@@ -1,9 +1,7 @@
 package com.trophonius;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.io.Serializable;
+import java.io.*;
+import java.nio.file.Paths;
 import java.util.HashMap;
 
 public class Table implements Serializable {
@@ -59,7 +57,6 @@ public class Table implements Serializable {
 
     public void printTableStructure() {
 
-
         System.out.println("Table Name: " + tableName);
         System.out.println("+" + "-".repeat(85) + "+");
         System.out.printf("| %-3s | %-20s | %-15s | %-10s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Primary Key", "Identity");
@@ -74,11 +71,31 @@ public class Table implements Serializable {
 
     // create the physical table file
     public void writeTableToDisk(String dbName) {
+
         try {
-            PrintWriter out = new PrintWriter(new File("data/" + dbName + "/" + tableName + ".tbl"));
-        } catch (FileNotFoundException e) {
+
+            // check if database directory exists in data directory
+            if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+
+                // write .tbl file first time
+                FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");
+                ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(dbFile));
+                os.writeObject(tableStructure);
+                os.flush();
+                os.close();
+                dbFile.flush();
+                dbFile.close();
+
+
+            } else  {
+                // Table file exists - do update
+                // TO DO
+            }
+
+        } catch (IOException e) {
             System.out.println("Table could not we written to disk: ");
             e.printStackTrace();
+
         }
     }
 

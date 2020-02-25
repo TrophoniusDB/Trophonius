@@ -108,46 +108,46 @@ public class DDL {
 
                 // Map SQL data types to Java classes
 
-                if(dataTypeString.equals("text") || dataTypeString.equals("string") ) {
+                if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
                     dataType.setClassName("String");
                 }
 
-                if(dataTypeString.equals("date") ) {
+                if (dataTypeString.equals("date")) {
                     dataType.setClassName("LocalDate");
                 }
 
-                if(dataTypeString.equals("datetime") ) {
+                if (dataTypeString.equals("datetime")) {
                     dataType.setClassName("LocalDateTime");
                 }
 
-                if(dataTypeString.equals("int") ) {
+                if (dataTypeString.equals("int")) {
                     dataType.setClassName("Integer");
                 }
 
-                if(dataTypeString.equals("decimal") || dataTypeString.equals("double") ) {
+                if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
                     dataType.setClassName("Double");
                 }
 
-                if(dataTypeString.equals("float") ) {
+                if (dataTypeString.equals("float")) {
                     dataType.setClassName("Float");
                 }
 
-                if(dataTypeString.equals("object") ) {
+                if (dataTypeString.equals("object")) {
                     dataType.setClassName("Object");
                     dataType.setComplex(true);
                 }
 
-                if(dataTypeString.equals("array(int)") ) {
+                if (dataTypeString.equals("array(int)")) {
                     dataType.setClassName("ArrayList<Integer>");
                     dataType.setComplex(true);
                 }
 
-                if(dataTypeString.equals("array(text)") ) {
+                if (dataTypeString.equals("array(text)")) {
                     dataType.setClassName("ArrayList<String>");
                     dataType.setComplex(true);
                 }
 
-                if(dataTypeString.equals("array(decimal)") ) {
+                if (dataTypeString.equals("array(decimal)")) {
                     dataType.setClassName("ArrayList<Double>");
                     dataType.setComplex(true);
                 }
