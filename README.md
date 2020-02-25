@@ -1,4 +1,6 @@
-# Trophonius
-Code Repository for Trophonius Data Base
+# Trophonius Terminal Client
+Code Repository for Trophonius Data Base Terminal Client
 
-## clone repository and open in IntelliJ
+## USAGE
+- clone repository and open in IntelliJ
+- Build artifact and run: java -jar Trophonius  
