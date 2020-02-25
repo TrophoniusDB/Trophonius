@@ -75,11 +75,11 @@ public class Sql {
             if (dbNames.isEmpty()) {
                 System.out.println("No databases found, Create one?");
             } else {
-                System.out.println("-".repeat(65));
-                System.out.println("Database");
-                System.out.println("-".repeat(65));
-                dbNames.forEach(name -> System.out.println(name));
-                System.out.println("-".repeat(65));
+                System.out.println("+"+"-".repeat(30)+"+");
+                System.out.printf("| %-28s |\n", "Database");
+                System.out.println("+"+"-".repeat(30)+"+");
+                dbNames.forEach(name -> System.out.printf("| %-28s |\n",name));
+                System.out.println("+"+"-".repeat(30)+"+");
             }
 
         } // END SHOW DATABASES
