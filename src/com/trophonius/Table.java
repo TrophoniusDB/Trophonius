@@ -74,10 +74,10 @@ public class Table implements Serializable {
 
         try {
 
-            // check if database directory exists in data directory
+            // check that table file not  exists in data directory
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
-                // write .tbl file first time
+                // create table file and write table structure to the file
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");
                 ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(dbFile));
                 os.writeObject(tableStructure);
@@ -86,9 +86,8 @@ public class Table implements Serializable {
                 dbFile.flush();
                 dbFile.close();
 
-
             } else  {
-                // Table file exists - do update
+                // Table file exists - do update of table structure
                 // TO DO
             }
 
