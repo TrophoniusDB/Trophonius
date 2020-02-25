@@ -1,6 +1,8 @@
 package com.trophonius;
 
-public class DataType {
+import java.io.Serializable;
+
+public class DataType implements Serializable {
 
     private String name;
     private String className;

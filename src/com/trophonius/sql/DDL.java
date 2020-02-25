@@ -1,5 +1,6 @@
 package com.trophonius.sql;
 
+import com.trophonius.DataType;
 import com.trophonius.Database;
 import com.trophonius.Field;
 import com.trophonius.Table;
@@ -28,6 +29,7 @@ public class DDL {
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
 
+        // DDL SQL METHODS
 
         // SQL: CREATE DATABASE <dbname>
         if (sql.toLowerCase().startsWith("create database")) {
@@ -96,7 +98,48 @@ public class DDL {
                 // Create fields and set attributes
                 Field f1 = new Field();
                 f1.setName(fieldElement[0]);
-                f1.setDataType(fieldElement[1]);
+
+                // Data Type Conversion
+
+                String dataTypeString = fieldElement[1].toLowerCase();
+
+                DataType dataType = new DataType();
+                dataType.setName(dataTypeString);
+
+
+                if(dataTypeString.equals("text") || dataTypeString.equals("string") ) {
+                    dataType.setClassName("String");
+                }
+
+                if(dataTypeString.equals("date") ) {
+                    dataType.setClassName("LocalDate");
+                }
+
+                if(dataTypeString.equals("datetime") ) {
+                    dataType.setClassName("LocalDateTime");
+                }
+
+                if(dataTypeString.equals("int") ) {
+                    dataType.setClassName("Integer");
+                }
+
+                if(dataTypeString.equals("decimal") || dataTypeString.equals("double") ) {
+                    dataType.setClassName("Double");
+                }
+
+                if(dataTypeString.equals("float") ) {
+                    dataType.setClassName("Float");
+                }
+
+                if(dataTypeString.equals("object") ) {
+                    dataType.setClassName("Object");
+                    dataType.setComplex(true);
+                }
+
+
+
+                f1.setDataType(dataType);
+
 
                 //    System.out.println("DataType = " + fieldElement[1]);
                 if (field.contains("primary key")) {

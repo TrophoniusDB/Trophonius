@@ -22,7 +22,7 @@ public class DML {
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
 
-        // SQL METHODS
+        // DML SQL METHODS
 
 
 

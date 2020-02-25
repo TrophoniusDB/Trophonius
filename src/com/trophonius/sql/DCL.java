@@ -21,7 +21,7 @@ public class DCL {
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
 
-        // SQL METHODS
+        // DCL SQL METHODS
 
 
     }

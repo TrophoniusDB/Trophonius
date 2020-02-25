@@ -5,7 +5,7 @@ import java.io.Serializable;
 public class Field implements Serializable {
 
     private String name;
-    private String dataType;
+    private DataType dataType;
     private boolean primaryKey;
     private boolean notNull;
     private boolean autoIncrement;
@@ -13,12 +13,12 @@ public class Field implements Serializable {
     public Field() {
     }
 
-    public Field(String name, String dataType) {
+    public Field(String name, DataType dataType) {
         this.name = name;
         this.dataType = dataType;
     }
 
-    public Field(String name, String dataType, boolean primaryKey, boolean notNull, boolean autoIncrement) {
+    public Field(String name, DataType dataType, boolean primaryKey, boolean notNull, boolean autoIncrement) {
         this.name = name;
         this.dataType = dataType;
         this.primaryKey = primaryKey;
@@ -34,11 +34,11 @@ public class Field implements Serializable {
         this.name = name;
     }
 
-    public String getDataType() {
+    public DataType getDataType() {
         return dataType;
     }
 
-    public void setDataType(String dataType) {
+    public void setDataType(DataType dataType) {
         this.dataType = dataType;
     }
 
