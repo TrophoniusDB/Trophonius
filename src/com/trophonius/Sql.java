@@ -97,20 +97,17 @@ public class Sql {
 
 
         // SQL: DESCRIBE <FULL> DATABASE <dbname>
-        if (sql.toLowerCase().startsWith("describe database")
-                || sql.toLowerCase().startsWith("describe full database")
-                || (sql.toLowerCase().startsWith("describe full") && this.prompt.length() > 2)
-        ) {
+        if (sql.toLowerCase().startsWith("describe database") || sql.toLowerCase().startsWith("describe full database")) {
             String dbName;
             boolean full;
             Database showDB = new Database();
 
             // if sql = describe <dbname>
-            if (words.length == 2) {
-                dbName = words[1];
-                // if sql = describe database <dbname>
-            } else {
+            if (words.length == 3) {
                 dbName = words[2];
+            // if sql = describe database <dbname>
+            } else {
+                dbName = words[3];
                 showDB.setDbName(dbName);
             }
 
