@@ -106,6 +106,7 @@ public class DDL {
                 DataType dataType = new DataType();
                 dataType.setName(dataTypeString);
 
+                // Map SQL data types to Java classes
 
                 if(dataTypeString.equals("text") || dataTypeString.equals("string") ) {
                     dataType.setClassName("String");
@@ -136,6 +137,20 @@ public class DDL {
                     dataType.setComplex(true);
                 }
 
+                if(dataTypeString.equals("array(int)") ) {
+                    dataType.setClassName("ArrayList<Integer>");
+                    dataType.setComplex(true);
+                }
+
+                if(dataTypeString.equals("array(text)") ) {
+                    dataType.setClassName("ArrayList<String>");
+                    dataType.setComplex(true);
+                }
+
+                if(dataTypeString.equals("array(decimal)") ) {
+                    dataType.setClassName("ArrayList<Double>");
+                    dataType.setComplex(true);
+                }
 
 
                 f1.setDataType(dataType);
