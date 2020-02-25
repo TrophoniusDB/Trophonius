@@ -1,24 +1,25 @@
-package com.trophonius;
+package com.trophonius.sql;
+
+import com.trophonius.Database;
+import com.trophonius.Field;
+import com.trophonius.Table;
 
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Sql {
+public class DDL {
+
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
 
-
-    public Sql(String prompt, Database currentDB, String sql) {
+    public DDL(String prompt, Database currentDB, String sql) {
         this.sql = sql;
         this.prompt = prompt;
         this.currentDB = currentDB;
         parseSql(currentDB, sql);
     }
-
 
     private void parseSql(Database currentDB, String sql) {
 
@@ -26,6 +27,7 @@ public class Sql {
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
+
 
         // SQL: CREATE DATABASE <dbname>
         if (sql.toLowerCase().startsWith("create database")) {
@@ -67,92 +69,6 @@ public class Sql {
             } // end else
         } // end create database
 
-        // SQL: SHOW DATABASES
-        if (sql.toLowerCase().equals("show databases")) {
-
-            ArrayList<String> dbNames = HelperMethods.findDatabases();
-
-            if (dbNames.isEmpty()) {
-                System.out.println("No databases found, Create one?");
-            } else {
-                System.out.println("+"+"-".repeat(30)+"+");
-                System.out.printf("| %-28s |\n", "Database");
-                System.out.println("+"+"-".repeat(30)+"+");
-                dbNames.forEach(name -> System.out.printf("| %-28s |\n",name));
-                System.out.println("+"+"-".repeat(30)+"+");
-            }
-
-        } // END SHOW DATABASES
-
-        // SQL: SHOW TABLES
-        if (sql.toLowerCase().equals("show tables")) {
-
-            if (prompt.length() > 2) {
-                currentDB.printTables();
-            } else {
-                System.out.println("No database selected. Type: use <dbname> to select one");
-            }
-
-        }
-
-
-        // SQL: DESCRIBE <FULL> DATABASE <dbname>
-        if (sql.toLowerCase().startsWith("describe database") || sql.toLowerCase().startsWith("describe full database")) {
-            String dbName;
-            boolean full;
-            Database showDB = new Database();
-
-            // if sql = describe <dbname>
-            if (words.length == 3) {
-                dbName = words[2];
-            // if sql = describe database <dbname>
-            } else {
-                dbName = words[3];
-                showDB.setDbName(dbName);
-            }
-
-            if (sql.toLowerCase().contains("full")) {
-                full = true;
-            } else {
-                full = false;
-            }
-
-            try {
-                showDB.describeDatabase(dbName, full);
-            } catch (IOException | ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-
-        } // end describe database
-
-        // SQL: DESCRIBE <table name>
-        if (sql.toLowerCase().startsWith("describe") && this.prompt.length() > 2) {
-
-            String tableName = words[1];
-            AtomicBoolean tableExists = new AtomicBoolean(false);
-            currentDB.getTables().forEach((k, v) -> {
-                if (v.getTableName().equals(tableName)) {
-                    v.printTableStructure();
-                    tableExists.set(true);
-                }
-            });
-
-            if (!tableExists.getAcquire()) {
-                System.out.println("Table does not exist");
-            }
-        }
-
-
-        // SQL: USE <dbname>
-        if (sql.toLowerCase().startsWith("use")) {
-            String dbName = words[1];
-            currentDB = currentDB.openDatabase(dbName);
-            this.currentDB = currentDB;
-            prompt = currentDB.getDbName() + "/";
-            // this.currentDBName = currentDB.getDbName();
-            System.out.println("Database changed to " + currentDB.getDbName());
-
-        } // end use
 
         // SQL: CREATE TABLE <tablename> <default charset> <default collation>
         if (sql.toLowerCase().startsWith("create table")) {
@@ -214,5 +130,9 @@ public class Sql {
             Database.deleteDatabase(dbName);
 
         }
+
+
     }
+
+
 }

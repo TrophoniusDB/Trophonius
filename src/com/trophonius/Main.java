@@ -1,5 +1,7 @@
 package com.trophonius;
 
+import com.trophonius.sql.SqlParser;
+
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -24,7 +26,7 @@ public class Main {
                 System.out.println("Goodbye...");
                 System.exit(0);
             } else {
-                Sql sql = new Sql(prompt, currentDB, inputText);
+                SqlParser sql = new SqlParser(prompt, currentDB, inputText);
                 prompt = sql.prompt;
                 currentDB = sql.currentDB;
             }
