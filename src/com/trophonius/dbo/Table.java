@@ -65,6 +65,11 @@ public class Table implements Serializable {
         System.out.println("+" + "-".repeat(85) + "+");
     }
 
+    public HashMap<Integer, Field> getTableStructure() {
+        return tableStructure;
+    }
+
+
 
     public void saveTableStructure() {
 

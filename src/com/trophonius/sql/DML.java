@@ -1,5 +1,6 @@
 package com.trophonius.sql;
 
+import com.trophonius.dbo.DataType;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Table;
@@ -7,6 +8,7 @@ import com.trophonius.dbo.Table;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Map;
 
 public class DML {
 
@@ -73,11 +75,26 @@ public class DML {
 
 
                 // Save Row
-                // Get table structure
 
-//                for (Field f: currentTable) {
-//                    f.getDataType().getClassName()  ;
-//                }
+                String storedFieldName = v.getName();
+                String storedDataTypeName = v.getDataType().getName();
+                String storedClassName = v.getDataType().getClassName();
+
+                // Get table structure and put values into fields in a row and store row.
+
+                currentTable.getTableStructure().forEach((k,v) ->{
+
+                    //
+                    for (String name: fieldNames) {
+                        if (name.equals(storedFieldName)) {
+
+                        }
+                    }
+
+
+
+
+                });
 
 
 
