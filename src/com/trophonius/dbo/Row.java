@@ -1,6 +1,6 @@
 package com.trophonius.dbo;
 
-public class Record {
+public class Row {
 
 
 
