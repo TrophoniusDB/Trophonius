@@ -76,13 +76,13 @@ public class DML {
 
                 // Save Row
 
-                String storedFieldName = v.getName();
-                String storedDataTypeName = v.getDataType().getName();
-                String storedClassName = v.getDataType().getClassName();
 
                 // Get table structure and put values into fields in a row and store row.
 
                 currentTable.getTableStructure().forEach((k,v) ->{
+                    String storedFieldName = v.getName();
+                    String storedDataTypeName = v.getDataType().getName();
+                    String storedClassName = v.getDataType().getClassName();
 
                     //
                     for (String name: fieldNames) {
