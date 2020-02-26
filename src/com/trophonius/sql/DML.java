@@ -1,6 +1,8 @@
 package com.trophonius.sql;
 
 import com.trophonius.dbo.Database;
+import com.trophonius.dbo.Field;
+import com.trophonius.dbo.Table;
 
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -11,6 +13,8 @@ public class DML {
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
+    private Table currentTable;
+    private Field tableField;
 
     public DML(String prompt, Database currentDB, String sql) {
         this.sql = sql;
@@ -30,22 +34,14 @@ public class DML {
         // SQL INSERT <INTO> <TABLENAME>
         if (sql.toLowerCase().startsWith("insert") || sql.toLowerCase().startsWith("insert into")  ) {
 
-            // Determine tablename
             String tableName;
+
+            // Determine tablename
             if(sql.toLowerCase().startsWith("insert into")) {
                 tableName = words[2];
             } else {
                 tableName = words[1];
             }
-
-            // Find field names
-            String[] fieldNames = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split(", ");
-            // Arrays.stream(fieldNames).forEach(System.out::println);
-
-            // Find field values
-            String[] fieldValues = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split(", ");
-            Arrays.stream(fieldValues).forEach(System.out::println);
-
 
             // Check if table exists
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+".tbl"))) {
@@ -53,8 +49,39 @@ public class DML {
                 System.out.println("Table not found.");
                 return;
             } else {
-                // Table file found - open it, construct row and append row to table.
+
+
+                // Table exists - open it, construct row and append row to table.
                 // System.out.println("Table exists");
+
+                // Find field names from SQL
+                String[] fieldNames = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split("[, ]");
+                // Arrays.stream(fieldNames).forEach(System.out::println);
+
+                // Find field values from SQL
+                String valueString = sql.substring(sql.indexOf("values"),sql.length());
+                String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[, ]");
+                //Arrays.stream(fieldValues).forEach(System.out::println);
+
+                currentDB.getTables().forEach((k, v) -> {
+                    if (v.getTableName().equals(tableName)) {
+                        v.printTableStructure();
+                         currentTable = v;
+                        // TODO make method getTableStructure() ?
+                    }
+                });
+
+
+                // Save Row
+                // Get table structure
+
+//                for (Field f: currentTable) {
+//                    f.getDataType().getClassName()  ;
+//                }
+
+
+
+
                 LocalDateTime created = LocalDateTime.now();
 
 

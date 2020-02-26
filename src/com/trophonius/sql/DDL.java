@@ -155,7 +155,6 @@ public class DDL {
 
                 f1.setDataType(dataType);
 
-
                 //    System.out.println("DataType = " + fieldElement[1]);
                 if (field.contains("primary key")) {
                     f1.setPrimaryKey(true);

@@ -57,13 +57,11 @@ public class SqlParser {
         }
 
 
-
+        // SQL Client Helper methods
 
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
-
-
 
         // SQL: SHOW DATABASES
         if (sql.toLowerCase().equals("show databases")) {
