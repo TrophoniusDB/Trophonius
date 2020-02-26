@@ -1,6 +1,6 @@
 package com.trophonius.sql;
 
-import com.trophonius.Database;
+import com.trophonius.dbo.Database;
 
 public class DML {
 

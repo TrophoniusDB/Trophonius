@@ -1,4 +1,4 @@
-package com.trophonius;
+package com.trophonius.utils;
 
 import java.io.File;
 import java.nio.file.Paths;
@@ -23,7 +23,6 @@ public class HelperMethods {
         System.out.println("Deleted file/folder: " + file.getAbsolutePath());
     }
 
-
     public static ArrayList<String> findDatabases() {
 
         ArrayList<String> dbNames = new ArrayList<>();
@@ -42,9 +41,6 @@ public class HelperMethods {
 
         return dbNames;
     }
-
-
-
 
 } // END CLASS
 

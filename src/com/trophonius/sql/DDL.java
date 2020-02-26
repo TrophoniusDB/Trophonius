@@ -1,9 +1,9 @@
 package com.trophonius.sql;
 
-import com.trophonius.DataType;
-import com.trophonius.Database;
-import com.trophonius.Field;
-import com.trophonius.Table;
+import com.trophonius.dbo.DataType;
+import com.trophonius.dbo.Database;
+import com.trophonius.dbo.Field;
+import com.trophonius.dbo.Table;
 
 import java.io.IOException;
 import java.nio.file.Paths;

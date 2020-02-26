@@ -1,4 +1,6 @@
-package com.trophonius;
+package com.trophonius.dbo;
+
+import com.trophonius.utils.HelperMethods;
 
 import java.io.*;
 import java.nio.file.Paths;

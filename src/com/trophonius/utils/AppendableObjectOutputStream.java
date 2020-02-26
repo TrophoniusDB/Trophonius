@@ -1,4 +1,4 @@
-package com.trophonius;
+package com.trophonius.utils;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;

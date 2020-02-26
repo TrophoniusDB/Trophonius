@@ -1,5 +1,6 @@
 package com.trophonius;
 
+import com.trophonius.dbo.Database;
 import com.trophonius.sql.SqlParser;
 
 import java.io.IOException;

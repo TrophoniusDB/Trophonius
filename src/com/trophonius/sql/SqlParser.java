@@ -1,7 +1,7 @@
 package com.trophonius.sql;
 
-import com.trophonius.Database;
-import com.trophonius.HelperMethods;
+import com.trophonius.dbo.Database;
+import com.trophonius.utils.HelperMethods;
 
 import java.io.IOException;
 import java.util.ArrayList;

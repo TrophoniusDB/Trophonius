@@ -1,4 +1,4 @@
-package com.trophonius;
+package com.trophonius.dbo;
 
 import java.io.Serializable;
 
