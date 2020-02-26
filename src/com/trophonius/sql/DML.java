@@ -39,8 +39,13 @@ public class DML {
             }
 
             // Find field names
-            String[] fields = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split(", ");
-            Arrays.stream(fields).forEach(System.out::println);
+            String[] fieldNames = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split(", ");
+            // Arrays.stream(fieldNames).forEach(System.out::println);
+
+            // Find field values
+            String[] fieldValues = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split(", ");
+            Arrays.stream(fieldValues).forEach(System.out::println);
+
 
             // Check if table exists
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+".tbl"))) {
@@ -49,7 +54,7 @@ public class DML {
                 return;
             } else {
                 // Table file found - open it, construct row and append row to table.
-                System.out.println("Table exists");
+                // System.out.println("Table exists");
                 LocalDateTime created = LocalDateTime.now();
 
 
