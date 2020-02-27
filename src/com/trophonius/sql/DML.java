@@ -3,6 +3,7 @@ package com.trophonius.sql;
 import com.trophonius.dbo.*;
 
 import java.nio.file.Paths;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -52,7 +53,6 @@ public class DML {
                 return;
             } else {
 
-
                 // Table exists - open it, construct row and append row to table.
                 // System.out.println("Table exists");
 
@@ -65,6 +65,13 @@ public class DML {
                 String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[, ]");
                 //Arrays.stream(fieldValues).forEach(System.out::println);
 
+                HashMap<String, String> valueMap = new HashMap<>();
+
+                for(int i = 0; i < fieldNames.length;i++ ){
+                    valueMap.put(fieldNames[i], fieldValues[i]);
+                }
+
+
                 currentDB.getTables().forEach((k, v) -> {
                     if (v.getTableName().equals(tableName)) {
                         v.printTableStructure();
@@ -74,38 +81,43 @@ public class DML {
 
 
                 // Save Row
-                // Get table structure and put values into fields in a row and store row.
+                // put values a row and store row.
 
                 currentTable.getTableStructure().forEach((k,v) ->{
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
-                    String value = "";
+
+                    row.add("timestamp",LocalDateTime.now());
 
                     if (storedClassName.equals("String")) {
-                        value = new String();
+                        String value = new String(valueMap.get(storedFieldName));
+                        row.add(storedFieldName, value);
                     }
 
-                    if (storedClassName.equals("String")) {
-                        value = new String();
+                    if (storedClassName.equals("Integer")) {
+                        Integer value = Integer.getInteger(valueMap.get(storedFieldName));
+                        row.add(storedFieldName, value);
                     }
 
-                    //
-                    for (String name: fieldNames) {
-                        if (name.equals(storedFieldName)) {
-                            row.add(name, value);
-                        }
+                    if (storedClassName.equals("LocalDate")) {
+                        LocalDate value = LocalDate.parse(valueMap.get(storedFieldName));
+                        row.add(storedFieldName, value);
                     }
 
+                    if (storedClassName.equals("LocalDateTime")) {
+                        LocalDateTime value = LocalDateTime.parse(valueMap.get(storedFieldName));
+                        row.add(storedFieldName, value);
+                    }
 
-
+                    if (storedClassName.equals("Double")) {
+                        Double value = Double.valueOf(valueMap.get(storedFieldName));
+                        row.add(storedFieldName, value);
+                    }
 
                 });
 
-
-
-
-                LocalDateTime created = LocalDateTime.now();
+                System.out.println(row.toString());
 
 
 

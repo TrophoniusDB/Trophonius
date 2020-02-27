@@ -22,4 +22,10 @@ public class Row<E> {
         this.row.put(fieldName, value);
     }
 
+    @Override
+    public String toString() {
+        return "Row{" +
+                "row=" + row +
+                '}';
+    }
 }
