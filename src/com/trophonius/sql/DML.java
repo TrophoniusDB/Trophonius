@@ -1,13 +1,12 @@
 package com.trophonius.sql;
 
-import com.trophonius.dbo.DataType;
-import com.trophonius.dbo.Database;
-import com.trophonius.dbo.Field;
-import com.trophonius.dbo.Table;
+import com.trophonius.dbo.*;
 
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 public class DML {
@@ -17,6 +16,7 @@ public class DML {
     private String sql = "";
     private Table currentTable;
     private Field tableField;
+    private Row row = new Row();
 
     public DML(String prompt, Database currentDB, String sql) {
         this.sql = sql;
@@ -69,25 +69,21 @@ public class DML {
                     if (v.getTableName().equals(tableName)) {
                         v.printTableStructure();
                          currentTable = v;
-                        // TODO make method getTableStructure() ?
                     }
                 });
 
 
                 // Save Row
-
-
                 // Get table structure and put values into fields in a row and store row.
 
                 currentTable.getTableStructure().forEach((k,v) ->{
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
-
                     //
                     for (String name: fieldNames) {
                         if (name.equals(storedFieldName)) {
-
+                            row.add(name,);
                         }
                     }
 
