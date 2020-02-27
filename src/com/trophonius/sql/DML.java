@@ -80,10 +80,20 @@ public class DML {
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
+                    String value = "";
+
+                    if (storedClassName.equals("String")) {
+                        value = new String();
+                    }
+
+                    if (storedClassName.equals("String")) {
+                        value = new String();
+                    }
+
                     //
                     for (String name: fieldNames) {
                         if (name.equals(storedFieldName)) {
-                            row.add(name,);
+                            row.add(name, value);
                         }
                     }
 
