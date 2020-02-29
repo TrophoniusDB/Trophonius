@@ -24,8 +24,6 @@ public class Row<E> {
 
     @Override
     public String toString() {
-        return "Row{" +
-                "row=" + row +
-                '}';
+        return "Row{" + row + '}';
     }
 }

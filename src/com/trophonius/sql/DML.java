@@ -100,8 +100,9 @@ public class DML {
                                 row.add(storedFieldName, value);
                             }
 
-                            if (storedClassName.equals("Integer")) {
-                                Integer value = Integer.getInteger(valueMap.get(storedFieldName));
+                            if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
+                                Integer value = Integer.parseInt(valueMap.get(storedFieldName));
+                                System.out.println(value);
                                 row.add(storedFieldName, value);
                             }
 
