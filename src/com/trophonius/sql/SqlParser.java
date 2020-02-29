@@ -142,11 +142,14 @@ public class SqlParser {
         // SQL: USE <dbname>
         if (sql.toLowerCase().startsWith("use")) {
             String dbName = words[1];
-            currentDB = currentDB.openDatabase(dbName);
-            this.currentDB = currentDB;
-            prompt = currentDB.getDbName() + "/";
-            // this.currentDBName = currentDB.getDbName();
-            System.out.println("Database changed to " + currentDB.getDbName());
+
+            if((currentDB = currentDB.openDatabase(dbName)).getDbName() != null) {
+                this.currentDB = currentDB;
+                prompt = currentDB.getDbName() + "/";
+                // this.currentDBName = currentDB.getDbName();
+                System.out.println("Database changed to " + currentDB.getDbName());
+            }
+
 
         } // end use
 

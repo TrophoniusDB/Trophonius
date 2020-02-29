@@ -5,10 +5,8 @@ import com.trophonius.dbo.*;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Map;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DML {
 
@@ -46,13 +44,12 @@ public class DML {
                 tableName = words[1];
             }
 
-            // Check if table exists
+            // Check if table not found
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+".tbl"))) {
                 // Table file not found. Return to sender
                 System.out.println("Table not found.");
                 return;
             } else {
-
                 // Table exists - open it, construct row and append row to table.
                 // System.out.println("Table exists");
 
@@ -71,6 +68,7 @@ public class DML {
                     valueMap.put(fieldNames[i].strip(), fieldValues[i].strip());
                 }
 
+                // set currentTable
                 currentDB.getTables().forEach((k, v) -> {
                     if (v.getTableName().equals(tableName)) {
                       //  v.printTableStructure();
@@ -78,6 +76,19 @@ public class DML {
                     }
                 });
 
+
+                // Check if all fields from SQL exists in tableStructure of currentTable
+                AtomicBoolean allFieldsExists = new AtomicBoolean(true);
+                valueMap.forEach((k,v) -> {
+                    if(!currentTable.getTableStructure().containsKey(k)) {
+                        System.out.println("Field "+k+" does not exist in table "+tableName);
+                        allFieldsExists.set(false);
+                        return;
+                    }
+                });
+
+
+                if(allFieldsExists.getAcquire()== true) {
 
                 // Save Row
                 // put values a row and store row.
@@ -146,8 +157,10 @@ public class DML {
                 });
 
                 System.out.println(row.toString());
-                currentTable.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName(), row);
+                row.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName());
             }
+
+            } // end if allFieldsExists
 
         } // END INSERT INTO
 
