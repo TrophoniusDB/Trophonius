@@ -57,24 +57,23 @@ public class DML {
                 // System.out.println("Table exists");
 
                 // Find field names from SQL
-                String[] fieldNames = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split("[, ]");
+                String[] fieldNames = sql.substring(sql.indexOf("(")+1,sql.indexOf(")")).split("[,]");
                 // Arrays.stream(fieldNames).forEach(System.out::println);
 
                 // Find field values from SQL
                 String valueString = sql.substring(sql.indexOf("values"),sql.length());
-                String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[, ]");
+                String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[,]");
                 //Arrays.stream(fieldValues).forEach(System.out::println);
 
                 HashMap<String, String> valueMap = new HashMap<>();
 
                 for(int i = 0; i < fieldNames.length;i++ ){
-                    valueMap.put(fieldNames[i], fieldValues[i]);
+                    valueMap.put(fieldNames[i].strip(), fieldValues[i].strip());
                 }
-
 
                 currentDB.getTables().forEach((k, v) -> {
                     if (v.getTableName().equals(tableName)) {
-                        v.printTableStructure();
+                      //  v.printTableStructure();
                          currentTable = v;
                     }
                 });
@@ -90,7 +89,7 @@ public class DML {
 
                     row.add("timestamp",LocalDateTime.now());
 
-                        // Iterate through each sql-supplied fieldname/fieldvalue pair and check if name equals name in tablestructure
+                        // Iterate through each sql-supplied fieldname/fieldvalue pair and add to row + check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
 
                         if(sk.equals(storedFieldName)) {
@@ -98,31 +97,47 @@ public class DML {
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.add(storedFieldName, value);
-                            }
+                            } else
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
                                 Integer value = Integer.parseInt(valueMap.get(storedFieldName));
-                                System.out.println(value);
                                 row.add(storedFieldName, value);
-                            }
+                            } else
 
                             if (storedClassName.equals("LocalDate")) {
                                 String dateString = valueMap.get(storedFieldName).replaceAll("'","");
                                 dateString = dateString.replaceAll("\"","");
-                                LocalDate value = LocalDate.parse(dateString);
-                                row.add(storedFieldName, value);
-                            }
+                                try {
+                                    LocalDate value = LocalDate.parse(dateString);
+                                    row.add(storedFieldName, value);
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid date format:\n"+e.getMessage());
+                                }
+
+                            } else
 
                             if (storedClassName.equals("LocalDateTime")) {
-                                LocalDateTime value = LocalDateTime.parse(valueMap.get(storedFieldName));
-                                row.add(storedFieldName, value);
-                            }
+                                String dateTimeString = valueMap.get(storedFieldName).replaceAll("'","");
+                                dateTimeString = dateTimeString.replaceAll("\"","");
+
+                                try {
+                                    LocalDateTime value = LocalDateTime.parse(dateTimeString);
+                                    row.add(storedFieldName, value);
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid date format:\n"+e.getMessage());
+                                }
+
+                            } else
 
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
                                 row.add(storedFieldName, value);
                             }
 
+                        }  else {
+
+                            // No data from SQL, so add empty field:
+                            row.add(storedFieldName,null);
                         } // end if
                     });
 
@@ -130,8 +145,6 @@ public class DML {
                 });
 
                 System.out.println(row.toString());
-
-
 
             }
 
