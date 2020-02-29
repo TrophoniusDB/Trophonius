@@ -90,7 +90,7 @@ public class DML {
 
                     row.add("timestamp",LocalDateTime.now());
 
-                        // Iterate through each sql-supplied fieldname/fieldvalue pair and chech if name equals name in tablestructure
+                        // Iterate through each sql-supplied fieldname/fieldvalue pair and check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
 
                         if(sk.equals(storedFieldName)) {
