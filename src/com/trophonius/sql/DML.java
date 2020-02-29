@@ -90,30 +90,41 @@ public class DML {
 
                     row.add("timestamp",LocalDateTime.now());
 
-                    if (storedClassName.equals("String")) {
-                        String value = new String(valueMap.get(storedFieldName));
-                        row.add(storedFieldName, value);
-                    }
+                        // Iterate through each sql-supplied fieldname/fieldvalue pair and chech if name equals name in tablestructure
+                        valueMap.forEach((sk,sv) -> {
 
-                    if (storedClassName.equals("Integer")) {
-                        Integer value = Integer.getInteger(valueMap.get(storedFieldName));
-                        row.add(storedFieldName, value);
-                    }
+                        if(sk.equals(storedFieldName)) {
 
-                    if (storedClassName.equals("LocalDate")) {
-                        LocalDate value = LocalDate.parse(valueMap.get(storedFieldName));
-                        row.add(storedFieldName, value);
-                    }
+                            if (storedClassName.equals("String")) {
+                                String value = new String(valueMap.get(storedFieldName));
+                                row.add(storedFieldName, value);
+                            }
 
-                    if (storedClassName.equals("LocalDateTime")) {
-                        LocalDateTime value = LocalDateTime.parse(valueMap.get(storedFieldName));
-                        row.add(storedFieldName, value);
-                    }
+                            if (storedClassName.equals("Integer")) {
+                                Integer value = Integer.getInteger(valueMap.get(storedFieldName));
+                                row.add(storedFieldName, value);
+                            }
 
-                    if (storedClassName.equals("Double")) {
-                        Double value = Double.valueOf(valueMap.get(storedFieldName));
-                        row.add(storedFieldName, value);
-                    }
+                            if (storedClassName.equals("LocalDate")) {
+                                String dateString = valueMap.get(storedFieldName).replaceAll("'","");
+                                dateString = dateString.replaceAll("\"","");
+                                LocalDate value = LocalDate.parse(dateString);
+                                row.add(storedFieldName, value);
+                            }
+
+                            if (storedClassName.equals("LocalDateTime")) {
+                                LocalDateTime value = LocalDateTime.parse(valueMap.get(storedFieldName));
+                                row.add(storedFieldName, value);
+                            }
+
+                            if (storedClassName.equals("Double")) {
+                                Double value = Double.valueOf(valueMap.get(storedFieldName));
+                                row.add(storedFieldName, value);
+                            }
+
+                        } // end if
+                    });
+
 
                 });
 
