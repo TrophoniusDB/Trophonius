@@ -1,20 +1,21 @@
 package com.trophonius.dbo;
 
 import java.util.HashMap;
+import java.util.TreeMap;
 
 public class Row<E> {
 
-    private HashMap<String, E> row = new HashMap<String, E>();
+    private TreeMap<String, E> row = new TreeMap<String, E>();
 
     public Row() {
 
     }
 
-    public HashMap<String, E> getRow() {
+    public TreeMap<String, E> getRow() {
         return row;
     }
 
-    public void setRow(HashMap<String, E> row) {
+    public void setRow(TreeMap<String, E> row) {
         this.row = row;
     }
 

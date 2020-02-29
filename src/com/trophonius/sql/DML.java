@@ -97,12 +97,12 @@ public class DML {
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.add(storedFieldName, value);
-                            } else
+                            }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
                                 Integer value = Integer.parseInt(valueMap.get(storedFieldName));
                                 row.add(storedFieldName, value);
-                            } else
+                            }
 
                             if (storedClassName.equals("LocalDate")) {
                                 String dateString = valueMap.get(storedFieldName).replaceAll("'","");
@@ -114,7 +114,7 @@ public class DML {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
 
-                            } else
+                            }
 
                             if (storedClassName.equals("LocalDateTime")) {
                                 String dateTimeString = valueMap.get(storedFieldName).replaceAll("'","");
@@ -127,20 +127,21 @@ public class DML {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
 
-                            } else
+                            }
 
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
                                 row.add(storedFieldName, value);
                             }
 
-                        }  else {
-
-                            // No data from SQL, so add empty field:
-                            row.add(storedFieldName,null);
-                        } // end if
+                         } // end if
                     });
 
+
+                        // No data from SQL, so add empty field:
+                    if(!row.getRow().containsKey(storedFieldName))  {
+                        row.add(storedFieldName,null);
+                    }
 
                 });
 
@@ -152,7 +153,7 @@ public class DML {
 
 
 
-            }
+            } // end parseSQL
 
 
-}
+}  // end class
