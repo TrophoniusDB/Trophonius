@@ -80,11 +80,17 @@ public class DML {
                 // Check if all fields from SQL exists in tableStructure of currentTable
                 AtomicBoolean allFieldsExists = new AtomicBoolean(true);
                 valueMap.forEach((k,v) -> {
-                    if(!currentTable.getTableStructure().containsKey(k)) {
-                        System.out.println("Field "+k+" does not exist in table "+tableName);
-                        allFieldsExists.set(false);
-                        return;
-                    }
+                    System.out.println(k);
+                    currentTable.getTableStructure().forEach((a,b) -> {
+                        if(b.getName().equals(k)) {
+                            allFieldsExists.set(false);
+                        }
+
+                    });
+
+
+                    System.out.println("Field "+k+" does not exist in table "+tableName);
+
                 });
 
 
@@ -157,6 +163,7 @@ public class DML {
                 });
 
                 System.out.println(row.toString());
+                    System.out.println(currentTable.getTableName());
                 row.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName());
             }
 
