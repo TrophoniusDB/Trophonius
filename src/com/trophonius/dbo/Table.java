@@ -115,14 +115,14 @@ public class Table implements Serializable {
             if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
                 // Open table file for writing, and append row to the file
-                FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");
+                FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
                 AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
                 os.writeObject(row);;
                 os.flush();
                 os.close();
                 dbFile.flush();
                 dbFile.close();
-
+                System.out.println("Success: 1 row written to table "+tableName);
             } else  {
                 // Table file does not exists
                 System.out.println("Table file does not exist");

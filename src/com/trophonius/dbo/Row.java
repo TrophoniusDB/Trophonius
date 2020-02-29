@@ -1,9 +1,10 @@
 package com.trophonius.dbo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.TreeMap;
 
-public class Row<E> {
+public class Row<E> implements Serializable {
 
     private TreeMap<String, E> row = new TreeMap<String, E>();
 
