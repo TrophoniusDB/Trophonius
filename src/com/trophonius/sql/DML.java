@@ -146,7 +146,7 @@ public class DML {
                 });
 
                 System.out.println(row.toString());
-
+                currentTable.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName(), row);
             }
 
         } // END INSERT INTO

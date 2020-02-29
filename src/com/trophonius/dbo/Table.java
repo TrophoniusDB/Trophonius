@@ -1,5 +1,7 @@
 package com.trophonius.dbo;
 
+import com.trophonius.utils.AppendableObjectOutputStream;
+
 import java.io.*;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -103,6 +105,38 @@ public class Table implements Serializable {
 
         }
     }
+
+    // Append a row to en existing table
+    public void writeRowToDisk(String dbName, String tableName, Row row) {
+
+        try {
+
+            // check that table file exists in data directory
+            if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+
+                // Open table file for writing, and append row to the file
+                FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");
+                AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
+                os.writeObject(row);;
+                os.flush();
+                os.close();
+                dbFile.flush();
+                dbFile.close();
+
+            } else  {
+                // Table file does not exists
+                System.out.println("Table file does not exist");
+                return;
+            }
+
+        } catch (IOException e) {
+            System.out.println("Row could not we written to disk: ");
+            e.printStackTrace();
+
+        }
+    }
+
+
 
 
 }
