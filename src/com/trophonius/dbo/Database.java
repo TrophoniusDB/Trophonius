@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Database implements Serializable {
     private String dbName, charSet, collation;
@@ -228,4 +229,21 @@ public class Database implements Serializable {
     }
 
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Database)) return false;
+        Database database = (Database) o;
+        return getDbName().equals(database.getDbName()) &&
+                Objects.equals(getCharSet(), database.getCharSet()) &&
+                Objects.equals(getCollation(), database.getCollation()) &&
+                Objects.equals(getUsers(), database.getUsers()) &&
+                Objects.equals(getCreated(), database.getCreated()) &&
+                Objects.equals(getTables(), database.getTables());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getDbName(), getCharSet(), getCollation(), getUsers(), getCreated(), getTables());
+    }
 }

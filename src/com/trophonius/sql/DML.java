@@ -82,7 +82,7 @@ public class DML {
                 valueMap.forEach((k,v) -> {
                     System.out.println(k);
                     currentTable.getTableStructure().forEach((a,b) -> {
-                        if(b.getName().equals(k)) {
+                        if(!b.getName().equals(k)) {
                             allFieldsExists.set(false);
                         }
 
