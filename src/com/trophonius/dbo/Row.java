@@ -16,7 +16,6 @@ public class Row<E> implements Serializable {
     private TreeMap<String, E> primaryKey = new TreeMap<>();
     private TreeMap<TreeMap<String, E>, TreeMap<String, E>> rowWithPrimaryKey  = new TreeMap<>();
 
-
     public Row() {
 
     }
@@ -29,28 +28,28 @@ public class Row<E> implements Serializable {
         this.row = row;
     }
 
-    public ArrayList<E> getPrimaryKey() {
+    public TreeMap<String, E> getPrimaryKey() {
         return primaryKey;
     }
 
-    public void setPrimaryKey(ArrayList<E> primaryKey) {
+    public void setPrimaryKey(TreeMap<String, E> primaryKey) {
         this.primaryKey = primaryKey;
     }
 
-    public TreeMap<ArrayList<E>, TreeMap<String, E>> getRowWithPrimaryKey() {
+    public TreeMap<TreeMap<String, E>, TreeMap<String, E>> getRowWithPrimaryKey() {
         return rowWithPrimaryKey;
     }
 
-    public void setRowWithPrimaryKey(TreeMap<ArrayList<E>, TreeMap<String, E>> rowWithPrimaryKey) {
+    public void setRowWithPrimaryKey(TreeMap<TreeMap<String, E>, TreeMap<String, E>> rowWithPrimaryKey) {
         this.rowWithPrimaryKey = rowWithPrimaryKey;
     }
 
-    public void add (String fieldName, E value ) {
+    public void addToRow (String fieldName, E value ) {
         this.row.put(fieldName, value);
     }
 
     public void addToPrimaryKey (String fieldName, E value ) {
-        this.primaryKey.add(fieldName, value);
+        this.primaryKey.put(fieldName, value);
     }
 
 

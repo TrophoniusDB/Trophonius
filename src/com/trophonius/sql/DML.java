@@ -147,7 +147,12 @@ public class DML {
 
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
-                                row.add(storedFieldName, value);
+                               //TODO
+                                if(primaryKey) {
+                                    row.addToPrimaryKey(storedFieldName, value);
+                                } else {
+                                    row.addToRow(storedFieldName, value);
+                                }
                             }
 
                          } // end if
@@ -156,7 +161,7 @@ public class DML {
 
                         // No data from SQL, so add empty field:
                     if(!row.getRow().containsKey(storedFieldName))  {
-                        row.add(storedFieldName,null);
+                        row.addToRow(storedFieldName,null);
                     }
 
                 });
