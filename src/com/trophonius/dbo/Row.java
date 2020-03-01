@@ -12,9 +12,9 @@ import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
-    private TreeMap<String, E> row = new TreeMap<String, E>();
-    private ArrayList<E> primaryKey = new ArrayList<E>();
-    private TreeMap<ArrayList<E>, TreeMap<String, E>> rowWithPrimaryKey  = new TreeMap<>();
+    private TreeMap<String, E> row = new TreeMap<>();
+    private TreeMap<String, E> primaryKey = new TreeMap<>();
+    private TreeMap<TreeMap<String, E>, TreeMap<String, E>> rowWithPrimaryKey  = new TreeMap<>();
 
 
     public Row() {
@@ -29,9 +29,30 @@ public class Row<E> implements Serializable {
         this.row = row;
     }
 
+    public ArrayList<E> getPrimaryKey() {
+        return primaryKey;
+    }
+
+    public void setPrimaryKey(ArrayList<E> primaryKey) {
+        this.primaryKey = primaryKey;
+    }
+
+    public TreeMap<ArrayList<E>, TreeMap<String, E>> getRowWithPrimaryKey() {
+        return rowWithPrimaryKey;
+    }
+
+    public void setRowWithPrimaryKey(TreeMap<ArrayList<E>, TreeMap<String, E>> rowWithPrimaryKey) {
+        this.rowWithPrimaryKey = rowWithPrimaryKey;
+    }
+
     public void add (String fieldName, E value ) {
         this.row.put(fieldName, value);
     }
+
+    public void addToPrimaryKey (String fieldName, E value ) {
+        this.primaryKey.add(fieldName, value);
+    }
+
 
     // Append a row to en existing table file
     public void writeRowToDisk(String dbName, String tableName) {
