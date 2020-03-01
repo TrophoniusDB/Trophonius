@@ -105,8 +105,6 @@ public class DML {
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
 
-                    row.add("timestamp",LocalDateTime.now());
-
                         // Iterate through each sql-supplied fieldname/fieldvalue pair and add to row + check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
 

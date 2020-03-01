@@ -7,12 +7,15 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Paths;
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
     private TreeMap<String, E> row = new TreeMap<String, E>();
+    private ArrayList<E> primaryKey = new ArrayList<E>();
+    private TreeMap<ArrayList<E>, TreeMap<String, E>> rowWithPrimaryKey  = new TreeMap<>();
+
 
     public Row() {
 
@@ -38,9 +41,12 @@ public class Row<E> implements Serializable {
             // check that table file exists in data directory
             if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
-                // Open table file for writing, and append row to the file
+                // Open table file for writing, and append map of primary key + row to the file
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
                 AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
+
+
+
                 os.writeObject(row);;
                 os.flush();
                 os.close();

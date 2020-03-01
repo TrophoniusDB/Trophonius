@@ -83,9 +83,9 @@ public class Table implements Serializable {
     }
 
 
-
+    // Save altered table structure to db - file
     public void saveTableStructure() {
-
+      // TODO
     }
 
     // create the physical table file
