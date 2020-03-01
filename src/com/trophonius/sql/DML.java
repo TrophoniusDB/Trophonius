@@ -84,17 +84,17 @@ public class DML {
                     currentTable.getTableStructure().forEach((a,b) -> {
                         if(!b.getName().equals(k)) {
                             allFieldsExists.set(false);
+                            System.out.println("Field "+k+" does not exist in table "+tableName);
                         }
 
                     });
 
 
-                    System.out.println("Field "+k+" does not exist in table "+tableName);
-
                 });
 
+                System.out.println(allFieldsExists.getAcquire());
 
-                if(allFieldsExists.getAcquire()== true) {
+                if(allFieldsExists.get() == true) {
 
                 // Save Row
                 // put values a row and store row.
