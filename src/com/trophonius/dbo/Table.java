@@ -4,11 +4,13 @@ import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Table implements Serializable {
     private String tableName, charSet, collation;
     private HashMap<Integer, Field> tableStructure = new HashMap<>();
+    private ArrayList<String> fieldNames;
 
     public Table() {
     }
@@ -56,6 +58,15 @@ public class Table implements Serializable {
     public void setCollation(String collation) {
         this.collation = collation;
     }
+
+    public ArrayList<String> getFieldNames() {
+        ArrayList<String> names = new ArrayList<>();
+        tableStructure.forEach((k,v) -> {
+            names.add(v.getName());
+        });
+        return names;
+    }
+
 
     public void printTableStructure() {
 

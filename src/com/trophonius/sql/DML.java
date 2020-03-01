@@ -5,6 +5,8 @@ import com.trophonius.dbo.*;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -65,7 +67,10 @@ public class DML {
                 HashMap<String, String> valueMap = new HashMap<>();
 
                 for(int i = 0; i < fieldNames.length;i++ ){
-                    valueMap.put(fieldNames[i].strip(), fieldValues[i].strip());
+                    fieldNames[i] = fieldNames[i].strip();
+                    fieldValues[i] = fieldValues[i].strip();
+
+                    valueMap.put(fieldNames[i], fieldValues[i]);
                 }
 
                 // set currentTable
@@ -78,26 +83,22 @@ public class DML {
 
 
                 // Check if all fields from SQL exists in tableStructure of currentTable
-                AtomicBoolean allFieldsExists = new AtomicBoolean(true);
-                valueMap.forEach((k,v) -> {
-                    System.out.println(k);
-                    currentTable.getTableStructure().forEach((a,b) -> {
-                        if(!b.getName().equals(k)) {
-                            allFieldsExists.set(false);
-                            System.out.println("Field "+k+" does not exist in table "+tableName);
-                        }
 
-                    });
+                Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));
 
 
-                });
 
-                System.out.println(allFieldsExists.getAcquire());
+                if(found == false) {
+                // Not all field names were found in table structure. Print message and go back to prompt
+                    System.out.println("ERROR: one or more field names is not present in table");
+                    System.out.println("Fields in table: "+currentTable.getFieldNames());
+                    System.out.println("Fields in SQL statement: "+Arrays.asList(fieldNames));
 
-                if(allFieldsExists.get() == true) {
+                } else {
+                // All fieldNames where found in table structure, so continue to save row to file.
 
                 // Save Row
-                // put values a row and store row.
+                // put values in a row object and store in file.
 
                 currentTable.getTableStructure().forEach((k,v) ->{
                     String storedFieldName = v.getName();
@@ -162,8 +163,9 @@ public class DML {
 
                 });
 
+                // Write row to console
                 System.out.println(row.toString());
-                    System.out.println(currentTable.getTableName());
+                // Write row to table file
                 row.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName());
             }
 
