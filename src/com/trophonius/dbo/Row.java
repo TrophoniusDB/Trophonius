@@ -7,7 +7,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
@@ -52,6 +51,10 @@ public class Row<E> implements Serializable {
         this.primaryKey.put(fieldName, value);
     }
 
+    public void addToRowWithPrimaryKey (TreeMap<String, E> primaryKey, TreeMap<String,E> row ) {
+        this.rowWithPrimaryKey.put(primaryKey, row);
+    }
+
 
     // Append a row to en existing table file
     public void writeRowToDisk(String dbName, String tableName) {
@@ -64,10 +67,7 @@ public class Row<E> implements Serializable {
                 // Open table file for writing, and append map of primary key + row to the file
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
                 AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
-
-
-
-                os.writeObject(row);;
+                os.writeObject(rowWithPrimaryKey);;
                 os.flush();
                 os.close();
                 dbFile.flush();
