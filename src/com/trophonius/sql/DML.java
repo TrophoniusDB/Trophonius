@@ -86,7 +86,7 @@ public class DML {
 
                 Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));
 
-
+                
 
                 if(found == false) {
                 // Not all field names were found in table structure. Print message and go back to prompt
