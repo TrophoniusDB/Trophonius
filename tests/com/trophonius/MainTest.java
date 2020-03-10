@@ -25,14 +25,19 @@ class MainTest {
 
 @Test
     void sqlParserTestUse() {
-    String inputText = "use terje";
+    String inputText = "use testbase";
     String prompt = ">";
-    Database currentDB = new Database();
+    //Database currentDB = new Database();
     SqlParser sql = new SqlParser(prompt, currentDB, inputText);
     assertAll("parseSQL",
             () -> assertEquals(sql.prompt, ">"),
             () -> assertEquals(sql.currentDB, currentDB),
-            () -> assertEquals(inputText, "use  terje")
+            () -> assertEquals(inputText, "use testbase"),
+            () -> {
+//        if(assertNotEquals(currentDB.getDbName(),null)==true) {
+//         assertEquals(currentDB.getDbName(), "testbase");
+//        }
+    }
     );
 
 }
