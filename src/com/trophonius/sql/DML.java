@@ -86,7 +86,7 @@ public class DML {
 
                 Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));
 
-                
+
 
                 if(found == false) {
                 // Not all field names were found in table structure. Print message and go back to prompt
@@ -112,12 +112,12 @@ public class DML {
 
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
-                                row.add(storedFieldName, value);
+                                row.addToRow(storedFieldName, value);
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
                                 Integer value = Integer.parseInt(valueMap.get(storedFieldName));
-                                row.add(storedFieldName, value);
+                                row.addToRow(storedFieldName, value);
                             }
 
                             if (storedClassName.equals("LocalDate")) {
@@ -125,7 +125,7 @@ public class DML {
                                 dateString = dateString.replaceAll("\"","");
                                 try {
                                     LocalDate value = LocalDate.parse(dateString);
-                                    row.add(storedFieldName, value);
+                                    row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -138,7 +138,7 @@ public class DML {
 
                                 try {
                                     LocalDateTime value = LocalDateTime.parse(dateTimeString);
-                                    row.add(storedFieldName, value);
+                                    row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -147,12 +147,8 @@ public class DML {
 
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
-                               //TODO
-                                if(primaryKey) {
-                                    row.addToPrimaryKey(storedFieldName, value);
-                                } else {
                                     row.addToRow(storedFieldName, value);
-                                }
+
                             }
 
                          } // end if
