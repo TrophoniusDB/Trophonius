@@ -3,6 +3,7 @@ package com.trophonius.dbo;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -94,7 +95,7 @@ public class Table implements Serializable {
         try {
 
             // check that table file not  exists in data directory
-            if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+            if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
                 // create table file and write table structure to the file
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");

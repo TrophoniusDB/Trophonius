@@ -173,6 +173,34 @@ public class DML {
         } // END INSERT INTO
 
 
+        // SQL SELECT <fields...> FROM <TABLENAME>
+        if (sql.toLowerCase().startsWith("select") ) {
+
+            String tableName = null;
+
+            // Determine tablename
+            for (int i = 0; i< words.length; i++) {
+                if (words[i].toLowerCase().equals("from")) {
+                    tableName = words[i+1];
+                }
+            }
+
+
+            // Check if table not found
+            if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
+                // Table file not found. Return to sender
+                System.out.println("Table not found.");
+                return;
+            } else {
+                // Table exists - open it, fetch row and return fields.
+                 System.out.println("Table exists");
+
+                // Find field names from SQL
+                //String[] fieldNames = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")")).split("[,]");
+                // Arrays.stream(fieldNames).forEach(System.out::println);
+
+            }
+        } // end Select
 
             } // end parseSQL
 
