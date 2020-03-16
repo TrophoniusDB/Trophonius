@@ -2,12 +2,14 @@ package com.trophonius.sql;
 
 import com.trophonius.dbo.*;
 
+import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DML {
@@ -194,6 +196,40 @@ public class DML {
             } else {
                 // Table exists - open it, fetch row and return fields.
                  System.out.println("Table exists");
+                final String[] primaryKeyDataType = new String[1];
+
+                try {
+                    FileInputStream dbFile = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
+                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFile));
+
+
+                    try {
+                        HashMap<Integer,Field> tableStructure = (HashMap<Integer, Field>) is.readObject();
+                        tableStructure.forEach((k,v) -> {
+                            System.out.println(v.getName()+ " "+v.getDataType().getClassName());
+                            if(v.isPrimaryKey()) {
+                                primaryKeyDataType[0] = v.getDataType().getClassName();
+                            }
+                        });
+
+                        TreeMap<TreeMap<String,  ? >, TreeMap<String, ?>> row = (TreeMap<TreeMap<String, ?>, TreeMap<String, ?>>) is.readObject();
+
+                        row.forEach((k,v) -> {
+                            System.out.println(k.entrySet());
+
+                        });
+
+
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+
+
+                } catch (IOException e) {
+                    System.out.println("Error! Could not open table file...");
+                    e.printStackTrace();
+                }
+
 
                 // Find field names from SQL
                 //String[] fieldNames = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")")).split("[,]");
