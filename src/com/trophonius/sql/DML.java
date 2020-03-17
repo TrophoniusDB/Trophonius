@@ -6,11 +6,10 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class DML {
 
@@ -19,7 +18,7 @@ public class DML {
     private String sql = "";
     private Table currentTable;
     private Field tableField;
-    private Row row = new Row();
+    private Row<Serializable> row = new Row<>();
 
     public DML(String prompt, Database currentDB, String sql) {
         this.sql = sql;
@@ -212,12 +211,8 @@ public class DML {
                             }
                         });
 
-                        TreeMap<TreeMap<String,  ? >, TreeMap<String, ?>> row = (TreeMap<TreeMap<String, ?>, TreeMap<String, ?>>) is.readObject();
+                        is.close();
 
-                        row.forEach((k,v) -> {
-                            System.out.println(k.entrySet());
-
-                        });
 
 
                     } catch (ClassNotFoundException e) {
