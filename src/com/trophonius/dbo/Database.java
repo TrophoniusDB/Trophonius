@@ -65,9 +65,22 @@ public class Database implements Serializable {
         try {
             // Delete table file
             java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/"+tableName+".tbl"));
-            System.out.println("Table deleted.");
+            System.out.println("Table file deleted from disk.");
             // Delete record of the table in database file
-            this.tables.forEach((k,v) -> System.out.println(v.getTableName()));
+            this.tables.forEach((k,v) -> {
+                if(v.getTableName().equals(tableName)) {
+                    tables.remove(k);
+                    try {
+                        currentDB.saveDatabase(currentDB);
+                        System.out.println("Table deleted. Database updated");
+                    } catch (IOException e) {
+                        System.out.println("Database not updated...");
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Table not found in database");
+                }
+            });
 
         } catch (IOException e) {
             System.out.println("Table " + tableName + " could not be deleted.");
