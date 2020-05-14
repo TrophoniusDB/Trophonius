@@ -77,6 +77,10 @@ public class DDL {
             // Determine table name
             String tableName = words[2];
 
+            // Check if table already exists
+            // TODO
+
+
             // Create new table in memory
             Table t1 = new Table();
             t1.setTableName(tableName);
@@ -185,8 +189,14 @@ public class DDL {
         if (sql.toLowerCase().startsWith("drop database")) {
             String dbName = words[2];
             Database.deleteDatabase(dbName);
-
         }
+
+        // SQL: DROP TABLE
+        if (sql.toLowerCase().startsWith("drop table")) {
+            String tableName = words[2];
+            Database.deleteTable(currentDB.getDbName(), tableName);
+        }
+
 
 
     }
