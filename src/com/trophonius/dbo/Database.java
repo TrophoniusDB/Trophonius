@@ -2,6 +2,7 @@ package com.trophonius.dbo;
 
 import com.trophonius.utils.HelperMethods;
 
+import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
@@ -59,13 +60,15 @@ public class Database implements Serializable {
 
     }
 
-    public static void deleteTable(String dbName, String tableName) {
+    public static void deleteTable(Database currentDB, String tableName) {
 
         try {
             // Delete table file
-            java.nio.file.Files.delete(Paths.get("data/" + dbName + "/"+tableName+".tbl"));
+            java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/"+tableName+".tbl"));
             System.out.println("Table deleted.");
             // Delete record of the table in database file
+            currentDB.getTables();
+
 
         } catch (IOException e) {
             System.out.println("Table " + tableName + " could not be deleted.");
