@@ -59,6 +59,19 @@ public class Database implements Serializable {
 
     }
 
+    public static void deleteTable(String dbName, String tableName) {
+
+        try {
+            java.nio.file.Files.deleteIfExists(Paths.get("data/" + dbName + "/"+tableName));
+            System.out.println("Table deleted.");
+
+        } catch (IOException e) {
+            System.out.println("Table " + tableName + " could not be deleted.");
+            e.printStackTrace();
+        }
+
+    }
+
     public String getDbName() {
         return dbName;
     }
