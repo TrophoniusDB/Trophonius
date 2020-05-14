@@ -108,7 +108,8 @@ public class Table implements Serializable {
 
             } else  {
                 // Table file exists - do update of table structure
-                // TO DO
+                // TODO
+                System.out.println("Table already exists");
             }
 
         } catch (IOException e) {
