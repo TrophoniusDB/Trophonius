@@ -1,16 +1,16 @@
 package com.trophonius.dbo;
 
-import com.trophonius.utils.AppendableObjectOutputStream;
-
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Table implements Serializable {
     private String tableName, charSet, collation;
-    private HashMap<Integer, Field> tableStructure = new HashMap<>();
+    private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
 
     public Table() {
@@ -33,7 +33,7 @@ public class Table implements Serializable {
 
     // Add Fields to the tableStructure HashMap
     public void addField (Field field) {
-        this.tableStructure.put(tableStructure.size()+1,field);
+        this.tableStructure.put(field.getName(),field);
     }
 
     public String getTableName() {
@@ -63,23 +63,23 @@ public class Table implements Serializable {
     public ArrayList<String> getFieldNames() {
         ArrayList<String> names = new ArrayList<>();
         tableStructure.forEach((k,v) -> {
-            names.add(v.getName());
+            names.add(k);
         });
         return names;
     }
 
 
     public void printTableStructure() {
-
+        AtomicReference<Integer> i = new AtomicReference<>(1);
         System.out.println("Table Name: " + tableName);
         System.out.println("+" + "-".repeat(85) + "+");
         System.out.printf("| %-3s | %-20s | %-15s | %-10s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Primary Key", "Identity");
         System.out.println("+" + "-".repeat(85) + "+");
-        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-10s | %-12s | %-8s |\n", k, v.getName(), v.getDataType().getName(), v.isNotNull(), v.isPrimaryKey(), v.isAutoIncrement()));
+        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-10s | %-12s | %-8s |\n", i.getAndSet(i.get() + 1), v.getName(), v.getDataType().getName(), v.isNotNull(), v.isPrimaryKey(), v.isAutoIncrement()));
         System.out.println("+" + "-".repeat(85) + "+");
     }
 
-    public HashMap<Integer, Field> getTableStructure() {
+    public LinkedHashMap<String, Field> getTableStructure() {
         return tableStructure;
     }
 

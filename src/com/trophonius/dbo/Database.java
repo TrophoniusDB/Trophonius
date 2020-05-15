@@ -6,16 +6,15 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class Database implements Serializable {
     private String dbName, charSet, collation;
     private Map users;
     private LocalDateTime created;
-    private HashMap<Integer, Table> tables = new HashMap<>();
+    private HashMap<String, Table> tables = new HashMap<>();
 
     public Database() {
     }
@@ -61,36 +60,32 @@ public class Database implements Serializable {
     }
 
     public static void deleteTable(Database currentDB, String tableName) {
-        AtomicBoolean found = new AtomicBoolean(false);
+
         try {
             // Delete table file
-            java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/"+tableName+".tbl"));
+            java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"));
             System.out.println("Table file deleted from disk.");
-            // Delete record of the table in database file
-            HashMap<Integer,Table> table = (HashMap<Integer, Table>) currentDB.tables.clone();
-            table.forEach((k,v) -> {
-                if(v.getTableName().equals(tableName)) {
-                    currentDB.tables.remove(k);
-                    try {
-                        saveDatabase(currentDB);
-                        System.out.println("Table deleted. Database updated");
-                        found.set(true);
-                    } catch (IOException e) {
-                        System.out.println("Database not updated...");
-                        e.printStackTrace();
-                    }
-                }
-                if(!found.get())  {
-                    System.out.println("Table not found in database");
-                }
-            });
-
         } catch (IOException e) {
-            System.out.println("Table " + tableName + " could not be deleted.");
+            System.out.println("Table file " + tableName + " could not be deleted.");
             e.printStackTrace();
         }
+        // Delete record of the table in database file
+        try {
+            currentDB.tables.remove(tableName);
+        } catch (Exception e) {
+            System.out.println("Table not found in database");
+        }
 
-    }
+        try {
+            saveDatabase(currentDB);
+            System.out.println("Table deleted. Database updated");
+        } catch (IOException e) {
+            System.out.println("Database not updated...");
+            e.printStackTrace();
+        }
+    } // end delete table
+
+
 
     public String getDbName() {
         return dbName;
@@ -132,18 +127,18 @@ public class Database implements Serializable {
         this.created = created;
     }
 
-    public HashMap<Integer, Table> getTables() {
+    public HashMap<String, Table> getTables() {
         return tables;
     }
 
-    public void setTables(HashMap<Integer, Table> tables) {
+    public void setTables(HashMap<String, Table> tables) {
         this.tables = tables;
     }
 
     public void addTable(Database db, Table table) {
 
         try {
-            db.tables.put(tables.size() + 1, table);
+            db.tables.put(table.getTableName(), table);
             System.out.println("Added table to: " + db.getDbName());
             db.saveDatabase(db);
             System.out.println("Table created and Database Updated");
@@ -160,12 +155,12 @@ public class Database implements Serializable {
 
 
     public void printTables() {
-
+        AtomicReference<Integer> i = new AtomicReference<>(1);
         if (tables.size() > 0) {
             System.out.println("+" + "-".repeat(65) + "+");
             System.out.printf("| %-3s | %-25s | %-15s | %-10s  |\n", "#", "Table Name", "Character set", "Collation");
             System.out.println("+" + "-".repeat(65) + "+");
-            tables.forEach((k, v) -> System.out.printf("| %-3d | %-25s | %-15s | %-10s  |\n", k, v.getTableName(), v.getCharSet(), v.getCollation()));
+            tables.forEach((k, v) -> System.out.printf("| %-3d | %-25s | %-15s | %-10s  |\n", i.getAndSet(i.get() + 1), v.getTableName(), v.getCharSet(), v.getCollation()));
             System.out.println("+" + "-".repeat(65) + "+");
         } else {
             System.out.println("No tables found");

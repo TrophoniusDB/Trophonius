@@ -6,10 +6,7 @@ import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 public class DML {
 
@@ -203,13 +200,20 @@ public class DML {
 
 
                     try {
-                        HashMap<Integer,Field> tableStructure = (HashMap<Integer, Field>) is.readObject();
+                        // Read fields from table
+
+                        LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
                         tableStructure.forEach((k,v) -> {
-                            System.out.println(v.getName()+ " "+v.getDataType().getClassName());
+
+                            System.out.println(k+ " "+v.getDataType().getClassName());
                             if(v.isPrimaryKey()) {
                                 primaryKeyDataType[0] = v.getDataType().getClassName();
+                                System.out.println("Primary key is of dataType: "+primaryKeyDataType[0]);
                             }
+
                         });
+
+
 
                         is.close();
 
