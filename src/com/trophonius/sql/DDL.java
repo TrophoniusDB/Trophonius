@@ -198,6 +198,23 @@ public class DDL {
             Database.deleteTable(currentDB, tableName);
         }
 
+        // SQL: ALTER TABLE
+        if (sql.toLowerCase().startsWith("alter table")) {
+            String tableName = words[2];
+            String tableAction = words[3];
+
+            if (tableAction.equals("add")) {
+                String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
+                //Table.addField(tableName,fieldProps);
+                System.out.println(fieldProps);
+            }
+
+
+        }
+
+
+
+
     }
 
 
