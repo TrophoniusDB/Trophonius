@@ -205,8 +205,9 @@ public class DDL {
 
             if (tableAction.equals("add")) {
                 String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
-                //Table.addField(tableName,fieldProps);
-                System.out.println(fieldProps);
+                currentDB.addField(tableName,fieldProps);
+
+
             }
 
 

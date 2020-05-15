@@ -153,6 +153,12 @@ public class Database implements Serializable {
 
     }
 
+    public void addField(String tableName, String fieldProps) {
+
+
+    }
+
+
     public void printTables() {
 
         if (tables.size() > 0) {
@@ -280,4 +286,6 @@ public class Database implements Serializable {
     public int hashCode() {
         return Objects.hash(getDbName(), getCharSet(), getCollation(), getUsers(), getCreated(), getTables());
     }
+
+
 }
