@@ -85,7 +85,6 @@ public class DML {
                 Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));
 
 
-
                 if(found == false) {
                 // Not all field names were found in table structure. Print message and go back to prompt
                     System.out.println("ERROR: one or more field names is not present in table");
@@ -102,6 +101,9 @@ public class DML {
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
+                    Boolean isPrimaryKey = v.isPrimaryKey();
+
+
 
                         // Iterate through each sql-supplied fieldname/fieldvalue pair and add to row + check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
@@ -111,6 +113,9 @@ public class DML {
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
+                                if(isPrimaryKey) {
+                                    String pk = value;
+                                }
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
@@ -146,7 +151,6 @@ public class DML {
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
                                     row.addToRow(storedFieldName, value);
-
                             }
 
                          } // end if
@@ -163,7 +167,7 @@ public class DML {
                 // Write row to console
                 System.out.println(row.toString());
                 // Write row to table file
-                row.writeRowToDisk(currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(pk, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists

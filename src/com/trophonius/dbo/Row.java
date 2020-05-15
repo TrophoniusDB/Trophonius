@@ -11,9 +11,8 @@ import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
+    // One row consists of a TreeMap with the fieldname as the key and the field as the value
     private TreeMap<String, E> row = new TreeMap<>();
-    private TreeMap<String, E> primaryKey = new TreeMap<>();
-    private TreeMap<TreeMap<String, E>, TreeMap<String, E>> rowWithPrimaryKey  = new TreeMap<>();
 
     public Row() {
 
@@ -27,38 +26,18 @@ public class Row<E> implements Serializable {
         this.row = row;
     }
 
-    public TreeMap<String, E> getPrimaryKey() {
-        return primaryKey;
-    }
-
-    public void setPrimaryKey(TreeMap<String, E> primaryKey) {
-        this.primaryKey = primaryKey;
-    }
-
-    public TreeMap<TreeMap<String, E>, TreeMap<String, E>> getRowWithPrimaryKey() {
-        return rowWithPrimaryKey;
-    }
-
-    public void setRowWithPrimaryKey(TreeMap<TreeMap<String, E>, TreeMap<String, E>> rowWithPrimaryKey) {
-        this.rowWithPrimaryKey = rowWithPrimaryKey;
-    }
 
     public void addToRow (String fieldName, E value ) {
         this.row.put(fieldName, value);
     }
 
-    public void addToPrimaryKey (String fieldName, E value ) {
-        this.primaryKey.put(fieldName, value);
-    }
-
-    public void addToRowWithPrimaryKey (TreeMap<String, E> primaryKey, TreeMap<String,E> row ) {
-        this.rowWithPrimaryKey.put(primaryKey, row);
-    }
 
 
     // Append a row to en existing table file
-    public void writeRowToDisk(String dbName, String tableName) {
-
+    public void writeRowsToDisk(E primaryKey, Row row, String dbName, String tableName) {
+        // a table of rows consists of a TreeMap with the primary key as the key and the corresponding row as the value
+        private TreeMap<E, Row> rows  = new TreeMap<>();
+        rows.put(primaryKey,row);
         try {
 
             // check that table file exists in data directory
@@ -67,7 +46,7 @@ public class Row<E> implements Serializable {
                 // Open table file for writing, and append map of primary key + row to the file
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
                 AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
-                os.writeObject(rowWithPrimaryKey);;
+                os.writeObject(rows);;
                 os.flush();
                 os.close();
                 dbFile.flush();
