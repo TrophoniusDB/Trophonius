@@ -212,8 +212,12 @@ public class DML {
                             }
 
                         });
-
-
+                        // list rows
+                        TreeMap<Integer, Row> rows = (TreeMap<Integer, Row>) is.readObject();
+                        System.out.println("Number of records in table: "+rows.size());
+                        rows.forEach((k,v) -> {
+                            System.out.println(k+" "+v);
+                        });
 
                         is.close();
 
