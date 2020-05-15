@@ -15,7 +15,7 @@ public class Main {
 
         System.out.println("Welcome to Trophonius - a Simple and Fast Database");
         System.out.println("Version 0.0.1");
-        System.out.println("Type 'quit' to exit");
+        System.out.println("Type 'quit' or '\\q' to exit");
 
         // Main Menu
         while (true) {
@@ -23,7 +23,7 @@ public class Main {
             System.out.print(prompt + "> ");
             Scanner input = new Scanner(System.in);
             String inputText = input.nextLine();
-            if (inputText.equals("quit")) {
+            if (inputText.equals("quit") || inputText.equals("\\q") ) {
                 System.out.println("Goodbye...");
                 System.exit(0);
             } else {

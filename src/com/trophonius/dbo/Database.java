@@ -2,13 +2,14 @@ package com.trophonius.dbo;
 
 import com.trophonius.utils.HelperMethods;
 
-import javax.xml.crypto.Data;
 import java.io.*;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Database implements Serializable {
     private String dbName, charSet, collation;
@@ -57,27 +58,29 @@ public class Database implements Serializable {
             e.printStackTrace();
         }
 
-
     }
 
-    public void deleteTable(Database currentDB, String tableName) {
-
+    public static void deleteTable(Database currentDB, String tableName) {
+        AtomicBoolean found = new AtomicBoolean(false);
         try {
             // Delete table file
             java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/"+tableName+".tbl"));
             System.out.println("Table file deleted from disk.");
             // Delete record of the table in database file
-            this.tables.forEach((k,v) -> {
+            HashMap<Integer,Table> table = (HashMap<Integer, Table>) currentDB.tables.clone();
+            table.forEach((k,v) -> {
                 if(v.getTableName().equals(tableName)) {
-                    tables.remove(k);
+                    currentDB.tables.remove(k);
                     try {
-                        currentDB.saveDatabase(currentDB);
+                        saveDatabase(currentDB);
                         System.out.println("Table deleted. Database updated");
+                        found.set(true);
                     } catch (IOException e) {
                         System.out.println("Database not updated...");
                         e.printStackTrace();
                     }
-                } else {
+                }
+                if(!found.get())  {
                     System.out.println("Table not found in database");
                 }
             });
@@ -164,7 +167,7 @@ public class Database implements Serializable {
 
     }
 
-    public void saveDatabase(Database outDB) throws IOException {
+    public static void saveDatabase(Database outDB) throws IOException {
 
         try {
 
@@ -204,6 +207,7 @@ public class Database implements Serializable {
         try (FileInputStream dbFile = new FileInputStream("data/" + dbName + "/" + dbName + ".db")) {
             dbIs = new ObjectInputStream(new BufferedInputStream(dbFile));
             openedDB = (Database) dbIs.readObject();
+            dbIs.close();
         } catch (FileNotFoundException e) {
             System.out.println("Database Unknown");
             ;

@@ -64,7 +64,7 @@ public class SqlParser {
         String charset = "", collation = "";
 
         // SQL: SHOW DATABASES
-        if (sql.toLowerCase().equals("show databases")) {
+        if (sql.toLowerCase().equals("show databases") || sql.toLowerCase().equals("\\l") ) {
 
             ArrayList<String> dbNames = HelperMethods.findDatabases();
 
@@ -81,7 +81,7 @@ public class SqlParser {
         } // END SHOW DATABASES
 
         // SQL: SHOW TABLES
-        if (sql.toLowerCase().equals("show tables")) {
+        if (sql.toLowerCase().equals("show tables") || sql.toLowerCase().equals("\\d")) {
 
             if (prompt.length() > 2) {
                 currentDB.printTables();

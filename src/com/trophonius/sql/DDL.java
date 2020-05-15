@@ -194,10 +194,8 @@ public class DDL {
         // SQL: DROP TABLE
         if (sql.toLowerCase().startsWith("drop table")) {
             String tableName = words[2];
-            currentDB.deleteTable(currentDB, tableName);
+            Database.deleteTable(currentDB, tableName);
         }
-
-
 
     }
 
