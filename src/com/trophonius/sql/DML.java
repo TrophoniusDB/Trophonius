@@ -114,13 +114,16 @@ public class DML {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                                 if(isPrimaryKey) {
-                                    currentTable.seTprimaryKey(value) ;
+                                    currentTable.setPrimaryKey(value) ;
                                 }
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
                                 Integer value = Integer.parseInt(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
+                                if(isPrimaryKey) {
+                                    currentTable.setPrimaryKey(value) ;
+                                }
                             }
 
                             if (storedClassName.equals("LocalDate")) {
@@ -129,6 +132,9 @@ public class DML {
                                 try {
                                     LocalDate value = LocalDate.parse(dateString);
                                     row.addToRow(storedFieldName, value);
+                                    if(isPrimaryKey) {
+                                        currentTable.setPrimaryKey(value) ;
+                                    }
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -142,6 +148,9 @@ public class DML {
                                 try {
                                     LocalDateTime value = LocalDateTime.parse(dateTimeString);
                                     row.addToRow(storedFieldName, value);
+                                    if(isPrimaryKey) {
+                                        currentTable.setPrimaryKey(value) ;
+                                    }
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -151,6 +160,9 @@ public class DML {
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
                                     row.addToRow(storedFieldName, value);
+                                if(isPrimaryKey) {
+                                    currentTable.setPrimaryKey(value) ;
+                                }
                             }
 
                          } // end if
@@ -167,7 +179,7 @@ public class DML {
                 // Write row to console
                 System.out.println(row.toString());
                 // Write row to table file
-                row.writeRowsToDisk(pk, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(currentTable.getPrimaryKey(), row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists
@@ -219,6 +231,7 @@ public class DML {
                         // list rows
                         TreeMap<Integer, Row> rows = (TreeMap<Integer, Row>) is.readObject();
                         System.out.println("Number of records in table: "+rows.size());
+
                         rows.forEach((k,v) -> {
                             System.out.println(k+" "+v);
                         });

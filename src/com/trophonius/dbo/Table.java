@@ -11,6 +11,7 @@ public class Table implements Serializable {
     private String tableName, charSet, collation;
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
+    private Object primaryKeyValue;
 
     public Table() {
     }
@@ -30,8 +31,13 @@ public class Table implements Serializable {
         this.collation = collation;
     }
 
-    public void setPrimaryKey(String value) {
+    public <T> Object getPrimaryKey(T value) {
+        T primaryKeyValue = value;
+        return primaryKeyValue;
+    }
 
+    public <T> void setPrimaryKey(T value) {
+        T primaryKeyValue = value;
     }
 
     // Add Fields to the tableStructure HashMap
