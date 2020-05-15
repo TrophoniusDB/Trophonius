@@ -62,16 +62,15 @@ public class DML {
                 String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[,]");
                 //Arrays.stream(fieldValues).forEach(System.out::println);
 
+                // Put field names and field values in a HashMap for later use
                 HashMap<String, String> valueMap = new HashMap<>();
-
                 for(int i = 0; i < fieldNames.length;i++ ){
                     fieldNames[i] = fieldNames[i].strip();
                     fieldValues[i] = fieldValues[i].strip();
-
                     valueMap.put(fieldNames[i], fieldValues[i]);
                 }
 
-                // set currentTable
+                // set the value of currentTable
                 currentDB.getTables().forEach((k, v) -> {
                     if (v.getTableName().equals(tableName)) {
                       //  v.printTableStructure();
@@ -101,9 +100,6 @@ public class DML {
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
-                    Boolean isPrimaryKey = v.isPrimaryKey();
-
-
 
                         // Iterate through each sql-supplied fieldname/fieldvalue pair and add to row + check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
@@ -113,9 +109,6 @@ public class DML {
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
-                                if(isPrimaryKey) {
-                                    currentTable.seTprimaryKey(value) ;
-                                }
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
@@ -166,8 +159,10 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
+                currentTable.getPrimaryKey();
+
                 // Write row to table file
-                row.writeRowsToDisk(pk, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(primaryKeyValue, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists

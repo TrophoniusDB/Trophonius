@@ -71,6 +71,11 @@ public class Table implements Serializable {
         return names;
     }
 
+    public Field getPrimaryKey() {
+
+        return tableStructure.keySet().stream();
+    }
+
 
     public void printTableStructure() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
