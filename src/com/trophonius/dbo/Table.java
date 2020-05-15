@@ -4,7 +4,6 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -29,6 +28,10 @@ public class Table implements Serializable {
         this.tableName = tableName;
         this.charSet = charSet;
         this.collation = collation;
+    }
+
+    public void setPrimaryKey(String value) {
+
     }
 
     // Add Fields to the tableStructure HashMap
@@ -118,7 +121,6 @@ public class Table implements Serializable {
 
         }
     }
-
 
 
 

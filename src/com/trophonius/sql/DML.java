@@ -114,7 +114,7 @@ public class DML {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                                 if(isPrimaryKey) {
-                                    String pk = value;
+                                    currentTable.seTprimaryKey(value) ;
                                 }
                             }
 

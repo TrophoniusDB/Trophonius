@@ -36,7 +36,7 @@ public class Row<E> implements Serializable {
     // Append a row to en existing table file
     public void writeRowsToDisk(E primaryKey, Row row, String dbName, String tableName) {
         // a table of rows consists of a TreeMap with the primary key as the key and the corresponding row as the value
-        private TreeMap<E, Row> rows  = new TreeMap<>();
+        TreeMap<E, Row> rows  = new TreeMap<>();
         rows.put(primaryKey,row);
         try {
 
