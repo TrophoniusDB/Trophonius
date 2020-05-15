@@ -78,110 +78,111 @@ public class DDL {
             String tableName = words[2];
 
             // Check if table already exists
-            // TODO
+            if (java.nio.file.Files.isRegularFile(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+".tbl"))) {
+                System.out.println("Table "+ tableName +" already exists in database "+ currentDB.getDbName());
+                return;
+            } else {
+                // Create new table in memory
+                Table t1 = new Table();
+                t1.setTableName(tableName);
+
+                // Extract fields from sql
+                String fieldString = sql.substring(sql.indexOf("(") + 1, sql.lastIndexOf(")"));
+
+                // Split fieldString into fields array
+                String[] fields = fieldString.split(",");
+
+                // loop trough fields array
+                for (String field : fields) {
+                    // strip leading and trailing spaces
+                    field = field.strip();
+                    // Split array into new array of each word in field statement
+                    String[] fieldElement = field.split(" ");
 
 
-            // Create new table in memory
-            Table t1 = new Table();
-            t1.setTableName(tableName);
+                    // Create fields and set attributes
+                    Field f1 = new Field();
+                    f1.setName(fieldElement[0]);
 
-            // Extract fields from sql
-            String fieldString = sql.substring(sql.indexOf("(") + 1, sql.lastIndexOf(")"));
+                    // Data Type Conversion
 
-            // Split fieldString into fields array
-            String[] fields = fieldString.split(",");
+                    String dataTypeString = fieldElement[1].toLowerCase();
 
-            // loop trough fields array
-            for (String field : fields) {
-                // strip leading and trailing spaces
-                field = field.strip();
-                // Split array into new array of each word in field statement
-                String[] fieldElement = field.split(" ");
+                    DataType dataType = new DataType();
+                    dataType.setName(dataTypeString);
 
+                    // Map SQL data types to Java classes
 
-                // Create fields and set attributes
-                Field f1 = new Field();
-                f1.setName(fieldElement[0]);
+                    if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
+                        dataType.setClassName("String");
+                    }
 
-                // Data Type Conversion
+                    if (dataTypeString.equals("date")) {
+                        dataType.setClassName("LocalDate");
+                    }
 
-                String dataTypeString = fieldElement[1].toLowerCase();
+                    if (dataTypeString.equals("datetime")) {
+                        dataType.setClassName("LocalDateTime");
+                    }
 
-                DataType dataType = new DataType();
-                dataType.setName(dataTypeString);
+                    if (dataTypeString.equals("int")) {
+                        dataType.setClassName("Integer");
+                    }
 
-                // Map SQL data types to Java classes
+                    if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
+                        dataType.setClassName("Double");
+                    }
 
-                if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
-                    dataType.setClassName("String");
-                }
+                    if (dataTypeString.equals("float")) {
+                        dataType.setClassName("Float");
+                    }
 
-                if (dataTypeString.equals("date")) {
-                    dataType.setClassName("LocalDate");
-                }
+                    if (dataTypeString.equals("object")) {
+                        dataType.setClassName("Object");
+                        dataType.setComplex(true);
+                    }
 
-                if (dataTypeString.equals("datetime")) {
-                    dataType.setClassName("LocalDateTime");
-                }
+                    if (dataTypeString.equals("array(int)")) {
+                        dataType.setClassName("ArrayList<Integer>");
+                        dataType.setComplex(true);
+                    }
 
-                if (dataTypeString.equals("int")) {
-                    dataType.setClassName("Integer");
-                }
+                    if (dataTypeString.equals("array(text)")) {
+                        dataType.setClassName("ArrayList<String>");
+                        dataType.setComplex(true);
+                    }
 
-                if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
-                    dataType.setClassName("Double");
-                }
-
-                if (dataTypeString.equals("float")) {
-                    dataType.setClassName("Float");
-                }
-
-                if (dataTypeString.equals("object")) {
-                    dataType.setClassName("Object");
-                    dataType.setComplex(true);
-                }
-
-                if (dataTypeString.equals("array(int)")) {
-                    dataType.setClassName("ArrayList<Integer>");
-                    dataType.setComplex(true);
-                }
-
-                if (dataTypeString.equals("array(text)")) {
-                    dataType.setClassName("ArrayList<String>");
-                    dataType.setComplex(true);
-                }
-
-                if (dataTypeString.equals("array(decimal)")) {
-                    dataType.setClassName("ArrayList<Double>");
-                    dataType.setComplex(true);
-                }
+                    if (dataTypeString.equals("array(decimal)")) {
+                        dataType.setClassName("ArrayList<Double>");
+                        dataType.setComplex(true);
+                    }
 
 
-                f1.setDataType(dataType);
+                    f1.setDataType(dataType);
 
-                //    System.out.println("DataType = " + fieldElement[1]);
-                if (field.contains("primary key")) {
-                    f1.setPrimaryKey(true);
-                    f1.setNotNull(true);
-                }
+                    //    System.out.println("DataType = " + fieldElement[1]);
+                    if (field.contains("primary key")) {
+                        f1.setPrimaryKey(true);
+                        f1.setNotNull(true);
+                    }
 
-                if (field.contains("auto_increment") || field.contains("identity")) {
-                    f1.setAutoIncrement(true);
-                }
+                    if (field.contains("auto_increment") || field.contains("identity")) {
+                        f1.setAutoIncrement(true);
+                    }
 
-                if (field.contains("not null")) {
-                    f1.setNotNull(true);
-                }
+                    if (field.contains("not null")) {
+                        f1.setNotNull(true);
+                    }
 
-                // Add field to table
-                t1.addField(f1);
+                    // Add field to table
+                    t1.addField(f1);
 
-            } // end create and add fields to table
+                } // end create and add fields to table
 
-            // Add newly created table to currentDB
-            currentDB.addTable(currentDB, t1);
-            t1.writeTableToDisk(currentDB.getDbName());
-
+                // Add newly created table to currentDB
+                currentDB.addTable(currentDB, t1);
+                t1.writeTableToDisk(currentDB.getDbName());
+            } // end else
         } // end create table
 
 
