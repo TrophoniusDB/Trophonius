@@ -159,10 +159,10 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
-                currentTable.getPrimaryKey();
+                Field primaryKeyField = (Field) currentTable.getTableStructure().values().stream().filter(a->a.isPrimaryKey());
 
                 // Write row to table file
-                row.writeRowsToDisk(primaryKeyValue, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(primaryKeyField, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists
