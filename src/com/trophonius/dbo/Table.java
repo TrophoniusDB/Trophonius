@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 
 public class Table implements Serializable {
     private String tableName, charSet, collation;
@@ -75,6 +76,10 @@ public class Table implements Serializable {
             names.add(k);
         });
         return names;
+    }
+
+    public Field getPrimaryKey() {
+        tableStructure
     }
 
 

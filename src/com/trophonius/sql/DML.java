@@ -62,16 +62,15 @@ public class DML {
                 String[] fieldValues = valueString.substring(valueString.indexOf("(")+1,valueString.indexOf(")")).split("[,]");
                 //Arrays.stream(fieldValues).forEach(System.out::println);
 
+                // Put field names and field values in a HashMap for later use
                 HashMap<String, String> valueMap = new HashMap<>();
-
                 for(int i = 0; i < fieldNames.length;i++ ){
                     fieldNames[i] = fieldNames[i].strip();
                     fieldValues[i] = fieldValues[i].strip();
-
                     valueMap.put(fieldNames[i], fieldValues[i]);
                 }
 
-                // set currentTable
+                // set the value of currentTable
                 currentDB.getTables().forEach((k, v) -> {
                     if (v.getTableName().equals(tableName)) {
                       //  v.printTableStructure();
@@ -101,9 +100,6 @@ public class DML {
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
-                    Boolean isPrimaryKey = v.isPrimaryKey();
-
-
 
                         // Iterate through each sql-supplied fieldname/fieldvalue pair and add to row + check if name equals name in tablestructure
                         valueMap.forEach((sk,sv) -> {
@@ -113,17 +109,11 @@ public class DML {
                             if (storedClassName.equals("String")) {
                                 String value = new String(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
-                                if(isPrimaryKey) {
-                                    currentTable.setPrimaryKey(value) ;
-                                }
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int") ) {
                                 Integer value = Integer.parseInt(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
-                                if(isPrimaryKey) {
-                                    currentTable.setPrimaryKey(value) ;
-                                }
                             }
 
                             if (storedClassName.equals("LocalDate")) {
@@ -132,9 +122,6 @@ public class DML {
                                 try {
                                     LocalDate value = LocalDate.parse(dateString);
                                     row.addToRow(storedFieldName, value);
-                                    if(isPrimaryKey) {
-                                        currentTable.setPrimaryKey(value) ;
-                                    }
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -148,9 +135,6 @@ public class DML {
                                 try {
                                     LocalDateTime value = LocalDateTime.parse(dateTimeString);
                                     row.addToRow(storedFieldName, value);
-                                    if(isPrimaryKey) {
-                                        currentTable.setPrimaryKey(value) ;
-                                    }
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n"+e.getMessage());
                                 }
@@ -160,9 +144,6 @@ public class DML {
                             if (storedClassName.equals("Double")) {
                                 Double value = Double.valueOf(valueMap.get(storedFieldName));
                                     row.addToRow(storedFieldName, value);
-                                if(isPrimaryKey) {
-                                    currentTable.setPrimaryKey(value) ;
-                                }
                             }
 
                          } // end if
@@ -178,8 +159,10 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
+                Field primaryKeyField = (Field) currentTable.getTableStructure().values().stream().filter(a->a.isPrimaryKey());
+
                 // Write row to table file
-                row.writeRowsToDisk(currentTable.getPrimaryKey(), row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(primaryKeyField, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists
@@ -231,7 +214,6 @@ public class DML {
                         // list rows
                         TreeMap<Integer, Row> rows = (TreeMap<Integer, Row>) is.readObject();
                         System.out.println("Number of records in table: "+rows.size());
-
                         rows.forEach((k,v) -> {
                             System.out.println(k+" "+v);
                         });
