@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class DML {
+public class DML<E> {
 
     public String prompt = "/";
     public Database currentDB;
@@ -94,9 +95,7 @@ public class DML {
                 // All fieldNames where found in table structure, so continue to save row to file.
 
                 // Save Row
-                // put values in a row object and store in file.
-
-                currentTable.getTableStructure().forEach((k,v) ->{
+                    currentTable.getTableStructure().forEach((k,v) ->{
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
@@ -159,10 +158,19 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
-                Field primaryKeyField = (Field) currentTable.getTableStructure().values().stream().filter(a->a.isPrimaryKey());
+
+                // get primary key field and use it to look up value in valuemap in writeRowToDisk below
+                String primaryKeyField = currentTable.getTableStructure()
+                        .values().stream().filter(a->a.isPrimaryKey()).map(a->a.getName()).collect(Collectors.joining());
+                var primaryKeyValue = valueMap.get(primaryKeyField);
+
+                   /*
+                     System.out.println("Primary Key field "+primaryKeyField);
+                     System.out.println("Primary key value "+primaryKeyValue);
+                    */
 
                 // Write row to table file
-                row.writeRowsToDisk(primaryKeyField, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(primaryKeyValue, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists
@@ -190,57 +198,59 @@ public class DML {
                 return;
             } else {
                 // Table exists - open it, fetch row and return fields.
-                 System.out.println("Table exists");
-                final String[] primaryKeyDataType = new String[1];
-
                 try {
-                    FileInputStream dbFile = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
-                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFile));
-
+                    FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
+                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
 
                     try {
                         // Read fields from table
 
                         LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
+                        // Print table header
+
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+                        System.out.print("| ");
                         tableStructure.forEach((k,v) -> {
-
-                            System.out.println(k+ " "+v.getDataType().getClassName());
-                            if(v.isPrimaryKey()) {
-                                primaryKeyDataType[0] = v.getDataType().getClassName();
-                                System.out.println("Primary key is of dataType: "+primaryKeyDataType[0]);
-                            }
-
+                            // print field names
+                            System.out.printf(" %-40s |",k );
                         });
+                        System.out.println();
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+
                         // list rows
-                        TreeMap<Integer, Row> rows = (TreeMap<Integer, Row>) is.readObject();
-                        System.out.println("Number of records in table: "+rows.size());
+
+                      TreeMap<E,Row> rows = new TreeMap<>();
+                      while(true) {
+                          try {
+                       rows.put((E) is.readObject(),(Row) is.readObject());
+                          } catch (EOFException e) {
+                              break;
+                          }
+                      } // end while
+
+                        // Print each row
                         rows.forEach((k,v) -> {
-                            System.out.println(k+" "+v);
+                            System.out.print("| ");
+                            v.getRow().forEach((a,b) -> {
+                                System.out.printf(" %-40s |",b);
+                            });
+                            System.out.println();
                         });
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
 
                         is.close();
 
-
-
-                    } catch (ClassNotFoundException e) {
+                    } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-
 
                 } catch (IOException e) {
                     System.out.println("Error! Could not open table file...");
                     e.printStackTrace();
                 }
-
-
-                // Find field names from SQL
-                //String[] fieldNames = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")")).split("[,]");
-                // Arrays.stream(fieldNames).forEach(System.out::println);
-
             }
         } // end Select
 
-            } // end parseSQL
-
+    } // end parseSQL
 
 }  // end class
