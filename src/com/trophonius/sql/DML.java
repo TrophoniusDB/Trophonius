@@ -95,9 +95,7 @@ public class DML<E> {
                 // All fieldNames where found in table structure, so continue to save row to file.
 
                 // Save Row
-                // put values in a row object and store in file.
-
-                currentTable.getTableStructure().forEach((k,v) ->{
+                    currentTable.getTableStructure().forEach((k,v) ->{
                     String storedFieldName = v.getName();
                     String storedDataTypeName = v.getDataType().getName();
                     String storedClassName = v.getDataType().getClassName();
@@ -200,9 +198,6 @@ public class DML<E> {
                 return;
             } else {
                 // Table exists - open it, fetch row and return fields.
-                 System.out.println("Table exists");
-                final String[] primaryKeyDataType = new String[1];
-
                 try {
                     FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
                     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
@@ -212,15 +207,10 @@ public class DML<E> {
 
                         LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
                         tableStructure.forEach((k,v) -> {
-
-                            System.out.println(k+ " "+v.getDataType().getClassName());
-                            if(v.isPrimaryKey()) {
-                                primaryKeyDataType[0] = v.getDataType().getClassName();
-                                System.out.println("Primary key is of dataType: "+primaryKeyDataType[0]);
-                            }
-
+                            // print field names
+                            System.out.print(k+" ");
                         });
-
+                        System.out.println();
                         // list rows
 
                       TreeMap<E,Row> rows = new TreeMap<>();
@@ -233,9 +223,12 @@ public class DML<E> {
                       } // end while
 
                         rows.forEach((k,v) -> {
-                            System.out.println(v.toString());
-                        });
 
+                            v.getRow().forEach((a,b) -> {
+                                System.out.print(b+" ");
+                            });
+                            System.out.println();
+                        });
 
                         is.close();
 
@@ -247,16 +240,9 @@ public class DML<E> {
                     System.out.println("Error! Could not open table file...");
                     e.printStackTrace();
                 }
-
-
-                // Find field names from SQL
-                //String[] fieldNames = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")")).split("[,]");
-                // Arrays.stream(fieldNames).forEach(System.out::println);
-
             }
         } // end Select
 
-            } // end parseSQL
-
+    } // end parseSQL
 
 }  // end class
