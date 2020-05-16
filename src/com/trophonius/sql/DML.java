@@ -206,11 +206,17 @@ public class DML<E> {
                         // Read fields from table
 
                         LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
+                        // Print table header
+
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+                        System.out.print("| ");
                         tableStructure.forEach((k,v) -> {
                             // print field names
-                            System.out.print(k+" ");
+                            System.out.printf(" %-40s |",k );
                         });
                         System.out.println();
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+
                         // list rows
 
                       TreeMap<E,Row> rows = new TreeMap<>();
@@ -222,13 +228,15 @@ public class DML<E> {
                           }
                       } // end while
 
+                        // Print each row
                         rows.forEach((k,v) -> {
-
+                            System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
-                                System.out.print(b+" ");
+                                System.out.printf(" %-40s |",b);
                             });
                             System.out.println();
                         });
+                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
 
                         is.close();
 
