@@ -217,17 +217,14 @@ public class DML<E> {
                             }
                         } // end while
 
-                        int maxlength = 20;
 
                         // Calculate field widths for length of ascii-box
                          int maxlength = rows.entrySet().stream()
                                 .mapToInt(a -> {
-                                    return a.getValue().toString().length()
+                                    return a.getValue().toString().length();
                                 })
                                 .peek(a-> System.out.println(a))
                                 .max().getAsInt();
-
-
 
                         // Print table header
                         System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
