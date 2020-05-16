@@ -79,6 +79,10 @@ public class Table implements Serializable {
         return names;
     }
 
+    public int getMaxFieldNameSize () {
+        return tableStructure.entrySet().stream().map(a -> a.getKey().length()).mapToInt(a->a).max().getAsInt();
+    }
+
     public void printTableStructure() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         System.out.println("Table Name: " + tableName);

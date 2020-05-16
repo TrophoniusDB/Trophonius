@@ -47,7 +47,7 @@ public class Database implements Serializable {
         try {
 
             HelperMethods.recursiveDelete(new File("data/" + dbName));
-            java.nio.file.Files.deleteIfExists(Paths.get("data/" + dbName + "/*.*"));
+            java.nio.file.Files.deleteIfExists(Paths.get("data/" + dbName+"/"));
 
             java.nio.file.Files.deleteIfExists(Paths.get(dbName));
             System.out.println("Database deleted.");

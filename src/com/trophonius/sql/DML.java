@@ -208,18 +208,19 @@ public class DML<E> {
                         LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
                         // Print table header
 
-                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+                        System.out.println("+" + "-".repeat(33*tableStructure.size()) + "+");
                         System.out.print("| ");
                         tableStructure.forEach((k,v) -> {
                             // print field names
-                            System.out.printf(" %-40s |",k );
+                            System.out.printf(" %-30s |",k );
                         });
                         System.out.println();
-                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
+                        System.out.println("+" + "-".repeat(33*tableStructure.size()) + "+");
 
-                        // list rows
-
+                        // List rows
+                      // Sorted by primary key, does not work without primary key
                       TreeMap<E,Row> rows = new TreeMap<>();
+
                       while(true) {
                           try {
                        rows.put((E) is.readObject(),(Row) is.readObject());
@@ -232,12 +233,12 @@ public class DML<E> {
                         rows.forEach((k,v) -> {
                             System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
-                                System.out.printf(" %-40s |",b);
+                                System.out.printf(" %-30s |",b);
                             });
                             System.out.println();
                         });
-                        System.out.println("+" + "-".repeat(43*tableStructure.size()) + "+");
-
+                        System.out.println("+" + "-".repeat(33*tableStructure.size()) + "+");
+                        System.out.println(rows.size()+" rows returned");
                         is.close();
 
                     } catch (ClassNotFoundException | IOException e) {

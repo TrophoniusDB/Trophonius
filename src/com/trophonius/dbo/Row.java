@@ -7,22 +7,23 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Paths;
+import java.util.LinkedHashMap;
 import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
     // One row consists of a TreeMap with the fieldname as the key and the field as the value
-    private TreeMap<String, E> row = new TreeMap<>();
+    private LinkedHashMap<String, E> row = new LinkedHashMap<>();
 
     public Row() {
 
     }
 
-    public TreeMap<String, E> getRow() {
+    public LinkedHashMap<String, E> getRow() {
         return row;
     }
 
-    public void setRow(TreeMap<String, E> row) {
+    public void setRow(LinkedHashMap<String, E> row) {
         this.row = row;
     }
 
@@ -33,10 +34,7 @@ public class Row<E> implements Serializable {
     // Append a row to en existing table file
     public void writeRowsToDisk(E primaryKey, Row row, String dbName, String tableName) {
         // a row consists of a primary key followed by the corresponding row
-/*
-        TreeMap<E, Row> rows = new TreeMap<>();
-        rows.put(primaryKey, row);
-*/
+
         try {
             // check that table file exists in data directory
             if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
