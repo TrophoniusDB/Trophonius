@@ -217,7 +217,7 @@ public class DML<E> {
                         System.out.println();
                         System.out.println("+" + "-".repeat(33*tableStructure.size()) + "+");
 
-                        // List rows
+                        // List rows with Primary Key
                       // Sorted by primary key, does not work without primary key
                       TreeMap<E,Row> rows = new TreeMap<>();
 
