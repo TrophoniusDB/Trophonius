@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
@@ -24,7 +25,7 @@ public class Row<E> implements Serializable {
     }
 
     public int getMaxValue() {
-       return this.row.entrySet().stream().mapToInt(k -> k.getValue().toString().length()).max().getAsInt();
+       return this.row.entrySet().stream().filter(a -> a.getValue().toString().length()>0).mapToInt(k -> k.getValue().toString().length()).max().getAsInt();
     }
 
     public void setRow(LinkedHashMap<String, E> row) {

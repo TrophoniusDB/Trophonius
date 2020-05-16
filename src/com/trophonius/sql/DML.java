@@ -220,11 +220,12 @@ public class DML<E> {
 
                         // Calculate field widths for length of ascii-box
                          int maxlength = rows.entrySet().stream()
-                                .mapToInt(a -> {
-                                    return a.getValue().toString().length();
+                                .map(a -> {
+                                    return a.getValue();
                                 })
-                                .peek(a-> System.out.println(a))
-                                .max().getAsInt();
+                                 .mapToInt(a->a.getMaxValue())
+                                // .peek(System.out::println)
+                                 .max().getAsInt();
 
                         // Print table header
                         System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
