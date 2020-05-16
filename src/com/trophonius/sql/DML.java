@@ -4,6 +4,7 @@ import com.trophonius.dbo.*;
 
 import java.io.*;
 import java.nio.file.Paths;
+import java.security.KeyStore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -218,7 +219,19 @@ public class DML<E> {
 
 
                         // Calculate field widths for length of ascii-box
-                        int maxlength = rows.values().stream().mapToInt(a->a.getRow().values().toString().length()).max().getAsInt();
+                        /* int maxlength = rows.values().stream()
+                                .mapToInt(a -> a.getMaxValue())
+                                .peek(a-> System.out.println(a))
+                                .max().getAsInt();
+                         */
+
+                        int maxlength = 0;
+                        rows.forEach((k,v) -> {
+                                v.getRow().entrySet().stream().map(a -> {
+                                    a.
+                            });
+                        });
+
 
                         // Print table header
                         System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");

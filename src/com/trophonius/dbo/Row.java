@@ -23,6 +23,10 @@ public class Row<E> implements Serializable {
         return row;
     }
 
+    public int getMaxValue() {
+       return this.row.entrySet().stream().mapToInt(k -> k.getValue().toString().length()).max().getAsInt();
+    }
+
     public void setRow(LinkedHashMap<String, E> row) {
         this.row = row;
     }
