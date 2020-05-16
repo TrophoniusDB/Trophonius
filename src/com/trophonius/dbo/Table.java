@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
@@ -72,11 +73,6 @@ public class Table implements Serializable {
         return names;
     }
 
-    public Field getPrimaryKey() {
-        tableStructure
-    }
-
-
     public void printTableStructure() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         System.out.println("Table Name: " + tableName);
@@ -98,7 +94,7 @@ public class Table implements Serializable {
     }
 
     // create the physical table file
-    public void writeTableToDisk(String dbName) {
+    public <E> void writeTableToDisk(String dbName) {
 
         try {
 

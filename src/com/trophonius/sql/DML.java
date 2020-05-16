@@ -7,8 +7,9 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
-public class DML {
+public class DML<E> {
 
     public String prompt = "/";
     public Database currentDB;
@@ -159,12 +160,19 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
-                String primaryKeyField = currentTable.getTableStructure()
-                        .values().stream().filter(a->a.isPrimaryKey()).map(a->a.getName()).toString();
 
+                // get primary key field and use it to look up value in valuemap in writeRowToDisk below
+                String primaryKeyField = currentTable.getTableStructure()
+                        .values().stream().filter(a->a.isPrimaryKey()).map(a->a.getName()).collect(Collectors.joining());
+                var primaryKeyValue = valueMap.get(primaryKeyField);
+
+                   /*
+                     System.out.println("Primary Key field "+primaryKeyField);
+                     System.out.println("Primary key value "+primaryKeyValue);
+                    */
 
                 // Write row to table file
-                row.writeRowsToDisk(primaryKeyField, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowsToDisk(primaryKeyValue, row, currentDB.getDbName(), currentTable.getTableName());
             }
 
             } // end if allFieldsExists
@@ -196,9 +204,8 @@ public class DML {
                 final String[] primaryKeyDataType = new String[1];
 
                 try {
-                    FileInputStream dbFile = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
-                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFile));
-
+                    FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
+                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
 
                     try {
                         // Read fields from table
@@ -213,21 +220,28 @@ public class DML {
                             }
 
                         });
+
                         // list rows
-                        TreeMap<Integer, Row> rows = (TreeMap<Integer, Row>) is.readObject();
-                        System.out.println("Number of records in table: "+rows.size());
+
+                      TreeMap<E,Row> rows = new TreeMap<>();
+                      while(true) {
+                          try {
+                       rows.put((E) is.readObject(),(Row) is.readObject());
+                          } catch (EOFException e) {
+                              break;
+                          }
+                      } // end while
+
                         rows.forEach((k,v) -> {
-                            System.out.println(k+" "+v);
+                            System.out.println(v.toString());
                         });
+
 
                         is.close();
 
-
-
-                    } catch (ClassNotFoundException e) {
+                    } catch (ClassNotFoundException | IOException e) {
                         e.printStackTrace();
                     }
-
 
                 } catch (IOException e) {
                     System.out.println("Error! Could not open table file...");
