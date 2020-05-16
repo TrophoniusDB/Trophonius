@@ -24,8 +24,12 @@ public class Row<E> implements Serializable {
         return row;
     }
 
-    public int getMaxValue() {
-       return this.row.entrySet().stream().filter(a -> a.getValue().toString().length()>0).mapToInt(k -> k.getValue().toString().length()).max().getAsInt();
+    public int getMaxValueLength() {
+       return this.row.values().stream().filter(Objects::nonNull).mapToInt(e -> e.toString().length()).max().getAsInt();
+    }
+
+    public int getMaxKeyLength() {
+        return this.row.keySet().stream().filter(Objects::nonNull).mapToInt(e -> e.length()).max().getAsInt();
     }
 
     public void setRow(LinkedHashMap<String, E> row) {

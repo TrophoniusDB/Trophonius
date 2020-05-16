@@ -223,16 +223,19 @@ public class DML<E> {
                                 .map(a -> {
                                     return a.getValue();
                                 })
-                                 .mapToInt(a->a.getMaxValue())
+                                 .mapToInt(a->a.getMaxValueLength())
                                 // .peek(System.out::println)
                                  .max().getAsInt();
+
+
 
                         // Print table header
                         System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
                         System.out.print("| ");
                         tableStructure.forEach((k,v) -> {
                             // print field names
-                            System.out.printf(" %-"+maxlength+"s |",k );
+
+                            System.out.printf(" %-"+rows.get(k).getMaxValueLength()+"s |",k );
                         });
                         System.out.println();
                         System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
