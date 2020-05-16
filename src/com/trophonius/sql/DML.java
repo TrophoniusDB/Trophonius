@@ -159,7 +159,9 @@ public class DML {
 
                 // Write row to console
                 System.out.println(row.toString());
-                Field primaryKeyField = (Field) currentTable.getTableStructure().values().stream().filter(a->a.isPrimaryKey());
+                String primaryKeyField = currentTable.getTableStructure()
+                        .values().stream().filter(a->a.isPrimaryKey()).map(a->a.getName()).toString();
+
 
                 // Write row to table file
                 row.writeRowsToDisk(primaryKeyField, row, currentDB.getDbName(), currentTable.getTableName());
