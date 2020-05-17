@@ -241,54 +241,71 @@ public class DML<E> {
                                 // .peek(System.out::println)
                                  .max().getAsInt();
 
+                        // Calculate minimum field width from field names
+                        int minLength = fieldList.stream().mapToInt(a->a.length()).max().getAsInt();
 
-                        // Print table header
+                        if(maxlength < minLength) {
+                            maxlength = minLength;
+                        }
+
                         System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
                         System.out.print("| ");
+
+                        int finalMaxlength = maxlength;
+
                         fieldList.forEach(k -> {
                             // print field names
-                            System.out.printf(" %-"+maxlength+"s |",k );
+                            System.out.printf(" %-"+ finalMaxlength +"s |",k );
                         });
                         System.out.println();
                         System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
 
                         // list rows
 
+                        Map<String,E> printList = new LinkedHashMap<>();
+
                         // Print each row
-                       rows.forEach((k,v) -> {
+                        rows.forEach((k,v) -> {
                             System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
                                 // Check if field is in fieldList, i.e. should be returned
                                 if(fieldList.stream().map(c->c.trim()).collect(Collectors.toList()).contains(a)) {
-                                    System.out.printf(" %-" + maxlength + "s |", b);
+                                // put keys ad values in a linkedHashMap - printList
+                                    printList.put(a.toString().trim(),(E) b);
                                 }
                             });
+
+                            // print fields in the same order as in the sql
+                            fieldList.forEach(a-> {
+                                String b = a.trim();
+                                System.out.printf(" %-" + finalMaxlength + "s |", printList.get(b));
+                            });
+
                             System.out.println();
                         });
 
 
-                        fieldList.forEach(a -> {
+
+/*                        fieldList.forEach(a -> {
                             System.out.print("| ");
                             // check if a field in the row is in the fieldList
-                            if(rows.entrySet().stream()
-                                    .map(b->b.getValue())
-                                    .map(c->c.getRow())
-                                    .map(d->d.keySet())
-                                    .anyMatch(e->e.contains(a.trim()))) {
-
                                 rows.forEach((f,g)-> {
-                                    g.getRow().forEach((h, i) -> {
-                                        // print field values
-                                        System.out.printf(" %-" + maxlength + "s |", i);
+                                    if(rows.entrySet().stream()
+                                            .map(b->b.getValue())
+                                            .map(c->c.getRow())
+                                            .map(d->d.keySet())
+                                            .anyMatch(e->e.contains(a.trim()))) {
 
-                                    });
+                                        g.getRow().forEach((h, i) -> {
+                                            // print field values
+                                            System.out.printf(" %-" + finalMaxlength + "s |", i);
+                                        });
+                                    }
+                                    System.out.println();
                                 });
-
-                            }
-
                         });
-
-                        System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
+*/
+                        System.out.println("+" + "-".repeat((finalMaxlength+3)*fieldList.size()) + "+");
                         // print number of rows returned
                         System.out.println(rows.size()>1 ? rows.size() +" rows returned" : rows.size() + " row returned");
                         is.close();
