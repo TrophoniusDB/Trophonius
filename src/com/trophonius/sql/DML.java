@@ -181,7 +181,7 @@ public class DML<E> {
 
         // SQL SELECT <fields...> FROM <TABLENAME>
         if (sql.toLowerCase().startsWith("select") ) {
-
+            List<String> fieldList = new ArrayList<>();
             String tableName = null;
 
             // Determine tablename
@@ -208,10 +208,23 @@ public class DML<E> {
 
                         LinkedHashMap<String,Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
 
+                        // Determine fields to be fetched
+                        if (words[1].equals("*")) {
+                            fieldList.addAll(tableStructure.keySet());
+                        } else {
+                            String fields = sql.toLowerCase()
+                                    .substring(sql.toLowerCase().indexOf("select")+6,sql.toLowerCase().indexOf("from"));
+                            fieldList.addAll(Arrays.asList(fields.split(",")));
+                        }
+
+                        System.out.println("Fields to be feched: "+fieldList);
+
                         LinkedHashMap<E,Row> rows = new LinkedHashMap<>();
                         while(true) {
                             try {
-                                rows.put((E) is.readObject(),(Row) is.readObject());
+                                var pk = is.readObject();
+                                Row theRow = (Row) is.readObject();
+                                rows.put((E) pk, theRow);
                             } catch (EOFException e) {
                                 break;
                             }
@@ -228,17 +241,15 @@ public class DML<E> {
                                  .max().getAsInt();
 
 
-
                         // Print table header
-                        System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
+                        System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
                         System.out.print("| ");
-                        tableStructure.forEach((k,v) -> {
+                        fieldList.forEach(k -> {
                             // print field names
-
-                            System.out.printf(" %-"+rows.get(k).getMaxValueLength()+"s |",k );
+                            System.out.printf(" %-"+maxlength+"s |",k );
                         });
                         System.out.println();
-                        System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
+                        System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
 
                         // list rows
 
@@ -246,12 +257,14 @@ public class DML<E> {
                         rows.forEach((k,v) -> {
                             System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
-                                System.out.printf(" %-"+maxlength+"s |",b);
+                                if(fieldList.contains(a)) {
+                                    System.out.printf(" %-" + maxlength + "s |", b);
+                                }
                             });
                             System.out.println();
                         });
 
-                        System.out.println("+" + "-".repeat((maxlength+3)*tableStructure.size()) + "+");
+                        System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
                         // print number of rows returned
                         System.out.println(rows.size()>1 ? rows.size() +" rows returned" : rows.size() + " row returned");
                         is.close();
