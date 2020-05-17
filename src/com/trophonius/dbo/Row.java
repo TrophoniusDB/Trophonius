@@ -13,6 +13,7 @@ import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
+    private static final long serialVersionUID = -544016776593193705L;
     // One row consists of a TreeMap with the fieldname as the key and the field as the value
     private LinkedHashMap<String, E> row = new LinkedHashMap<>();
 

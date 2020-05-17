@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Field implements Serializable {
 
+    private static final long serialVersionUID = -5851856856760605828L;
     private String name;
     private DataType dataType;
     private boolean primaryKey;

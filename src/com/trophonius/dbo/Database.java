@@ -11,6 +11,7 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Database implements Serializable {
+    private static final long serialVersionUID = 3353993616667352381L;
     private String dbName, charSet, collation;
     private Map users;
     private LocalDateTime created;

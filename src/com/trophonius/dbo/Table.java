@@ -10,6 +10,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
 public class Table implements Serializable {
+    private static final long serialVersionUID = 9134175559420903358L;
     private String tableName, charSet, collation;
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;

@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class DataType implements Serializable {
 
+    private static final long serialVersionUID = 3002806822164145186L;
     private String name;
     private String className;
     private boolean complex;
