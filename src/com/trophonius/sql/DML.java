@@ -8,6 +8,7 @@ import java.security.KeyStore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class DML<E> {
@@ -254,15 +255,40 @@ public class DML<E> {
                         // list rows
 
                         // Print each row
-                        rows.forEach((k,v) -> {
+                      /*  rows.forEach((k,v) -> {
                             System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
-                                if(fieldList.contains(a)) {
+                                // Check if field is in fieldList, i.e. should be returned
+                                if(fieldList.stream().map(c->c.trim()).collect(Collectors.toList()).contains(a)) {
                                     System.out.printf(" %-" + maxlength + "s |", b);
                                 }
                             });
                             System.out.println();
                         });
+*/
+
+                        fieldList.forEach(a -> {
+                            System.out.print("| ");
+                            // check if a field in the row is in the fieldList
+                            if(rows.entrySet().stream()
+                                    .map(b->b.getValue())
+                                    .map(c->c.getRow())
+                                    .map(d->d.keySet())
+                                    .anyMatch(e->e.contains(a.trim()))) {
+                                // print field values
+                                System.out.printf(" %-" + maxlength + "s |",
+                                        rows.forEach((f,g)-> {
+                                        g.getRow().forEach((h,i) -> System.out.print(i)
+                                        });
+
+                                        }));
+
+
+
+                            }
+
+                        });
+
 
                         System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
                         // print number of rows returned

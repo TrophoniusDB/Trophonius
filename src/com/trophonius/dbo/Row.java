@@ -9,7 +9,6 @@ import java.io.Serializable;
 import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.TreeMap;
 
 public class Row<E> implements Serializable {
 
@@ -19,6 +18,10 @@ public class Row<E> implements Serializable {
 
     public Row() {
 
+    }
+
+    public <E> E getValue(String key)  {
+        return (E) row.get(key);
     }
 
     public LinkedHashMap<String, E> getRow() {
