@@ -255,7 +255,7 @@ public class DML<E> {
                         // list rows
 
                         // Print each row
-                      /*  rows.forEach((k,v) -> {
+                       rows.forEach((k,v) -> {
                             System.out.print("| ");
                             v.getRow().forEach((a,b) -> {
                                 // Check if field is in fieldList, i.e. should be returned
@@ -265,7 +265,7 @@ public class DML<E> {
                             });
                             System.out.println();
                         });
-*/
+
 
                         fieldList.forEach(a -> {
                             System.out.print("| ");
@@ -275,20 +275,18 @@ public class DML<E> {
                                     .map(c->c.getRow())
                                     .map(d->d.keySet())
                                     .anyMatch(e->e.contains(a.trim()))) {
-                                // print field values
-                                System.out.printf(" %-" + maxlength + "s |",
-                                        rows.forEach((f,g)-> {
-                                        g.getRow().forEach((h,i) -> System.out.print(i)
-                                        });
 
-                                        }));
+                                rows.forEach((f,g)-> {
+                                    g.getRow().forEach((h, i) -> {
+                                        // print field values
+                                        System.out.printf(" %-" + maxlength + "s |", i);
 
-
+                                    });
+                                });
 
                             }
 
                         });
-
 
                         System.out.println("+" + "-".repeat((maxlength+3)*fieldList.size()) + "+");
                         // print number of rows returned
