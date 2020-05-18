@@ -86,7 +86,7 @@ public class DML<E> {
 
                 if(found == false) {
                 // Not all field names were found in table structure. Print message and go back to prompt
-                    System.out.println("ERROR: one or more field names is not present in table");
+                    System.out.println("ERROR: One or more field names are not present in table");
                     System.out.println("Fields in table: "+currentTable.getFieldNames());
                     System.out.println("Fields in SQL statement: "+Arrays.asList(fieldNames));
 
@@ -219,13 +219,13 @@ public class DML<E> {
 
                             if(found == false) {
                                 // Not all field names were found in table structure. Print message and go back to prompt
-                                System.out.println("ERROR: one or more field names is not present in table");
+                                System.out.println("ERROR: One or more field names are not present in table");
                                 System.out.println("Fields in table: "+tableStructure.keySet() );
                                 System.out.println("Fields in SQL statement: "+fieldList);
                                 return;
                             }
                         }
-                        System.out.println("Fields to be feched: "+fieldList);
+                        System.out.println("Fields to be fetched: "+fieldList);
 
                         LinkedHashMap<E,Row> rows = new LinkedHashMap<>();
                         while(true) {
