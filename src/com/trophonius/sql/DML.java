@@ -291,27 +291,7 @@ public class DML<E> {
                             System.out.println();
                         } );
 
-
-
-/*                        fieldList.forEach(a -> {
-                            System.out.print("| ");
-                            // check if a field in the row is in the fieldList
-                                rows.forEach((f,g)-> {
-                                    if(rows.entrySet().stream()
-                                            .map(b->b.getValue())
-                                            .map(c->c.getRow())
-                                            .map(d->d.keySet())
-                                            .anyMatch(e->e.contains(a.trim()))) {
-
-                                        g.getRow().forEach((h, i) -> {
-                                            // print field values
-                                            System.out.printf(" %-" + finalMaxlength + "s |", i);
-                                        });
-                                    }
-                                    System.out.println();
-                                });
-                        });
-*/
+                        // Print table footer
                         System.out.println("+" + "-".repeat((finalMaxlength+3)*fieldList.size()) + "+");
                         // print number of rows returned
                         System.out.println(rows.size()>1 ? rows.size() +" rows returned" : rows.size() + " row returned");
