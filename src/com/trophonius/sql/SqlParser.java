@@ -26,34 +26,34 @@ public class SqlParser {
         // DDL Statements
         if (
                 sql.toLowerCase().startsWith("create") ||
-                sql.toLowerCase().startsWith("drop") ||
-                sql.toLowerCase().startsWith("truncate") ||
-                sql.toLowerCase().startsWith("alter") ||
-                sql.toLowerCase().startsWith("rename")
+                        sql.toLowerCase().startsWith("drop") ||
+                        sql.toLowerCase().startsWith("truncate") ||
+                        sql.toLowerCase().startsWith("alter") ||
+                        sql.toLowerCase().startsWith("rename")
         ) {
             // Dispatch to DDL-parser
-            DDL parser = new DDL(prompt,currentDB,sql);
+            DDL parser = new DDL(prompt, currentDB, sql);
         }
 
         // DML Statements
         if (
                 sql.toLowerCase().startsWith("select") ||
-                sql.toLowerCase().startsWith("insert") ||
-                sql.toLowerCase().startsWith("update") ||
-                sql.toLowerCase().startsWith("delete")
+                        sql.toLowerCase().startsWith("insert") ||
+                        sql.toLowerCase().startsWith("update") ||
+                        sql.toLowerCase().startsWith("delete")
         ) {
             // Dispatch to DML-parser
-            DML parser = new DML(prompt,currentDB,sql);
+            DML parser = new DML(prompt, currentDB, sql);
         }
 
 
         // DCL Statements
         if (
                 sql.toLowerCase().startsWith("grant") ||
-                sql.toLowerCase().startsWith("revoke")
+                        sql.toLowerCase().startsWith("revoke")
         ) {
             // Dispatch to DCL-parser
-            DCL parser = new DCL(prompt,currentDB,sql);
+            DCL parser = new DCL(prompt, currentDB, sql);
         }
 
 
@@ -64,18 +64,18 @@ public class SqlParser {
         String charset = "", collation = "";
 
         // SQL: SHOW DATABASES
-        if (sql.toLowerCase().equals("show databases") || sql.toLowerCase().equals("\\l") ) {
+        if (sql.toLowerCase().equals("show databases") || sql.toLowerCase().equals("\\l")) {
 
             ArrayList<String> dbNames = HelperMethods.findDatabases();
 
             if (dbNames.isEmpty()) {
                 System.out.println("No databases found, Create one?");
             } else {
-                System.out.println("+"+"-".repeat(30)+"+");
+                System.out.println("+" + "-".repeat(30) + "+");
                 System.out.printf("| %-28s |\n", "Database");
-                System.out.println("+"+"-".repeat(30)+"+");
-                dbNames.forEach(name -> System.out.printf("| %-28s |\n",name));
-                System.out.println("+"+"-".repeat(30)+"+");
+                System.out.println("+" + "-".repeat(30) + "+");
+                dbNames.forEach(name -> System.out.printf("| %-28s |\n", name));
+                System.out.println("+" + "-".repeat(30) + "+");
             }
 
         } // END SHOW DATABASES
@@ -101,7 +101,7 @@ public class SqlParser {
             // if sql = describe <dbname>
             if (words.length == 3) {
                 dbName = words[2];
-            // if sql = describe database <dbname>
+                // if sql = describe database <dbname>
             } else {
                 dbName = words[3];
                 showDB.setDbName(dbName);
@@ -143,15 +143,19 @@ public class SqlParser {
         if (sql.toLowerCase().startsWith("use")) {
             String dbName = words[1];
 
-            if((currentDB = currentDB.openDatabase(dbName)).getDbName() != null) {
+            if ((currentDB = currentDB.openDatabase(dbName)).getDbName() != null) {
                 this.currentDB = currentDB;
                 prompt = currentDB.getDbName() + "/";
                 // this.currentDBName = currentDB.getDbName();
                 System.out.println("Database changed to " + currentDB.getDbName());
             }
 
-
         } // end use
 
+        // populate testbase
+        if (sql.toLowerCase().startsWith("populate")) {
+            int numberofRows = Integer.valueOf(words[1]);
+            HelperMethods.populate(numberofRows);
+        }
     }
 }

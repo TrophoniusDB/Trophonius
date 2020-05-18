@@ -16,7 +16,6 @@ public class HelperMethods {
         return Math.round(n * Math.pow(10, dec)) / (float) Math.pow(10, dec);
     }
 
-
     public static void recursiveDelete(File file) {
         //to end the recursive loop
         if (!file.exists())
@@ -52,6 +51,13 @@ public class HelperMethods {
 
         return dbNames;
     }
+
+    public static void populate(int rows) {
+        for (Integer i = 1; i <= rows ; i++) {
+            System.out.println("insert into test (id,tall) values ("+i+","+Math.random()+")");
+        }
+    }
+
 
 } // END CLASS
 

@@ -81,11 +81,8 @@ public class DML<E> {
                     }
                 });
 
-
                 // Check if all fields from SQL exists in tableStructure of currentTable
-
                 Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));
-
 
                 if(found == false) {
                 // Not all field names were found in table structure. Print message and go back to prompt
@@ -193,7 +190,7 @@ public class DML<E> {
             }
 
 
-            // Check if table not found
+                // Check if table not found
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
                 // Table file not found. Return to sender
                 System.out.println("Table not found.");
@@ -214,10 +211,20 @@ public class DML<E> {
                             fieldList.addAll(tableStructure.keySet());
                         } else {
                             String fields = sql.toLowerCase()
-                                    .substring(sql.toLowerCase().indexOf("select")+6,sql.toLowerCase().indexOf("from"));
-                            fieldList.addAll(Arrays.asList(fields.split(",")));
-                        }
+                                    .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
+                            fieldList.addAll(Arrays.stream(fields.split(",")).map(a->a.trim()).collect(Collectors.toList()));
 
+                            // Check if all fields from SQL exists in tableStructure of currentTable
+                            Boolean found = tableStructure.keySet().containsAll(fieldList);
+
+                            if(found == false) {
+                                // Not all field names were found in table structure. Print message and go back to prompt
+                                System.out.println("ERROR: one or more field names is not present in table");
+                                System.out.println("Fields in table: "+tableStructure.keySet() );
+                                System.out.println("Fields in SQL statement: "+fieldList);
+                                return;
+                            }
+                        }
                         System.out.println("Fields to be feched: "+fieldList);
 
                         LinkedHashMap<E,Row> rows = new LinkedHashMap<>();
@@ -282,7 +289,7 @@ public class DML<E> {
                             });
 
                             System.out.println();
-                        });
+                        } );
 
 
 
@@ -318,6 +325,7 @@ public class DML<E> {
                     System.out.println("Error! Could not open table file...");
                     e.printStackTrace();
                 }
+
             }
         } // end Select
 
