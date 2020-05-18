@@ -138,7 +138,6 @@ public class SqlParser {
             }
         }
 
-
         // SQL: USE <dbname>
         if (sql.toLowerCase().startsWith("use")) {
             String dbName = words[1];
@@ -149,7 +148,6 @@ public class SqlParser {
                 // this.currentDBName = currentDB.getDbName();
                 System.out.println("Database changed to " + currentDB.getDbName());
             }
-
         } // end use
 
         // populate testbase
