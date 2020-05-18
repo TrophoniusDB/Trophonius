@@ -1,6 +1,8 @@
 package com.trophonius.utils;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
@@ -52,9 +54,13 @@ public class HelperMethods {
         return dbNames;
     }
 
-    public static void populate(int rows) {
-        for (Integer i = 1; i <= rows ; i++) {
-            System.out.println("insert into test (id,tall) values ("+i+","+Math.random()+")");
+    public static void populate(int rows, String filename) {
+        try (FileWriter outFile = new FileWriter(filename)){
+            for (Integer i = 1; i <= rows ; i++) {
+                outFile.append("insert into test (id,tall) values ("+i+","+Math.random()+")\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 

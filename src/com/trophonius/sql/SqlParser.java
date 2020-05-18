@@ -155,7 +155,11 @@ public class SqlParser {
         // populate testbase
         if (sql.toLowerCase().startsWith("populate")) {
             int numberofRows = Integer.valueOf(words[1]);
-            HelperMethods.populate(numberofRows);
+            String outFile = words[2];
+            HelperMethods.populate(numberofRows,outFile);
         }
+
+        // Import SQL from file
+
     }
 }
