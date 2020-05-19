@@ -207,14 +207,9 @@ public class DDL {
                 String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
                 currentDB.addField(tableName,fieldProps);
 
-
             }
 
-
         }
-
-
-
 
     }
 

@@ -4,6 +4,8 @@ import com.trophonius.dbo.Database;
 import com.trophonius.utils.HelperMethods;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -40,7 +42,10 @@ public class SqlParser {
                 sql.toLowerCase().startsWith("select") ||
                         sql.toLowerCase().startsWith("insert") ||
                         sql.toLowerCase().startsWith("update") ||
-                        sql.toLowerCase().startsWith("delete")
+                        sql.toLowerCase().startsWith("delete") ||
+                        sql.toLowerCase().startsWith("import") ||
+                        sql.toLowerCase().startsWith("\\i")
+
         ) {
             // Dispatch to DML-parser
             DML parser = new DML(prompt, currentDB, sql);
@@ -154,10 +159,9 @@ public class SqlParser {
         if (sql.toLowerCase().startsWith("populate")) {
             int numberofRows = Integer.valueOf(words[1]);
             String outFile = words[2];
-            HelperMethods.populate(numberofRows,outFile);
+            HelperMethods.populate(numberofRows, outFile);
         }
 
-        // Import SQL from file
-
     }
+
 }
