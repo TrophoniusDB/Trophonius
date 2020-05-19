@@ -77,16 +77,18 @@ public class DML<E> {
                     ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
 
                     try {
-                        // Read fields from table
-
+                        // Read fieldNames and Fields from tableStructure stored in Table file as the first object
                         LinkedHashMap<String, Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
 
-                        // Determine fields to be fetched
+                        // Fetch all fields by putting the whole keySet into the fieldList
                         if (words[1].equals("*")) {
                             fieldList.addAll(tableStructure.keySet());
                         } else {
+                            // Or determine fields to be fetched and put them into fieldList
+                            // First substring the fields frm sql
                             String fields = sql.toLowerCase()
                                     .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
+                            // Then split the fields string and add Fields into fieldList
                             fieldList.addAll(Arrays.stream(fields.split(",")).map(a -> a.trim()).collect(Collectors.toList()));
 
                             // Check if all fields from SQL exists in tableStructure of currentTable
@@ -115,6 +117,11 @@ public class DML<E> {
                             }
                         } // end while
 
+
+                        if (rows.size()==0) {
+                            System.out.println("Table contains no rows...");
+                            return;
+                        }
 
                         // Calculate field widths for length of ascii-box
                         int maxlength = rows.entrySet().stream()
@@ -214,11 +221,9 @@ public class DML<E> {
             return;
         } else {
             // Table exists - open it, construct row and append row to table.
-            // System.out.println("Table exists");
 
             // Find field names from SQL
             String[] fieldNames = sql.substring(sql.indexOf("(") + 1, sql.indexOf(")")).split("[,]");
-            // Arrays.stream(fieldNames).forEach(System.out::println);
 
             // Find field values from SQL
             String valueString = sql.substring(sql.indexOf("values"), sql.length());
