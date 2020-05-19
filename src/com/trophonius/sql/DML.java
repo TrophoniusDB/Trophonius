@@ -44,12 +44,12 @@ public class DML<E> {
 
         } // END INSERT INTO
 
-        //  \i filename
+        //  \i or import sql from <filename>
         if (sql.toLowerCase().startsWith("\\i") || sql.toLowerCase().startsWith("import")) {
             String fileName = words[1];
             importSql(fileName);
 
-        } //
+        } // end import from file
 
 
         // SQL SELECT <fields...> FROM <TABLENAME>
@@ -102,6 +102,8 @@ public class DML<E> {
                         }
                         System.out.println("Fields to be fetched: " + fieldList);
 
+                        // Read primary key and row objects from table file and put into a LinkedHashMap
+                        // Breaks graciously when no more records to read
                         LinkedHashMap<E, Row> rows = new LinkedHashMap<>();
                         while (true) {
                             try {
@@ -126,15 +128,17 @@ public class DML<E> {
                         // Calculate minimum field width from field names
                         int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
 
+                        // fix, if maxlength is less than minlength
                         if (maxlength < minLength) {
                             maxlength = minLength;
                         }
 
                         System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
                         System.out.print("| ");
-
+                        // copy maxlength to a final variabel for use in forEach()
                         int finalMaxlength = maxlength;
 
+                        // Iterate through fieldList and print field names in the table header
                         fieldList.forEach(k -> {
                             // print field names
                             System.out.printf(" %-" + finalMaxlength + "s |", k);
@@ -142,7 +146,7 @@ public class DML<E> {
                         System.out.println();
                         System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
 
-                        // list rows
+                        // print rows, by first putting them into a LinkedHashMap - printlist
 
                         Map<String, E> printList = new LinkedHashMap<>();
 
@@ -160,7 +164,8 @@ public class DML<E> {
                             // print fields in the same order as in the sql
                             fieldList.forEach(a -> {
                                 String b = a.trim();
-                                System.out.printf(" %-" + finalMaxlength + "s |", printList.get(b));
+                                E theValue = printList.get(b);
+                                System.out.printf(" %-" + finalMaxlength + "s |", theValue);
                             });
 
                             System.out.println();
