@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Random;
 
 public class HelperMethods {
 
@@ -60,8 +61,9 @@ public class HelperMethods {
 
     public static void populate(int rows, String filename) {
         try (FileWriter outFile = new FileWriter(filename)){
+            Random rand = new Random();
             for (Integer i = 1; i <= rows ; i++) {
-                outFile.append("insert into test (id,tall) values ("+i+","+Math.random()+")\n");
+                outFile.append("insert into test (id,tall) values ("+i+","+rand.nextInt()+")\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

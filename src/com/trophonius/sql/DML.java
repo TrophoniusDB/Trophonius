@@ -104,14 +104,20 @@ public class DML<E> {
                         }
                         System.out.println("Fields to be fetched: " + fieldList);
 
-                        // Read primary key and row objects from table file and put into a LinkedHashMap
+                        // get primary key field
+                        // String primaryKeyField = tableStructure
+                        /*        .values().stream()
+                                .filter(a -> a.isPrimaryKey())
+                                .map(a -> a.getName())
+                                .collect(Collectors.joining());
+                        */
+                        // Read row objects from table file and put into a TreeMap
                         // Breaks graciously when no more records to read
-                        LinkedHashMap<E, Row> rows = new LinkedHashMap<>();
+                        List<Row> rows = new ArrayList<>();
                         while (true) {
                             try {
-                                var pk = is.readObject();
-                                Row theRow = (Row) is.readObject();
-                                rows.put((E) pk, theRow);
+                               Row theRow = (Row) is.readObject();
+                                rows.add(theRow);
                             } catch (EOFException e) {
                                 break;
                             }
@@ -124,12 +130,9 @@ public class DML<E> {
                         }
 
                         // Calculate field widths for length of ascii-box
-                        int maxlength = rows.entrySet().stream()
-                                .map(a -> {
-                                    return a.getValue();
-                                })
-                                .mapToInt(a -> a.getMaxValueLength())
-                                // .peek(System.out::println)
+                        int maxlength = rows.stream()
+                                .mapToInt(a -> a.getRow().values().toString().length())
+                             // .peek(System.out::println)
                                 .max().getAsInt();
 
                         // Calculate minimum field width from field names
@@ -153,24 +156,23 @@ public class DML<E> {
                         System.out.println();
                         System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
 
-                        // print rows, by first putting them into a LinkedHashMap - printlist
-
+                        // print rows, by first putting them into a LinkedHashMap: printList
                         Map<String, E> printList = new LinkedHashMap<>();
 
                         // Print each row
-                        rows.forEach((k, v) -> {
+                        rows.forEach(a -> {
                             System.out.print("| ");
-                            v.getRow().forEach((a, b) -> {
+                            a.getRow().forEach((b, c) -> {
                                 // Check if field is in fieldList, i.e. should be returned
-                                if (fieldList.stream().map(c -> c.trim()).collect(Collectors.toList()).contains(a)) {
+                                if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
                                     // put keys and values in a linkedHashMap - printList
-                                    printList.put(a.toString().trim(), (E) b);
+                                    printList.put(b.toString().trim(), (E) c);
                                 }
                             });
 
                             // print fields in the same order as in the sql
-                            fieldList.forEach(a -> {
-                                String b = a.trim();
+                            fieldList.forEach(d -> {
+                                String b = d.trim();
                                 E theValue = printList.get(b);
                                 System.out.printf(" %-" + finalMaxlength + "s |", theValue);
                             });
@@ -325,21 +327,13 @@ public class DML<E> {
 
                 });
 
-                // Write row to console
-                // System.out.println(row.toString());
-
-                // get primary key field and use it to look up value in valuemap in writeRowToDisk below
-                String primaryKeyField = currentTable.getTableStructure()
-                        .values().stream().filter(a -> a.isPrimaryKey()).map(a -> a.getName()).collect(Collectors.joining());
-                var primaryKeyValue = valueMap.get(primaryKeyField);
-
                    /*
                      System.out.println("Primary Key field "+primaryKeyField);
                      System.out.println("Primary key value "+primaryKeyValue);
                     */
 
                 // Write row to table file
-                row.writeRowsToDisk(primaryKeyValue, row, currentDB.getDbName(), currentTable.getTableName());
+                row.writeRowToDisk(row, currentDB.getDbName(), currentTable.getTableName());
             }
 
         } // end if allFieldsExists
