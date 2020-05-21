@@ -124,6 +124,9 @@ public class DML<E> {
                         } // end while
 
 
+                        is.close();
+                        dbFileIn.close();
+
                         if (rows.size()==0) {
                             System.out.println("Table contains no rows...");
                             return;
@@ -163,18 +166,25 @@ public class DML<E> {
                         rows.forEach(a -> {
                             System.out.print("| ");
                             a.getRow().forEach((b, c) -> {
-                                // Check if field is in fieldList, i.e. should be returned
-                                if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
-                                    // put keys and values in a linkedHashMap - printList
-                                    printList.put(b.toString().trim(), (E) c);
-                                }
+                            // Check if field is in fieldList, i.e. should be returned
+                            if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
+                              // put keys and values in a linkedHashMap - printList
+                              printList.put(b.toString().trim(), (E) c);
+                            }
                             });
 
                             // print fields in the same order as in the sql
                             fieldList.forEach(d -> {
                                 String b = d.trim();
-                                E theValue = printList.get(b);
-                                System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                                var theValue = printList.get(b);
+
+                                if(theValue.getClass().getName().contains("Integer")) {
+                                    System.out.printf(" %-" + finalMaxlength + "d |", theValue);
+                                } else {
+                                    System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                                }
+
+
                             });
 
                             System.out.println();
@@ -277,7 +287,7 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int")) {
-                                Integer value = Integer.parseInt(valueMap.get(storedFieldName));
+                                Integer value = Integer.valueOf(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                             }
 
@@ -306,7 +316,7 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Double")) {
-                                Double value = Double.parseDouble(valueMap.get(storedFieldName));
+                                Double value = Double.valueOf(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                             }
 
