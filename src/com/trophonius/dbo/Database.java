@@ -240,7 +240,7 @@ public class Database implements Serializable {
             System.out.println();
 
             // print table structures, if database has tables and sql = describe full
-
+            is.close();
             if (db.tables.size() > 0) {
                 System.out.println("Tables");
                 db.printTables();
