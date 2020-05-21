@@ -287,7 +287,7 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int")) {
-                                Integer value = Integer.valueOf(valueMap.get(storedFieldName));
+                                Integer value = Integer.parseInt(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                             }
 
@@ -316,7 +316,7 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Double")) {
-                                Double value = Double.valueOf(valueMap.get(storedFieldName));
+                                Double value = Double.parseDouble(valueMap.get(storedFieldName));
                                 row.addToRow(storedFieldName, value);
                             }
 
