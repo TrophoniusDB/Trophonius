@@ -54,14 +54,14 @@ public class Row<E> implements Serializable {
                 // Open table file for writing, and append map of primary key + row to the file
 
                 FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
-                AppendableObjectOutputStream os = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
+                AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFile));
                 // Write the primary key
                 // os.writeObject(primaryKey);
                 // write the row
                 //System.out.println(getRow());
-                os.writeObject(row);
-                os.flush();
-                os.close();
+                oStr.writeObject(row);
+                oStr.flush();
+                oStr.close();
                 dbFile.flush();
                 dbFile.close();
                 System.out.println("Success: 1 row written to table: "+tableName);
