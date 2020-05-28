@@ -288,8 +288,13 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Integer") || storedClassName.equals("int")) {
-                                Integer value = Integer.parseInt(valueMap.get(storedFieldName));
-                                row.addToRow(storedFieldName, value);
+                                try {
+                                    Integer value = Integer.parseInt(valueMap.get(storedFieldName));
+                                    row.addToRow(storedFieldName, value);
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid Integer format:\n" + e.getMessage());
+                                }
+
                             }
 
                             if (storedClassName.equals("LocalDate")) {
@@ -317,15 +322,22 @@ public class DML<E> {
                             }
 
                             if (storedClassName.equals("Double")) {
-                                Double value = Double.parseDouble(valueMap.get(storedFieldName));
-                                row.addToRow(storedFieldName, value);
+                                try {
+                                    Double value = Double.parseDouble(valueMap.get(storedFieldName));
+                                    row.addToRow(storedFieldName, value);
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid Double format:\n" + e.getMessage());
+                                }
                             }
 
                             if (storedClassName.equals("Float")) {
-                                Float value = Float.parseFloat(valueMap.get(storedFieldName));
-                                row.addToRow(storedFieldName, value);
+                                try {
+                                    Float value = Float.parseFloat(valueMap.get(storedFieldName));
+                                    row.addToRow(storedFieldName, value);
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid Float format:\n" + e.getMessage());
+                                }
                             }
-
 
                         } // end if
                     });
