@@ -44,9 +44,8 @@ public class Row<E> implements Serializable {
         this.row.put(fieldName, value);
     }
 
-    // Append a row to en existing table file
+    // Append a row to an existing table file
     public void writeRowToDisk(Row row, String dbName, String tableName) {
-        // a row consists of a primary key followed by the corresponding row
 
         try {
             // check that table file exists in data directory
@@ -60,7 +59,7 @@ public class Row<E> implements Serializable {
                 // os.writeObject(primaryKey);
                 // write the row
                 //System.out.println(getRow());
-                os.writeObject(row.getRow());
+                os.writeObject(row);
                 os.flush();
                 os.close();
                 dbFile.flush();
