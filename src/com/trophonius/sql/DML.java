@@ -111,7 +111,7 @@ public class DML<E> {
                                 .map(a -> a.getName())
                                 .collect(Collectors.joining());
                         */
-                        // Read row objects from table file and put into a TreeMap
+                        // Read row objects from table file and put into an ArrayList
                         // Breaks graciously when no more records to read
                         List<Row> rows = new ArrayList<>();
                         while (true) {
@@ -134,9 +134,10 @@ public class DML<E> {
 
                         // Calculate field widths for length of ascii-box
                         int maxlength = rows.stream()
-                                .mapToInt(a -> a.getRow().values().toString().length())
-                             // .peek(System.out::println)
+                                .map(a -> a.getRow().values())
+                                .mapToInt(b-> b.stream().mapToInt(c->c.toString().length()).max().getAsInt())
                                 .max().getAsInt();
+
 
                         // Calculate minimum field width from field names
                         int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
