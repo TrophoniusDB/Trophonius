@@ -59,7 +59,8 @@ public class Row<E> implements Serializable {
                 // Write the primary key
                 // os.writeObject(primaryKey);
                 // write the row
-                os.writeObject(row);
+                //System.out.println(getRow());
+                os.writeObject(row.getRow());
                 os.flush();
                 os.close();
                 dbFile.flush();
