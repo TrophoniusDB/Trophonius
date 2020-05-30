@@ -174,6 +174,8 @@ public class DDL {
                         f1.setNotNull(true);
                     }
 
+                    // System.out.println(f1.getDataType().getClassName()+" "+ f1.getName());
+
                     // Add field to table
                     t1.addField(f1);
 

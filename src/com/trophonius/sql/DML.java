@@ -6,11 +6,10 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.KeyStore;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collector;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 public class DML<E> {
@@ -80,11 +79,11 @@ public class DML<E> {
                         // Read fieldNames and Fields from tableStructure stored in Table file as the first object
                         LinkedHashMap<String, Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
 
-                        // Fetch all fields by putting the whole keySet into the fieldList
+                        // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
                         if (words[1].equals("*")) {
                             fieldList.addAll(tableStructure.keySet());
                         } else {
-                            // Or determine fields to be fetched and put them into fieldList
+                            // Or else determine fields to be fetched and put them into the variable fieldList
                             // First substring the fields frm sql
                             String fields = sql.toLowerCase()
                                     .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
@@ -111,7 +110,8 @@ public class DML<E> {
                                 .map(a -> a.getName())
                                 .collect(Collectors.joining());
                         */
-                        // Read row objects from table file and put into an ArrayList
+
+                        // Read row objects from table file and put them into an ArrayList
                         // Breaks graciously when no more records to read
                         List<Row> rows = new ArrayList<>();
                         while (true) {
@@ -242,7 +242,7 @@ public class DML<E> {
             String[] fieldValues = valueString.substring(valueString.indexOf("(") + 1, valueString.indexOf(")")).split("[,]");
             //Arrays.stream(fieldValues).forEach(System.out::println);
 
-            // Put field names and field values in a HashMap for later use
+            // Put field names and field values from SQL in a HashMap for later use
             HashMap<String, String> valueMap = new HashMap<>();
             for (int i = 0; i < fieldNames.length; i++) {
                 fieldNames[i] = fieldNames[i].strip();
@@ -269,6 +269,8 @@ public class DML<E> {
 
             } else {
                 // All fieldNames where found in table structure, so continue to save row to file.
+                // variable to check if Field Value is valid
+                AtomicReference<Boolean> validFields = new AtomicReference<>(true);
 
                 // Save Row
                 currentTable.getTableStructure().forEach((k, v) -> {
@@ -292,6 +294,8 @@ public class DML<E> {
                                     row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Integer format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
                                 }
 
                             }
@@ -304,6 +308,8 @@ public class DML<E> {
                                     row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
                                 }
                             }
 
@@ -315,7 +321,9 @@ public class DML<E> {
                                     LocalDateTime value = LocalDateTime.parse(dateTimeString);
                                     row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
-                                    System.out.println("Not a valid date format:\n" + e.getMessage());
+                                    System.out.println("Not a valid datetime format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
                                 }
 
                             }
@@ -326,6 +334,8 @@ public class DML<E> {
                                     row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Double format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
                                 }
                             }
 
@@ -335,6 +345,8 @@ public class DML<E> {
                                     row.addToRow(storedFieldName, value);
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Float format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
                                 }
                             }
 
@@ -354,8 +366,12 @@ public class DML<E> {
                      System.out.println("Primary key value "+primaryKeyValue);
                     */
 
-                // Write row to table file
-                row.writeRowToDisk(row, currentDB.getDbName(), currentTable.getTableName());
+                // If all field values are valid, write row to table file
+                if(validFields.get()) {
+                    row.writeRowToDisk(row, currentDB.getDbName(), currentTable.getTableName());
+                } else {
+                    System.out.println("Row not saved in table");
+                }
             }
 
         } // end if allFieldsExists
