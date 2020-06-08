@@ -9,6 +9,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 public class HelperMethods {
@@ -69,6 +70,52 @@ public class HelperMethods {
             e.printStackTrace();
         }
     }
+
+
+    // print HTML-table with no header and footer
+    public static void printHTMLTable(String[][] data) {
+        String[] fields = new String[0];
+        printHTMLTable(fields, data, false , false);
+    } // end printHTMLTable
+
+
+    // print HTML-table with optional header and footer
+    public static void printHTMLTable(String[] fields, String[][] data, boolean header , boolean footer) {
+        System.out.println("<table>");
+        // Print Table head if header=true and field array has records
+        if (header && fields.length>0) {
+            System.out.println("<thead>");
+            System.out.print("<tr>");
+            Arrays.stream(fields).forEach(h -> {
+                System.out.print("<th>" + h + "</th>");
+            });
+            System.out.println("</tr>");
+            System.out.println("</thead>");
+        }
+        // Print table body
+        System.out.println("<tbody>");
+        Arrays.stream(data).forEach(r -> {
+            System.out.print("<tr>");
+            Arrays.stream(r).forEach(k -> System.out.print("<td>" + k + "</td>"));
+            System.out.println("</tr>");
+        });
+        System.out.println("</tbody>");
+
+        // Print Table foot if footer=true
+        if (footer) {
+            System.out.println("<tfoot>");
+            System.out.print("<tr>");
+            Arrays.stream(fields).forEach(h -> {
+                System.out.print("<th>" + h + "</th>");
+            });
+            System.out.println("</tr>");
+            System.out.println("</tfoot>");
+        }
+
+        System.out.println("</table>");
+
+    } // end printHTMLTable
+
 
 
 
