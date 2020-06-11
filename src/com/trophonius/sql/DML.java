@@ -162,7 +162,7 @@ public class DML<E> {
                         // print rows, by first putting them into a LinkedHashMap: printList
                         Map<String, E> printList = new LinkedHashMap<>();
 
-                        // Print each row
+                        // Put each row in printList
                         rows.forEach(a -> {
                             System.out.print("| ");
                             a.getRow().forEach((b, c) -> {
@@ -172,6 +172,8 @@ public class DML<E> {
                               printList.put(b.toString().trim(), (E) c);
                             }
                             });
+
+                            // TODO - write routines for printing plain, html and csv
 
                             // print fields in the same order as in the sql
                             fieldList.forEach(d -> {
