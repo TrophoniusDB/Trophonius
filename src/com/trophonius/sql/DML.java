@@ -53,16 +53,14 @@ public class DML<E> {
 
         // SQL SELECT <fields...> FROM <TABLENAME>
         if (sql.toLowerCase().startsWith("select")) {
-            List<String> fieldList = new ArrayList<>();
-            String tableName = null;
 
             // Determine tablename
+            String tableName = null;
             for (int i = 0; i < words.length; i++) {
                 if (words[i].toLowerCase().equals("from")) {
                     tableName = words[i + 1];
                 }
             }
-
 
             // Check if table not found
             if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
@@ -71,146 +69,162 @@ public class DML<E> {
                 return;
             } else {
                 // Table exists - open it, fetch row and return fields.
-                try {
-                    FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
-                    ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
+                LinkedHashMap<String, E> resultTable = selectFromTable(tableName, sql);
+            }
 
-                    try {
-                        // Read fieldNames and Fields from tableStructure stored in Table file as the first object
-                        LinkedHashMap<String, Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
+        } // end Select
 
-                        // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
-                        if (words[1].equals("*")) {
-                            fieldList.addAll(tableStructure.keySet());
-                        } else {
-                            // Or else determine fields to be fetched and put them into the variable fieldList
-                            // First substring the fields frm sql
-                            String fields = sql.toLowerCase()
-                                    .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
-                            // Then split the fields string and add Fields into fieldList
-                            fieldList.addAll(Arrays.stream(fields.split(",")).map(a -> a.trim()).collect(Collectors.toList()));
+    } // end parseSQL
 
-                            // Check if all fields from SQL exists in tableStructure of currentTable
-                            Boolean found = tableStructure.keySet().containsAll(fieldList);
 
-                            if (found == false) {
-                                // Not all field names were found in table structure. Print message and go back to prompt
-                                System.out.println("ERROR: One or more field names are not present in table");
-                                System.out.println("Fields in table: " + tableStructure.keySet());
-                                System.out.println("Fields in SQL statement: " + fieldList);
-                                return;
-                            }
-                        }
-                        System.out.println("Fields to be fetched: " + fieldList);
+    public LinkedHashMap<String,E> selectFromTable (String tableName, String sql) {
+        // Split sql into separate words
+        String[] words = sql.split("[= ]");
 
-                        // get primary key field
-                        // String primaryKeyField = tableStructure
+        // make a list to hold field names from sql
+        List<String> fieldList = new ArrayList<>();
+
+        try {
+            FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
+            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
+
+            try {
+                // Read fieldNames and Fields from tableStructure stored in Table file as the first object
+                LinkedHashMap<String, Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
+
+                // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
+                if (words[1].equals("*")) {
+                    fieldList.addAll(tableStructure.keySet());
+                } else {
+                    // Or else determine fields to be fetched and put them into the variable fieldList
+                    // First substring the fields frm sql
+                    String fields = sql.toLowerCase()
+                            .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
+                    // Then split the fields string and add Fields into fieldList
+                    fieldList.addAll(Arrays.stream(fields.split(",")).map(a -> a.trim()).collect(Collectors.toList()));
+
+                    // Check if all fields from SQL exists in tableStructure of currentTable
+                    Boolean found = tableStructure.keySet().containsAll(fieldList);
+
+                    if (found == false) {
+                        // Not all field names were found in table structure. Print message and go back to prompt
+                        System.out.println("ERROR: One or more field names are not present in table");
+                        System.out.println("Fields in table: " + tableStructure.keySet());
+                        System.out.println("Fields in SQL statement: " + fieldList);
+                        return null;
+                    }
+                }
+                System.out.println("Fields to be fetched: " + fieldList);
+
+                // get primary key field
+                // String primaryKeyField = tableStructure
                         /*        .values().stream()
                                 .filter(a -> a.isPrimaryKey())
                                 .map(a -> a.getName())
                                 .collect(Collectors.joining());
                         */
 
-                        // Read row objects from table file and put them into an ArrayList
-                        // Breaks graciously when no more records to read
-                        List<Row> rows = new ArrayList<>();
-                        while (true) {
-                            try {
-                               Row theRow = (Row) is.readObject();
-                                rows.add(theRow);
-                            } catch (EOFException e) {
-                                break;
-                            }
-                        } // end while
-
-                        is.close();
-                        dbFileIn.close();
-
-                        if (rows.size()==0) {
-                            System.out.println("Table contains no rows...");
-                            return;
-                        }
-
-                        // Calculate field widths for length of ascii-box
-                        int maxlength = rows.stream()
-                                .map(a -> a.getRow().values())
-                                .mapToInt(b-> b.stream().mapToInt(c->c.toString().length()).max().getAsInt())
-                                .max().getAsInt();
-
-
-                        // Calculate minimum field width from field names
-                        int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
-
-                        // fix, if maxlength is less than minlength
-                        if (maxlength < minLength) {
-                            maxlength = minLength;
-                        }
-
-                        System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
-                        System.out.print("| ");
-                        // copy maxlength to a final variabel for use in forEach()
-                        int finalMaxlength = maxlength;
-
-                        // Iterate through fieldList and print field names in the table header
-                        fieldList.forEach(k -> {
-                            // print field names
-                            System.out.printf(" %-" + finalMaxlength + "s |", k);
-                        });
-                        System.out.println();
-                        System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
-
-                        // print rows, by first putting them into a LinkedHashMap: printList
-                        Map<String, E> printList = new LinkedHashMap<>();
-
-                        // Put each row in printList
-                        rows.forEach(a -> {
-                            System.out.print("| ");
-                            a.getRow().forEach((b, c) -> {
-                            // Check if field is in fieldList, i.e. should be returned
-                            if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
-                              // put keys and values in a linkedHashMap - printList
-                              printList.put(b.toString().trim(), (E) c);
-                            }
-                            });
-
-                            // TODO - write routines for printing plain, html and csv
-
-                            // print fields in the same order as in the sql
-                            fieldList.forEach(d -> {
-                                String b = d.trim();
-                                var theValue = printList.get(b);
-
-                                if(theValue.getClass().getName().contains("Integer")) {
-                                    System.out.printf(" %-" + finalMaxlength + "d |", theValue);
-                                } else {
-                                    System.out.printf(" %-" + finalMaxlength + "s |", theValue);
-                                }
-
-
-                            });
-
-                            System.out.println();
-                        });
-
-                        // Print table footer
-                        System.out.println("+" + "-".repeat((finalMaxlength + 3) * fieldList.size()) + "+");
-                        // print number of rows returned
-                        System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
-                        is.close();
-
-                    } catch (ClassNotFoundException | IOException e) {
-                        e.printStackTrace();
+                // Read row objects from table file and put them into an ArrayList
+                // Breaks graciously when no more records to read
+                List<Row> rows = new ArrayList<>();
+                while (true) {
+                    try {
+                        Row theRow = (Row) is.readObject();
+                        rows.add(theRow);
+                    } catch (EOFException e) {
+                        break;
                     }
+                } // end while
 
-                } catch (IOException e) {
-                    System.out.println("Error! Could not open table file...");
-                    e.printStackTrace();
+                is.close();
+                dbFileIn.close();
+
+                if (rows.size() == 0) {
+                    System.out.println("Table contains no rows...");
+                    return null;
                 }
 
-            }
-        } // end Select
+                // Calculate field widths for length of ascii-box
+                int maxlength = rows.stream()
+                        .map(a -> a.getRow().values())
+                        .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
+                        .max().getAsInt();
 
-    } // end parseSQL
+
+                // Calculate minimum field width from field names
+                int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
+
+                // fix, if maxlength is less than minlength
+                if (maxlength < minLength) {
+                    maxlength = minLength;
+                }
+
+                System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
+                System.out.print("| ");
+                // copy maxlength to a final variabel for use in forEach()
+                int finalMaxlength = maxlength;
+
+                // Iterate through fieldList and print field names in the table header
+                fieldList.forEach(k -> {
+                    // print field names
+                    System.out.printf(" %-" + finalMaxlength + "s |", k);
+                });
+                System.out.println();
+                System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
+
+                // print rows, by first putting them into a LinkedHashMap: printList
+                Map<String, E> printList = new LinkedHashMap<>();
+
+                // Put each row in printList
+                rows.forEach(a -> {
+                    System.out.print("| ");
+                    a.getRow().forEach((b, c) -> {
+                        // Check if field is in fieldList, i.e. should be returned
+                        if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
+                            // put keys and values in a linkedHashMap - printList
+                            printList.put(b.toString().trim(), (E) c);
+                        }
+                    });
+
+                    // TODO - write routines for printing plain, html and csv
+
+                    // print fields in the same order as in the sql
+                    fieldList.forEach(d -> {
+                        String b = d.trim();
+                        var theValue = printList.get(b);
+
+                        if (theValue.getClass().getName().contains("Integer")) {
+                            System.out.printf(" %-" + finalMaxlength + "d |", theValue);
+                        } else {
+                            System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                        }
+
+
+                    });
+
+                    System.out.println();
+                });
+
+                // Print table footer
+                System.out.println("+" + "-".repeat((finalMaxlength + 3) * fieldList.size()) + "+");
+                // print number of rows returned
+                System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
+                is.close();
+
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error! Could not open table file...");
+            e.printStackTrace();
+        }
+
+        return null;
+    } // end selectFromtable
+
+
+
 
 
     public void insertIntoTable(String sql) {
