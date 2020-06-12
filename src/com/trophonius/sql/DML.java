@@ -1,6 +1,7 @@
 package com.trophonius.sql;
 
 import com.trophonius.dbo.*;
+import com.trophonius.utils.HelperMethods;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -69,7 +70,7 @@ public class DML<E> {
                 return;
             } else {
                 // Table exists - open it, fetch row and return fields.
-                LinkedHashMap<String, E> resultTable = selectFromTable(tableName, sql);
+                selectFromTable(tableName, sql);
             }
 
         } // end Select
@@ -77,7 +78,7 @@ public class DML<E> {
     } // end parseSQL
 
 
-    public LinkedHashMap<String,E> selectFromTable (String tableName, String sql) {
+    public void selectFromTable (String tableName, String sql) {
         // Split sql into separate words
         String[] words = sql.split("[= ]");
 

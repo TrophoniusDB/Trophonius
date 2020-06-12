@@ -73,14 +73,14 @@ public class HelperMethods {
 
 
     // print HTML-table with no header and footer
-    public static void printHTMLTable(String[][] data) {
+    public static <E> void printHTMLTable(E[][] data) {
         String[] fields = new String[0];
         printHTMLTable(fields, data, false , false);
     } // end printHTMLTable
 
 
     // print HTML-table with optional header and footer
-    public static void printHTMLTable(String[] fields, String[][] data, boolean header , boolean footer) {
+    public static <E> void printHTMLTable(String[] fields, E[][] data, boolean header , boolean footer) {
         System.out.println("<table>");
         // Print Table head if header=true and field array has records
         if (header && fields.length>0) {
