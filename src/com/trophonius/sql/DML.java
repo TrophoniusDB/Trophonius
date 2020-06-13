@@ -146,7 +146,8 @@ public class DML<E> {
                 }
 
              // Print result
-                printAsciiTable (fieldList, rows);
+                HelperMethods.printAsciiTable (fieldList, rows);
+
 
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
@@ -159,77 +160,6 @@ public class DML<E> {
 
 
     } // end selectFromTable
-
-
-    public void printAsciiTable (List<String> fieldList, List<Row> rows) {
-    // Calculate field widths for length of ascii-box
-                int maxlength = rows.stream()
-                        .map(a -> a.getRow().values())
-                        .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
-                        .max().getAsInt();
-
-
-                // Calculate minimum field width from field names
-                int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
-
-                // fix, if maxlength is less than minlength
-                if (maxlength < minLength) {
-                    maxlength = minLength;
-                }
-
-                System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
-                System.out.print("| ");
-                // copy maxlength to a final variabel for use in forEach()
-                int finalMaxlength = maxlength;
-
-                // Iterate through fieldList and print field names in the table header
-                fieldList.forEach(k -> {
-                    // print field names
-                    System.out.printf(" %-" + finalMaxlength + "s |", k);
-                });
-                System.out.println();
-                System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
-
-                // print rows, by first putting them into a LinkedHashMap: printList
-                Map<String, E> printList = new LinkedHashMap<>();
-
-                // Put each row in printList
-                rows.forEach(a -> {
-                    System.out.print("| ");
-                    a.getRow().forEach((b, c) -> {
-                        // Check if field is in fieldList, i.e. should be returned
-                        if (fieldList.stream().map(d -> d.trim()).collect(Collectors.toList()).contains(b)) {
-                            // put keys and values in a linkedHashMap - printList
-                            printList.put(b.toString().trim(), (E) c);
-                        }
-                    });
-
-                    // print fields in the same order as in the sql
-                    fieldList.forEach(d -> {
-                        String b = d.trim();
-                        var theValue = printList.get(b);
-
-                        if (theValue.getClass().getName().contains("Integer")) {
-                            System.out.printf(" %-" + finalMaxlength + "d |", theValue);
-                        } else {
-                            System.out.printf(" %-" + finalMaxlength + "s |", theValue);
-                        }
-
-
-                    });
-
-                    System.out.println();
-                });
-
-                // Print table footer
-                System.out.println("+" + "-".repeat((finalMaxlength + 3) * fieldList.size()) + "+");
-                // print number of rows returned
-                System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
-
-    } // end printAsciiTable
-
-
-
 
 
     public void insertIntoTable(String sql) {
