@@ -112,7 +112,7 @@ public class DML<E> {
                         System.out.println("ERROR: One or more field names are not present in table");
                         System.out.println("Fields in table: " + tableStructure.keySet());
                         System.out.println("Fields in SQL statement: " + fieldList);
-                        return null;
+                        return;
                     }
                 }
                 System.out.println("Fields to be fetched: " + fieldList);
@@ -142,10 +142,27 @@ public class DML<E> {
 
                 if (rows.size() == 0) {
                     System.out.println("Table contains no rows...");
-                    return null;
+                    return;
                 }
 
-                // Calculate field widths for length of ascii-box
+             // Print result
+                printAsciiTable (fieldList, rows);
+
+            } catch (ClassNotFoundException | IOException e) {
+                e.printStackTrace();
+            }
+
+        } catch (IOException e) {
+            System.out.println("Error! Could not open table file...");
+            e.printStackTrace();
+        }
+
+
+    } // end selectFromTable
+
+
+    public void printAsciiTable (List<String> fieldList, List<Row> rows) {
+    // Calculate field widths for length of ascii-box
                 int maxlength = rows.stream()
                         .map(a -> a.getRow().values())
                         .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
@@ -187,8 +204,6 @@ public class DML<E> {
                         }
                     });
 
-                    // TODO - write routines for printing plain, html and csv
-
                     // print fields in the same order as in the sql
                     fieldList.forEach(d -> {
                         String b = d.trim();
@@ -210,19 +225,8 @@ public class DML<E> {
                 System.out.println("+" + "-".repeat((finalMaxlength + 3) * fieldList.size()) + "+");
                 // print number of rows returned
                 System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
-                is.close();
 
-            } catch (ClassNotFoundException | IOException e) {
-                e.printStackTrace();
-            }
-
-        } catch (IOException e) {
-            System.out.println("Error! Could not open table file...");
-            e.printStackTrace();
-        }
-
-        return null;
-    } // end selectFromtable
+    } // end printAsciiTable
 
 
 
