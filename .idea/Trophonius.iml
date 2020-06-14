@@ -12,8 +12,8 @@
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="lib" level="project" />
     <orderEntry type="library" name="org.apache.parquet:parquet-format:2.8.0" level="project" />
-    <orderEntry type="library" name="org.apache.parquet:parquet-common:1.11.0" level="project" />
     <orderEntry type="library" name="org.apache.parquet:parquet-column:1.11.0" level="project" />
+    <orderEntry type="library" name="org.apache.parquet:parquet-common:1.11.0" level="project" />
     <orderEntry type="library" name="org.apache.parquet:parquet-encoding:1.11.0" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit5.4">
@@ -31,5 +31,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="org.apache.calcite:calcite-core:1.23.0" level="project" />
   </component>
 </module>

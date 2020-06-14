@@ -31,6 +31,8 @@ public class DML<E> {
 
     private void parseSql(Database currentDB, String sql) {
 
+
+
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
