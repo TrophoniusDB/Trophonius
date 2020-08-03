@@ -177,7 +177,7 @@ public class DDL {
                 Table alteredTable = new Table();
                 alteredTable.setTableName(tableName);
                 // TODO fix denne
-                currentDB.getTables().get(alteredTable.getTableName()).addField(newField);
+                // currentDB.getTables().get(alteredTable.getTableName()).addField(newField);
                 try {
                     Database.saveDatabase(currentDB);
                 } catch (IOException e) {
