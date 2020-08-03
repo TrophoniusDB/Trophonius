@@ -69,16 +69,16 @@ public class SqlParser {
         // SQL: help or \h
         if (sql.toLowerCase().equals("help") || sql.toLowerCase().equals("\\h")) {
             // print common commands
-            System.out.println("-".repeat(80));
-            System.out.printf("%-35s %-10s","Some common commands","Description\n");
-            System.out.println("-".repeat(80));
-            System.out.printf("%-35s %-10s","show databases or \\l","List all databases\n");
-            System.out.printf("%-35s %-10s","use <dbname>","Select a database\n");
-            System.out.printf("%-35s %-10s","show tables or \\d","List all tables in selected database\n");
-            System.out.printf("%-35s %-10s","describe <table name>","Show table structure of <table name>\n");
-            System.out.printf("%-35s %-10s","describe database <dbname>","Show database and table info from <table name>\n");
-            System.out.printf("%-35s %-10s","describe full database <dbname>","Show database and table structures from <table name>\n");
-            System.out.println("-".repeat(80));
+            System.out.println("-".repeat(110));
+            System.out.printf("%-50s %-10s","Some common commands","Description\n");
+            System.out.println("-".repeat(110));
+            System.out.printf("%-50s %-10s","show databases or \\l","List all databases\n");
+            System.out.printf("%-50s %-10s","use <dbname>","Select a database\n");
+            System.out.printf("%-50s %-10s","show tables or \\d","List all tables in selected database\n");
+            System.out.printf("%-50s %-10s","describe <table name>","Show table structure of <table name>\n");
+            System.out.printf("%-50s %-10s","describe database <dbname> or \\db <dbname>","Show database and table info from <table name>\n");
+            System.out.printf("%-50s %-10s","describe full database <dbname> or \\db+ <dbname>","Show database and table structures from <table name>\n");
+            System.out.println("-".repeat(110));
         }
 
         // SQL: SHOW DATABASES
@@ -111,21 +111,24 @@ public class SqlParser {
 
 
         // SQL: DESCRIBE <FULL> DATABASE <dbname>
-        if (sql.toLowerCase().startsWith("describe database") || sql.toLowerCase().startsWith("describe full database")) {
+        if (sql.toLowerCase().startsWith("describe database")
+                || sql.toLowerCase().startsWith("describe full database")
+                || sql.toLowerCase().startsWith("\\db")
+        ) {
             String dbName;
             boolean full;
             Database showDB = new Database();
 
-            // if sql = describe <dbname>
+            // if sql = describe database <dbname>
             if (words.length == 3) {
                 dbName = words[2];
-                // if sql = describe database <dbname>
+                // if sql = \db <dbname> or \db+ <dbname>
             } else {
-                dbName = words[3];
+                dbName = words[1];
                 showDB.setDbName(dbName);
             }
 
-            if (sql.toLowerCase().contains("full")) {
+            if (sql.toLowerCase().contains("full")  || sql.toLowerCase().startsWith("\\db+")) {
                 full = true;
             } else {
                 full = false;
