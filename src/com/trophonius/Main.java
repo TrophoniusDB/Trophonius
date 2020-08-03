@@ -15,7 +15,7 @@ public class Main {
 
         System.out.println("Welcome to Trophonius - a Simple and Fast Database");
         System.out.println("Version 0.0.1");
-        System.out.println("Type 'quit' or '\\q' to exit");
+        System.out.println("Type 'help' or '\\h' for help and 'quit' or '\\q' to exit");
 
         // Main Menu
         while (true) {

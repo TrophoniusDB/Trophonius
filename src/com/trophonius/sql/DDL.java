@@ -162,22 +162,30 @@ public class DDL {
 
             // Add column
             if (tableAction.equals("add")) {
+                // find field name and type
                 String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
-                System.out.println(fieldProps);
+
                 // configure datatype
                 String[] props = fieldProps.split(" ");
                 DataType newType = new DataType();
                 newType.setName(props[1]);
                 setClassAndComplex(newType,props[1]);
+
                 // configure field
                 Field newField = new Field();
                 newField.setName(props[0]);
                 newField.setDataType(newType);
 
-                Table alteredTable = new Table();
-                alteredTable.setTableName(tableName);
-                // TODO fix denne
-                // currentDB.getTables().get(alteredTable.getTableName()).addField(newField);
+                System.out.println("Database: "+currentDB.getDbName());
+                System.out.println("Table: "+tableName);
+                System.out.println("Field Name: "+newField.getName());
+                System.out.println("Field data Type: "+newField.getDataType().getName());
+                System.out.println("Field Class: "+ newField.getDataType().getClassName());
+
+
+
+                // TODO lagrer ikke ny tabell struktur i tabell-filen, bare i db-filen (tror jeg)
+                currentDB.getTables().get(tableName).addField(newField);
                 try {
                     Database.saveDatabase(currentDB);
                 } catch (IOException e) {
