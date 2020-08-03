@@ -191,9 +191,6 @@ public class DDL {
 
     }
 
-
-
-
     private void setClassAndComplex(DataType dataType, String dataTypeString) {
 
         // Map SQL data types to Java classes
