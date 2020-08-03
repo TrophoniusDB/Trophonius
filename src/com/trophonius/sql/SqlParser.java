@@ -66,6 +66,16 @@ public class SqlParser {
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
 
+        // SQL: help or \h
+        if (sql.toLowerCase().equals("help") || sql.toLowerCase().equals("\\h")) {
+
+            System.out.println("Some common commands:");
+            System.out.printf("%-20s %40s","show databases or \\l","List all databases\n");
+            System.out.printf("%-20s %40s","use <dbname>","Select a database\n");
+            System.out.printf("%-20s %40s","show tables or \\d","List all tables in selected database\n");
+            System.out.printf("%-20s %40s","describe <table name>","Show table structure of <table name>\n");
+        }
+
         // SQL: SHOW DATABASES
         if (sql.toLowerCase().equals("show databases") || sql.toLowerCase().equals("\\l")) {
 
