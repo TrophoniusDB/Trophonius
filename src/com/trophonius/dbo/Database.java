@@ -150,11 +150,6 @@ public class Database implements Serializable {
 
     }
 
-    public void addField(String tableName, String fieldProps) {
-
-
-    }
-
 
     public void printTables() {
         AtomicReference<Integer> i = new AtomicReference<>(1);

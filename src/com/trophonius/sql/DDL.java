@@ -111,52 +111,7 @@ public class DDL {
                     DataType dataType = new DataType();
                     dataType.setName(dataTypeString);
 
-                    // Map SQL data types to Java classes
-
-                    if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
-                        dataType.setClassName("String");
-                    }
-
-                    if (dataTypeString.equals("date")) {
-                        dataType.setClassName("LocalDate");
-                    }
-
-                    if (dataTypeString.equals("datetime")) {
-                        dataType.setClassName("LocalDateTime");
-                    }
-
-                    if (dataTypeString.equals("int")) {
-                        dataType.setClassName("Integer");
-                    }
-
-                    if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
-                        dataType.setClassName("Double");
-                    }
-
-                    if (dataTypeString.equals("float")) {
-                        dataType.setClassName("Float");
-                    }
-
-                    if (dataTypeString.equals("object")) {
-                        dataType.setClassName("Object");
-                        dataType.setComplex(true);
-                    }
-
-                    if (dataTypeString.equals("array(int)")) {
-                        dataType.setClassName("ArrayList<Integer>");
-                        dataType.setComplex(true);
-                    }
-
-                    if (dataTypeString.equals("array(text)")) {
-                        dataType.setClassName("ArrayList<String>");
-                        dataType.setComplex(true);
-                    }
-
-                    if (dataTypeString.equals("array(decimal)")) {
-                        dataType.setClassName("ArrayList<Double>");
-                        dataType.setComplex(true);
-                    }
-
+                    setClassAndComplex(dataType, dataTypeString);
 
                     f1.setDataType(dataType);
 
@@ -205,12 +160,86 @@ public class DDL {
             String tableName = words[2];
             String tableAction = words[3];
 
+            // Add column
             if (tableAction.equals("add")) {
                 String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
-                currentDB.addField(tableName,fieldProps);
+                System.out.println(fieldProps);
+                // configure datatype
+                String[] props = fieldProps.split(" ");
+                DataType newType = new DataType();
+                newType.setName(props[1]);
+                setClassAndComplex(newType,props[1]);
+                // configure field
+                Field newField = new Field();
+                newField.setName(props[0]);
+                newField.setDataType(newType);
+
+                Table alteredTable = new Table();
+                alteredTable.setTableName(tableName);
+                // TODO fix denne
+                currentDB.getTables().get(alteredTable.getTableName()).addField(newField);
+                try {
+                    Database.saveDatabase(currentDB);
+                } catch (IOException e) {
+                    System.out.println("Databasen ikke lagret fordi: "+e.getMessage());
+                    e.printStackTrace();
+                }
 
             }
 
+        }
+
+    }
+
+
+
+
+    private void setClassAndComplex(DataType dataType, String dataTypeString) {
+
+        // Map SQL data types to Java classes
+
+        if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
+            dataType.setClassName("String");
+        }
+
+        if (dataTypeString.equals("date")) {
+            dataType.setClassName("LocalDate");
+        }
+
+        if (dataTypeString.equals("datetime")) {
+            dataType.setClassName("LocalDateTime");
+        }
+
+        if (dataTypeString.equals("int")) {
+            dataType.setClassName("Integer");
+        }
+
+        if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
+            dataType.setClassName("Double");
+        }
+
+        if (dataTypeString.equals("float")) {
+            dataType.setClassName("Float");
+        }
+
+        if (dataTypeString.equals("object")) {
+            dataType.setClassName("Object");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("array(int)")) {
+            dataType.setClassName("ArrayList<Integer>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("array(text)")) {
+            dataType.setClassName("ArrayList<String>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("array(decimal)")) {
+            dataType.setClassName("ArrayList<Double>");
+            dataType.setComplex(true);
         }
 
     }
