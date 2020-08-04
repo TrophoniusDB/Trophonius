@@ -138,7 +138,7 @@ public class DDL {
 
                 // Add newly created table to currentDB
                 currentDB.addTable(currentDB, t1);
-                t1.writeTableToDisk(currentDB.getDbName());
+                t1.createTableOnDisk(currentDB.getDbName());
             } // end else
         } // end create table
 

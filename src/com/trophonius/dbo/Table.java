@@ -105,7 +105,7 @@ public class Table implements Serializable {
     }
 
     // create the physical table file
-    public <E> void writeTableToDisk(String dbName) {
+    public <E> void createTableOnDisk(String dbName) {
 
         try {
 
@@ -122,8 +122,7 @@ public class Table implements Serializable {
                 dbFile.close();
 
             } else  {
-                // Table file exists - do update of table structure
-                // TODO
+                // Table file exists
                 System.out.println("Table already exists");
             }
 
