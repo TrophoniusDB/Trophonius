@@ -159,49 +159,62 @@ public class DDL {
         if (sql.toLowerCase().startsWith("alter table")) {
             String tableName = words[2];
             String tableAction = words[3];
+            // find field name and type
+            String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
 
-            // Add column
+            // Add field to table
             if (tableAction.equals("add")) {
-                // find field name and type
-                String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
+                // method to add field to table
+                addField(tableName, fieldProps);
+            }
 
-                // configure datatype
-                String[] props = fieldProps.split(" ");
-                DataType newType = new DataType();
-                newType.setName(props[1]);
-                setClassAndComplex(newType,props[1]);
-
-                // configure field
-                Field newField = new Field();
-                newField.setName(props[0]);
-                newField.setDataType(newType);
-
-                System.out.println("Database: "+currentDB.getDbName());
-                System.out.println("Table: "+tableName);
-                System.out.println("Field Name: "+newField.getName());
-                System.out.println("Field data Type: "+newField.getDataType().getName());
-                System.out.println("Field Class: "+ newField.getDataType().getClassName());
-
-
-
-                // TODO lagrer ikke ny tabell struktur i tabell-filen, bare i db-filen (tror jeg)
-                currentDB.getTables().get(tableName).addField(newField);
-                try {
-                    Database.saveDatabase(currentDB);
-                } catch (IOException e) {
-                    System.out.println("Databasen ikke lagret fordi: "+e.getMessage());
-                    e.printStackTrace();
-                }
-
+            // Drop field from table
+            if (tableAction.equals("drop")) {
+                // TODO
             }
 
         }
 
+    } // end parseSql
+
+
+    private void addField(String tableName, String fieldProps) {
+
+        // configure datatype
+        String[] props = fieldProps.split(" ");
+        DataType newType = new DataType();
+        newType.setName(props[1]);
+        setClassAndComplex(newType,props[1]);
+
+        // configure field
+        Field newField = new Field();
+        newField.setName(props[0]);
+        newField.setDataType(newType);
+
+        System.out.println("Database: "+currentDB.getDbName());
+        System.out.println("Table: "+tableName);
+        System.out.println("Field Name: "+newField.getName());
+        System.out.println("Field data Type: "+newField.getDataType().getName());
+        System.out.println("Field Class: "+ newField.getDataType().getClassName());
+
+
+        // Add Field to Table Structure
+        currentDB.getTables().get(tableName).addField(newField);
+        try {
+            // And save to Data Base File
+            Database.saveDatabase(currentDB);
+        } catch (IOException e) {
+            System.out.println("Database file not saved, because: "+e.getMessage());
+            e.printStackTrace();
+        }
+
     }
+
 
     private void setClassAndComplex(DataType dataType, String dataTypeString) {
 
-        // Map SQL data types to Java classes
+        // Map Trophonius/SQL data types to Java classes
+        // Set className and complex (if array, list, map or set)
 
         if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
             dataType.setClassName("String");
@@ -246,6 +259,58 @@ public class DDL {
             dataType.setClassName("ArrayList<Double>");
             dataType.setComplex(true);
         }
+
+        if (dataTypeString.equals("map(int,int)")) {
+            dataType.setClassName("LinkedHashMap<Integer,Integer>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(int,text)")) {
+            dataType.setClassName("LinkedHashMap<Integer,String>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(text,text)")) {
+            dataType.setClassName("LinkedHashMap<String,String>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(text,int)")) {
+            dataType.setClassName("LinkedHashMap<String, Integer>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(int,decimal)")) {
+            dataType.setClassName("LinkedHashMap<Integer,Double>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(decimal,decimal)")) {
+            dataType.setClassName("LinkedHashMap<Double,Double>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(decimal,int)")) {
+            dataType.setClassName("LinkedHashMap<Double,Integer>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(text,decimal)")) {
+            dataType.setClassName("LinkedHashMap<String,Double>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(decimal,text)")) {
+            dataType.setClassName("LinkedHashMap<Double,String>");
+            dataType.setComplex(true);
+        }
+
+        if (dataTypeString.equals("map(object,object)")) {
+            dataType.setClassName("LinkedHashMap<Object,Object>");
+            dataType.setComplex(true);
+        }
+
+
 
     }
 
