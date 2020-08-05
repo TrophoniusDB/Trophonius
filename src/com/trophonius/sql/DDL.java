@@ -209,7 +209,7 @@ public class DDL {
         System.out.println("Primary Key: "+newField.isPrimaryKey());
         System.out.println("Identity/Auto_increment: "+newField.isAutoIncrement());
         System.out.println("Unique: "+newField.isUnique());
-        System.out.println("NOt Null: "+newField.isNotNull());
+        System.out.println("Not Null: "+newField.isNotNull());
 
 
         // Add Field to Table Structure

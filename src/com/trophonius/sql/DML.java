@@ -85,13 +85,14 @@ public class DML<E> {
         // make a list to hold field names from sql
         List<String> fieldList = new ArrayList<>();
 
+        // Open Table file to read in rows
         try {
             FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
             ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
 
             try {
-                // Read fieldNames and Fields from tableStructure stored in Table file as the first object
-                LinkedHashMap<String, Field> tableStructure = (LinkedHashMap<String, Field>) is.readObject();
+                // Read fieldNames and Fields from tableStructure
+                LinkedHashMap<String, Field> tableStructure = currentDB.getTables().get(tableName).getTableStructure();
 
                 // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
                 if (words[1].equals("*")) {
@@ -202,12 +203,7 @@ public class DML<E> {
             }
 
             // set the value of currentTable
-            currentDB.getTables().forEach((k, v) -> {
-                if (v.getTableName().equals(tableName)) {
-                    //  v.printTableStructure();
-                    currentTable = v;
-                }
-            });
+            Table currentTable = currentDB.getTables().get(tableName);
 
             // Check if all fields from SQL exists in tableStructure of currentTable
             Boolean found = currentTable.getFieldNames().containsAll(Arrays.asList(fieldNames));

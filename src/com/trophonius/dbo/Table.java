@@ -114,31 +114,24 @@ public class Table implements Serializable {
     // create the physical table file
     public <E> void createTableOnDisk(String dbName) {
 
-        try {
-
             // check that table file not  exists in data directory
             if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
-                // create table file and write table structure to the file
-                FileOutputStream dbFile = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl");
-                ObjectOutputStream os = new ObjectOutputStream(new BufferedOutputStream(dbFile));
-                os.writeObject(tableStructure);
-                os.flush();
-                os.close();
-                dbFile.flush();
-                dbFile.close();
+                try {
+                    // create empty table file
+                    Files.createFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"));
+                } catch (IOException e) {
+                    System.out.println("Table could not we written to disk: ");
+                    e.printStackTrace();
+                }
 
-            } else  {
+            } else {
                 // Table file exists
                 System.out.println("Table already exists");
             }
 
-        } catch (IOException e) {
-            System.out.println("Table could not we written to disk: ");
-            e.printStackTrace();
-
         }
-    }
+
 
 
 
