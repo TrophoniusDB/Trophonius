@@ -180,6 +180,10 @@ public class DDL {
             f1.setNotNull(true);
         }
 
+        if (field.contains("unique")) {
+            f1.setUnique(true);
+        }
+
 
     }
 
