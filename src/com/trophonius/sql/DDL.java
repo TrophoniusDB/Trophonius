@@ -95,41 +95,11 @@ public class DDL {
                 // loop trough fields array
                 for (String field : fields) {
                     // strip leading and trailing spaces
-                    field = field.strip();
-                    // Split array into new array of each word in field statement
-                    String[] fieldElement = field.split(" ");
 
-
-                    // Create fields and set attributes
+                    // Create field
                     Field f1 = new Field();
-                    f1.setName(fieldElement[0]);
-
-                    // Data Type Conversion
-
-                    String dataTypeString = fieldElement[1].toLowerCase();
-
-                    DataType dataType = new DataType();
-                    dataType.setName(dataTypeString);
-
-                    setClassAndComplex(dataType, dataTypeString);
-
-                    f1.setDataType(dataType);
-
-                    //    System.out.println("DataType = " + fieldElement[1]);
-                    if (field.contains("primary key")) {
-                        f1.setPrimaryKey(true);
-                        f1.setNotNull(true);
-                    }
-
-                    if (field.contains("auto_increment") || field.contains("identity")) {
-                        f1.setAutoIncrement(true);
-                    }
-
-                    if (field.contains("not null")) {
-                        f1.setNotNull(true);
-                    }
-
-                    // System.out.println(f1.getDataType().getClassName()+" "+ f1.getName());
+                    // Set field properties
+                    setFieldProperties(f1, field);
 
                     // Add field to table
                     t1.addField(f1);
@@ -177,6 +147,42 @@ public class DDL {
 
     } // end parseSql
 
+    private void setFieldProperties(Field f1,String field) {
+
+        field = field.strip();
+        // Split array into new array of each word in field statement
+        String[] fieldElement = field.split(" ");
+
+        f1.setName(fieldElement[0]);
+
+        // Data Type Conversion
+
+        String dataTypeString = fieldElement[1].toLowerCase();
+
+        DataType dataType = new DataType();
+        dataType.setName(dataTypeString);
+
+        setClassAndComplex(dataType, dataTypeString);
+
+        f1.setDataType(dataType);
+
+        //    System.out.println("DataType = " + fieldElement[1]);
+        if (field.contains("primary key")) {
+            f1.setPrimaryKey(true);
+            f1.setNotNull(true);
+        }
+
+        if (field.contains("auto_increment") || field.contains("identity")) {
+            f1.setAutoIncrement(true);
+        }
+
+        if (field.contains("not null")) {
+            f1.setNotNull(true);
+        }
+
+
+    }
+
 
     private void addField(String tableName, String fieldProps) {
 
@@ -186,10 +192,9 @@ public class DDL {
         newType.setName(props[1]);
         setClassAndComplex(newType,props[1]);
 
-        // configure field
+        // configure field with obligatory name and data type
         Field newField = new Field();
-        newField.setName(props[0]);
-        newField.setDataType(newType);
+        setFieldProperties(newField,fieldProps);
 
         System.out.println("Database: "+currentDB.getDbName());
         System.out.println("Table: "+tableName);

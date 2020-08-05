@@ -10,6 +10,8 @@ public class Field implements Serializable {
     private boolean primaryKey;
     private boolean notNull;
     private boolean autoIncrement;
+    private boolean unique;
+
 
     public Field() {
     }
@@ -66,5 +68,13 @@ public class Field implements Serializable {
 
     public void setAutoIncrement(boolean autoIncrement) {
         this.autoIncrement = autoIncrement;
+    }
+
+    public boolean isUnique() {
+        return unique;
+    }
+
+    public void setUnique(boolean unique) {
+        this.unique = unique;
     }
 }
