@@ -87,11 +87,11 @@ public class Table implements Serializable {
     public void printTableStructure() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         System.out.println("Table Name: " + tableName);
-        System.out.println("+" + "-".repeat(85) + "+");
-        System.out.printf("| %-3s | %-20s | %-15s | %-10s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Primary Key", "Identity");
-        System.out.println("+" + "-".repeat(85) + "+");
-        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-10s | %-12s | %-8s |\n", i.getAndSet(i.get() + 1), v.getName(), v.getDataType().getName(), v.isNotNull(), v.isPrimaryKey(), v.isAutoIncrement()));
-        System.out.println("+" + "-".repeat(85) + "+");
+        System.out.println("+" + "-".repeat(94) + "+");
+        System.out.printf("| %-3s | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Unique", "Primary Key", "Identity");
+        System.out.println("+" + "-".repeat(94) + "+");
+        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n", i.getAndSet(i.get() + 1), v.getName(), v.getDataType().getName(), v.isNotNull(), v.isUnique(), v.isPrimaryKey(), v.isAutoIncrement()));
+        System.out.println("+" + "-".repeat(94) + "+");
     }
 
     public LinkedHashMap<String, Field> getTableStructure() {
