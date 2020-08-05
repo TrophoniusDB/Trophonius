@@ -199,8 +199,13 @@ public class DDL {
         System.out.println("Database: "+currentDB.getDbName());
         System.out.println("Table: "+tableName);
         System.out.println("Field Name: "+newField.getName());
-        System.out.println("Field data Type: "+newField.getDataType().getName());
+        System.out.println("Field Data Type: "+newField.getDataType().getName());
         System.out.println("Field Class: "+ newField.getDataType().getClassName());
+        System.out.println("Complex Data Type: "+ newField.getDataType().isComplex());
+        System.out.println("Primary Key: "+newField.isPrimaryKey());
+        System.out.println("Identity/Auto_increment: "+newField.isAutoIncrement());
+        System.out.println("Unique: "+newField.isUnique());
+        System.out.println("NOt Null: "+newField.isNotNull());
 
 
         // Add Field to Table Structure
