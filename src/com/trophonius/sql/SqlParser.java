@@ -70,7 +70,7 @@ public class SqlParser {
         if (sql.toLowerCase().equals("help") || sql.toLowerCase().equals("\\h")) {
             // print common commands
             System.out.println("-".repeat(110));
-            System.out.printf("%-50s %-10s","Some common commands","Description\n");
+            System.out.printf("%-50s %-10s","Command  (shortcut)","Description\n");
             System.out.println("-".repeat(110));
             System.out.printf("%-50s %-10s","show databases (\\l)","List all databases\n");
             System.out.printf("%-50s %-10s","use <dbname>","Select a database\n");
