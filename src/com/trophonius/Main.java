@@ -22,11 +22,14 @@ public class Main {
             // print prompt
             System.out.print(prompt + "> ");
             Scanner input = new Scanner(System.in);
+            // Wait for input from user
             String inputText = input.nextLine();
             if (inputText.equals("quit") || inputText.equals("\\q") ) {
+                // Say goodbye and exit
                 System.out.println("Goodbye...");
                 System.exit(0);
             } else {
+                // Dispatch to SQL-parser
                 SqlParser sql = new SqlParser(prompt, currentDB, inputText);
                 prompt = sql.prompt;
                 currentDB = sql.currentDB;
