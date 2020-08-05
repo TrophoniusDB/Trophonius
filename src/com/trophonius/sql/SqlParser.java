@@ -69,9 +69,9 @@ public class SqlParser {
         // SQL: help or \h
         if (sql.toLowerCase().equals("help") || sql.toLowerCase().equals("\\h")) {
             // print common commands
-            System.out.println("-".repeat(110));
+            System.out.println("-".repeat(130));
             System.out.printf("%-50s %-10s","Command  (shortcut)","Description\n");
-            System.out.println("-".repeat(110));
+            System.out.println("-".repeat(130));
             System.out.printf("%-50s %-10s","show databases (\\l)","List all databases\n");
             System.out.printf("%-50s %-10s","use <dbname>","Select a database\n");
             System.out.printf("%-50s %-10s","show tables (\\d)","List all tables in selected database\n");
@@ -79,7 +79,7 @@ public class SqlParser {
             System.out.printf("%-50s %-10s","describe database <dbname> (\\db <dbname>)","Show database and table info from <table name>\n");
             System.out.printf("%-50s %-10s","describe full database <dbname> (\\db+ <dbname>)","Show database and table structures from <table name>\n");
             System.out.printf("%-50s %-10s","import (\\i) <filename.sql>","import sql insert statements from file into table in current db\n");
-            System.out.println("-".repeat(110));
+            System.out.println("-".repeat(130));
         }
 
         // SQL: SHOW DATABASES
