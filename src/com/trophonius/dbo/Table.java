@@ -90,7 +90,14 @@ public class Table implements Serializable {
         System.out.println("+" + "-".repeat(94) + "+");
         System.out.printf("| %-3s | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Unique", "Primary Key", "Identity");
         System.out.println("+" + "-".repeat(94) + "+");
-        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n", i.getAndSet(i.get() + 1), v.getName(), v.getDataType().getName(), v.isNotNull(), v.isUnique(), v.isPrimaryKey(), v.isAutoIncrement()));
+        tableStructure.forEach((k, v) -> System.out.printf("| %-3d | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n",
+                i.getAndSet(i.get() + 1),
+                v.getName(),
+                v.getDataType().getName(),
+                v.isNotNull(),
+                v.isUnique(),
+                v.isPrimaryKey(),
+                v.isAutoIncrement()));
         System.out.println("+" + "-".repeat(94) + "+");
     }
 
