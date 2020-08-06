@@ -83,12 +83,34 @@ public class HelperMethods {
     // Print ASCII Table from a list of fields names and a list of rows
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {
         // Calculate field widths for length of ascii-box
-        // TODO fix width for each field instead
-        int maxlength = rows.stream()
-                .map(a -> a.getRow().values())
-                .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
-                .max().getAsInt();
 
+        // Put field name and length in a HashMap
+        HashMap<String,Integer> fieldWithLengths = new HashMap<>();
+        for(String fieldName: fieldList) {
+            fieldWithLengths.put(fieldName,fieldName.length());
+        }
+
+        for(Row row: rows) {
+            for(int i=0 ; i< row.getRow().size();i++) {
+
+                for(int j=0; j<row.getRow().entrySet().size();j++) {
+
+                }
+
+            }
+
+            for (Object field: row.getRow().entrySet()) {
+                if(field)
+            }
+        }
+
+
+
+            // TODO fix width for each field instead
+//        int maxlength = rows.stream()
+//                .map(a -> a.getRow().values())
+//                .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
+//                .max().getAsInt();
 
         // Calculate minimum field width from field names
         int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
@@ -109,6 +131,7 @@ public class HelperMethods {
             // print field names
             System.out.printf(" %-" + finalMaxlength + "s |", k);
         });
+
         System.out.println();
         System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
 
