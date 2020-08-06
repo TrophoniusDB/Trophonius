@@ -1,5 +1,7 @@
 package com.trophonius.dbo;
 
+import com.trophonius.utils.AppendableObjectOutputStream;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -106,33 +108,34 @@ public class Table implements Serializable {
     }
 
 
-    // Save altered table structure to db - file
-    public void saveTableStructure() {
-      // TODO
-    }
-
-    // create the physical table file
+   // create the physical table file
     public <E> void createTableOnDisk(String dbName) {
+        // check that table file not  exists in data directory
+        if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+        TableStats stats = new TableStats();
+        stats.setNumberOfRows(0);
+        stats.setPreviousFileSize(0);
 
-            // check that table file not  exists in data directory
-            if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
-
-                try {
-                    // create empty table file
-                    Files.createFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"));
-                } catch (IOException e) {
-                    System.out.println("Table could not we written to disk: ");
-                    e.printStackTrace();
-                }
-
-            } else {
-                // Table file exists
-                System.out.println("Table already exists");
+            try {
+                // create table file and write table stats
+                FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
+                AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
+                oStr.writeObject(stats);
+                oStr.flush();
+                oStr.close();
+                dbFileOut.flush();
+                dbFileOut.close();
+            } catch (IOException e) {
+                System.out.println("Table could not we written to disk: ");
+                e.printStackTrace();
             }
 
+        } else {
+            // Table file exists
+            System.out.println("Table already exists");
         }
 
-
+    } // END createTableOnDisk
 
 
 }

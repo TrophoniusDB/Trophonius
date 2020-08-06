@@ -128,6 +128,8 @@ public class DML<E> {
 
                 // Read row objects from table file and put them into an ArrayList
                 // Breaks graciously when no more records to read
+
+                TableStats stats = (TableStats) is.readObject();
                 List<Row> rows = new ArrayList<>();
                 while (true) {
                     try {
