@@ -131,8 +131,10 @@ public class DML<E> {
                 // Read row objects from table file and put them into an ArrayList
                 // Breaks graciously when no more records to read
 
+                // Read in TableStats
                 TableStats stats = (TableStats) is.readObject();
 
+                // Read in Rows and put them in an ArrayList of Rows
                 List<Row> rows = new ArrayList<>();
                 while (true) {
                     try {
@@ -146,14 +148,14 @@ public class DML<E> {
                 is.close();
                 dbFileIn.close();
 
+                // If no rows are found, print message and return to prompt
                 if (rows.size() == 0) {
                     System.out.println("Table contains no rows...");
                     return;
                 }
 
-             // Print result
+             // Print result as Ascii Table through helper method printAsciiTable
                 HelperMethods.printAsciiTable (fieldList, rows);
-
 
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();

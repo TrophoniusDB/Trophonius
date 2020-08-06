@@ -1,5 +1,6 @@
 package com.trophonius.utils;
 
+import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
 import com.trophonius.sql.DML;
 
@@ -82,6 +83,7 @@ public class HelperMethods {
     // Print ASCII Table from a list of fields names and a list of rows
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {
         // Calculate field widths for length of ascii-box
+        // TODO fix width for each field instead
         int maxlength = rows.stream()
                 .map(a -> a.getRow().values())
                 .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
@@ -96,6 +98,7 @@ public class HelperMethods {
             maxlength = minLength;
         }
 
+        // Print table header line
         System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
         System.out.print("| ");
         // copy maxlength to a final variabel for use in forEach()
@@ -126,13 +129,22 @@ public class HelperMethods {
             // print fields in the same order as in the sql
             fieldList.forEach(d -> {
                 String b = d.trim();
-                var theValue = printList.get(b);
 
-                if (theValue.getClass().getName().contains("Integer")) {
-                    System.out.printf(" %-" + finalMaxlength + "d |", theValue);
-                } else {
+                // Check if row contains value for field
+                try {
+                    var theValue = printList.get(b);
+
+                    if (theValue.getClass().getName().contains("Integer")) {
+                        System.out.printf(" %-" + finalMaxlength + "d |", theValue);
+                    } else {
+                        System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                    }
+                } catch (Exception e) {
+                 // No value for field, so print null
+                    String theValue =  "null";
                     System.out.printf(" %-" + finalMaxlength + "s |", theValue);
                 }
+
 
 
             });
