@@ -1,6 +1,7 @@
 package com.trophonius.sql;
 
 import com.trophonius.dbo.*;
+import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.HelperMethods;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
@@ -89,7 +90,7 @@ public class DML<E> {
         // Open Table file to read in rows
         try {
             FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + ".tbl");
-            ObjectInputStream is = new ObjectInputStream(new BufferedInputStream(dbFileIn));
+            AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
 
             try {
                 // Read fieldNames and Fields from tableStructure
@@ -131,6 +132,7 @@ public class DML<E> {
                 // Breaks graciously when no more records to read
 
                 TableStats stats = (TableStats) is.readObject();
+
                 List<Row> rows = new ArrayList<>();
                 while (true) {
                     try {
