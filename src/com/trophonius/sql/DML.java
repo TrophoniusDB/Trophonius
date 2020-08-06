@@ -2,6 +2,7 @@ package com.trophonius.sql;
 
 import com.trophonius.dbo.*;
 import com.trophonius.utils.HelperMethods;
+import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.*;
 import java.nio.file.Files;

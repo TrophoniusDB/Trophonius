@@ -55,10 +55,6 @@ public class Row<E> implements Serializable {
 
                 FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
                 AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
-                // Write the primary key
-                // os.writeObject(primaryKey);
-                // write the row
-                //System.out.println(getRow());
                 oStr.writeObject(row);
                 oStr.flush();
                 oStr.close();

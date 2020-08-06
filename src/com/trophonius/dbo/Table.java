@@ -112,6 +112,7 @@ public class Table implements Serializable {
     public <E> void createTableOnDisk(String dbName) {
         // check that table file not  exists in data directory
         if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+        //Create initial Table Stats
         TableStats stats = new TableStats();
         stats.setNumberOfRows(0);
         stats.setPreviousFileSize(0);
