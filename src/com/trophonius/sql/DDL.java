@@ -152,12 +152,12 @@ public class DDL {
         if (sql.toLowerCase().startsWith("alter table")) {
             String tableName = words[2];
             String tableAction = words[3];
-            // find field name and type
+            // find field name, datatype and other field properties
             String fieldProps = sql.toLowerCase().substring(sql.toLowerCase().indexOf(words[4]));
 
             // Add field to table
             if (tableAction.equals("add")) {
-                // method to add field to table
+                // Add field to table
                 addField(tableName, fieldProps);
             }
 
@@ -172,8 +172,9 @@ public class DDL {
 
     private void setFieldProperties(Field f1, String field) {
 
+        // strip extra blanks
         field = field.strip();
-        // Split array into new array of each word in field statement
+        // Split into array of each word in field statement
         String[] fieldElement = field.split(" ");
 
         f1.setName(fieldElement[0]);
@@ -189,8 +190,7 @@ public class DDL {
 
         f1.setDataType(dataType);
 
-        //    System.out.println("DataType = " + fieldElement[1]);
-        if (field.contains("primary key")) {
+                if (field.contains("primary key")) {
             f1.setPrimaryKey(true);
             f1.setNotNull(true);
         }
@@ -221,6 +221,7 @@ public class DDL {
         Field newField = new Field();
         setFieldProperties(newField, fieldProps);
 
+        /*  TODO move to test
         System.out.println("Database: " + currentDB.getDbName());
         System.out.println("Table: " + tableName);
         System.out.println("Field Name: " + newField.getName());
@@ -231,7 +232,7 @@ public class DDL {
         System.out.println("Identity/Auto_increment: " + newField.isAutoIncrement());
         System.out.println("Unique: " + newField.isUnique());
         System.out.println("Not Null: " + newField.isNotNull());
-
+        */
 
         // Add Field to Table Structure
         currentDB.getTables().get(tableName).addField(newField);
