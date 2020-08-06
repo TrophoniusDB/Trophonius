@@ -61,7 +61,7 @@ public class DDL {
                 db1.setCreated(created);
 
                 try {
-                    db1.saveDatabase(db1);
+                    Database.saveDatabase(db1);
                     System.out.println("Database " + db1.getDbName() + " saved.");
                     currentDB = db1;
                 } catch (IOException e) {
@@ -78,13 +78,36 @@ public class DDL {
             String tableName = words[2];
 
             // Check if table already exists
-            if (java.nio.file.Files.isRegularFile(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+".tbl"))) {
-                System.out.println("Table "+ tableName +" already exists in database "+ currentDB.getDbName());
+            if (java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
+                System.out.println("Table " + tableName + " already exists in database " + currentDB.getDbName());
                 return;
             } else {
                 // Create new table in memory
                 Table t1 = new Table();
                 t1.setTableName(tableName);
+
+                // Extract table properties from sql
+                String propertiesString = sql.substring(sql.lastIndexOf(")") + 1);
+
+                // Set Character Set
+                if (propertiesString.contains("charset")) {
+                    String charSetString = propertiesString.substring(propertiesString.indexOf("charset"));
+                    String[] charSetCode = charSetString.split("[= ]");
+                    t1.setCharSet(charSetCode[1]);
+                } else {
+                    // set character set to database default
+                    t1.setCharSet(currentDB.getCharSet());
+                }
+
+                // Set Collation Language Code
+                if (propertiesString.contains("collation")) {
+                    String collationString = propertiesString.substring(propertiesString.indexOf("collation"));
+                    String[] langCode = collationString.split("[= ]");
+                    t1.setCollation(langCode[1]);
+                } else {
+                    // set collation to database default
+                    t1.setCollation(currentDB.getCollation());
+                }
 
                 // Extract fields from sql
                 String fieldString = sql.substring(sql.indexOf("(") + 1, sql.lastIndexOf(")"));
@@ -147,7 +170,7 @@ public class DDL {
 
     } // end parseSql
 
-    private void setFieldProperties(Field f1,String field) {
+    private void setFieldProperties(Field f1, String field) {
 
         field = field.strip();
         // Split array into new array of each word in field statement
@@ -184,9 +207,7 @@ public class DDL {
             f1.setUnique(true);
         }
 
-
     }
-
 
     private void addField(String tableName, String fieldProps) {
 
@@ -194,22 +215,22 @@ public class DDL {
         String[] props = fieldProps.split(" ");
         DataType newType = new DataType();
         newType.setName(props[1]);
-        setClassAndComplex(newType,props[1]);
+        setClassAndComplex(newType, props[1]);
 
         // configure field with obligatory name and data type
         Field newField = new Field();
-        setFieldProperties(newField,fieldProps);
+        setFieldProperties(newField, fieldProps);
 
-        System.out.println("Database: "+currentDB.getDbName());
-        System.out.println("Table: "+tableName);
-        System.out.println("Field Name: "+newField.getName());
-        System.out.println("Field Data Type: "+newField.getDataType().getName());
-        System.out.println("Field Class: "+ newField.getDataType().getClassName());
-        System.out.println("Complex Data Type: "+ newField.getDataType().isComplex());
-        System.out.println("Primary Key: "+newField.isPrimaryKey());
-        System.out.println("Identity/Auto_increment: "+newField.isAutoIncrement());
-        System.out.println("Unique: "+newField.isUnique());
-        System.out.println("Not Null: "+newField.isNotNull());
+        System.out.println("Database: " + currentDB.getDbName());
+        System.out.println("Table: " + tableName);
+        System.out.println("Field Name: " + newField.getName());
+        System.out.println("Field Data Type: " + newField.getDataType().getName());
+        System.out.println("Field Class: " + newField.getDataType().getClassName());
+        System.out.println("Complex Data Type: " + newField.getDataType().isComplex());
+        System.out.println("Primary Key: " + newField.isPrimaryKey());
+        System.out.println("Identity/Auto_increment: " + newField.isAutoIncrement());
+        System.out.println("Unique: " + newField.isUnique());
+        System.out.println("Not Null: " + newField.isNotNull());
 
 
         // Add Field to Table Structure
@@ -218,7 +239,7 @@ public class DDL {
             // And save to Data Base File
             Database.saveDatabase(currentDB);
         } catch (IOException e) {
-            System.out.println("Database file not saved, because: "+e.getMessage());
+            System.out.println("Database file not saved, because: " + e.getMessage());
             e.printStackTrace();
         }
 
@@ -324,9 +345,6 @@ public class DDL {
             dataType.setComplex(true);
         }
 
-
-
     }
-
 
 }

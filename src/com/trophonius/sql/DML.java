@@ -39,12 +39,12 @@ public class DML<E> {
 
         // SQL INSERT <INTO> <TABLENAME>
         if (sql.toLowerCase().startsWith("insert") || sql.toLowerCase().startsWith("insert into")) {
-
+            // Method to insert new row into existing table
             insertIntoTable(sql);
 
         } // END INSERT INTO
 
-        //  \i or import sql from <filename>
+        //  \i or import - sql from <filename>
         if (sql.toLowerCase().startsWith("\\i") || sql.toLowerCase().startsWith("import")) {
             String fileName = words[1];
             importSql(fileName);
