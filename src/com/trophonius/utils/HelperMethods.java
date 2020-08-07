@@ -87,7 +87,10 @@ public class HelperMethods {
         // Put field name and length in a HashMap
         Map<String,Integer> fieldsWithLength = new LinkedHashMap<>();
         for(String fieldName: fieldList) {
-            fieldsWithLength.put(fieldName,fieldName.length());
+            int fieldLength = fieldName.length();
+            // if field length is equal to or less than null (4), make it same length as "null"
+            if(fieldLength<5) fieldLength = 4;
+            fieldsWithLength.put(fieldName,fieldLength);
         }
 
         // Go through rows tro see if length of value is greater than length of field name
@@ -102,24 +105,28 @@ public class HelperMethods {
                 try {
                     valueLength = v.toString().length();
                 } catch (Exception e) {
-                    valueLength = 4;
+                    // no value for column in row, so use length of fieldName
+                    valueLength = fieldsWithLength.get(k);
                 }
             if (valueLength > maxLength[0]) maxLength[0] = valueLength;
+
             String fieldName = k.toString();
 
             int fieldLength = 0;
             try {
                fieldLength = fieldsWithLength.get(fieldName).intValue();
             } catch (Exception e) {
-                fieldLength = 0;
+                fieldLength = 4;
             }
 
             // If length of value is greater than length of field name put it in fieldsWithLength HashMap
             if(maxLength[0] > fieldLength) {
+                //Check if fieldName is amongst those to be returned
                 if(fieldsWithLength.containsKey(fieldName)) {
                     fieldsWithLength.put(fieldName, valueLength);
                 }
             }
+
         });
     });
         // The HashMap fieldsWithLength now contains the name of the field and its max length
@@ -157,20 +164,21 @@ public class HelperMethods {
             // print fields in the same order as in the sql
             fieldList.forEach(d -> {
                 String b = d.trim();
+                int theLength = fieldsWithLength.get(d);
 
                 // Check if row contains value for field
                 try {
                     var theValue = printList.get(b);
 
                     if (theValue.getClass().getName().contains("Integer")) {
-                        System.out.printf(" %-" + fieldsWithLength.get(d) + "d |", theValue);
+                        System.out.printf(" %-" + theLength + "d |", theValue);
                     } else {
-                        System.out.printf(" %-" + fieldsWithLength.get(d) + "s |", theValue);
+                        System.out.printf(" %-" + theLength + "s |", theValue);
                     }
                 } catch (Exception e) {
                  // No value for field, so print null
                     String theValue =  "null";
-                    System.out.printf(" %-" + fieldsWithLength.get(d)+ "s |", theValue);
+                    System.out.printf(" %-" + theLength+ "s |", theValue);
                 }
 
 
