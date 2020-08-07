@@ -127,7 +127,6 @@ public class HelperMethods {
                     fieldsWithLength.put(fieldName, valueLength);
                 }
             }
-
         });
     });
         // The HashMap fieldsWithLength now contains the name of the field and its max length
