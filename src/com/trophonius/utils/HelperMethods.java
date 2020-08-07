@@ -85,7 +85,7 @@ public class HelperMethods {
         // Calculate field widths for length of ascii-box
 
         // Put field name and length in a HashMap
-        HashMap<String,Integer> fieldsWithLength = new HashMap<>();
+        Map<String,Integer> fieldsWithLength = new LinkedHashMap<>();
         for(String fieldName: fieldList) {
             fieldsWithLength.put(fieldName,fieldName.length());
         }
@@ -116,7 +116,9 @@ public class HelperMethods {
 
             // If length of value is greater than length of field name put it in fieldsWithLength HashMap
             if(maxLength[0] > fieldLength) {
-               fieldsWithLength.put(fieldName,valueLength);
+                if(fieldsWithLength.containsKey(fieldName)) {
+                    fieldsWithLength.put(fieldName, valueLength);
+                }
             }
         });
     });
