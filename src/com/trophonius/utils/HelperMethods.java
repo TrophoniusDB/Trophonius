@@ -97,20 +97,21 @@ public class HelperMethods {
         // and put the longest in HashMap fieldsWithLength
 
         // iterate each row
-        rows.forEach(a-> {
-        // iterate each object in row
+        rows.stream().forEach(a-> {
+            // iterate each object in row
+            // System.out.println(a.getRow().keySet());
             final int[] maxLength = {0};
             a.getRow().forEach((k,v) -> {
                 int valueLength;
+                String fieldName = k.toString();
                 try {
                     valueLength = v.toString().length();
                 } catch (Exception e) {
                     // no value for column in row, so use length of fieldName
-                    valueLength = fieldsWithLength.get(k);
+                    valueLength = 4;
                 }
-            if (valueLength > maxLength[0]) maxLength[0] = valueLength;
 
-            String fieldName = k.toString();
+            if (valueLength > maxLength[0]) maxLength[0] = valueLength;
 
             int fieldLength = 0;
             try {
