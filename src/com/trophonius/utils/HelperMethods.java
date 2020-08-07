@@ -85,51 +85,46 @@ public class HelperMethods {
         // Calculate field widths for length of ascii-box
 
         // Put field name and length in a HashMap
-        HashMap<String,Integer> fieldWithLengths = new HashMap<>();
+        HashMap<String,Integer> fieldsWithLength = new HashMap<>();
         for(String fieldName: fieldList) {
-            fieldWithLengths.put(fieldName,fieldName.length());
+            fieldsWithLength.put(fieldName,fieldName.length());
         }
 
+        // Go through rows tro see if length of value is greater than length of field name
+        // and put the longest in HashMap fieldsWithLength
 
-        for(Row row: rows) {
+        // iterate each row
+        rows.forEach(a-> {
+        // iterate each object in row
+            final int[] maxLength = {0};
+            a.getRow().forEach((k,v) -> {
+            int valueLength  = v.toString().length();
+            if (valueLength > maxLength[0]) maxLength[0] = valueLength;
+            String fieldName = k.toString();
+            int fieldLength = fieldsWithLength.get(fieldName).intValue();
+            // If length of value is greater than length of field name put it in fieldsWithLength HashMap
+            if(maxLength[0] > fieldLength) {
+               fieldsWithLength.put(fieldName,valueLength);
+            }
+        });
+    });
+        // The HashMap fieldsWithLength now contains the name of the field and its max length
 
-        int valueLength  =   row.getRow().values().stream().mapToInt(a->a.toString().length()).max().getAsInt();
-
-        }
-
-
-
-
-
-
-            // TODO fix width for each field instead
-//        int maxlength = rows.stream()
-//                .map(a -> a.getRow().values())
-//                .mapToInt(b -> b.stream().mapToInt(c -> c.toString().length()).max().getAsInt())
-//                .max().getAsInt();
-
-        // Calculate minimum field width from field names
-//        int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
-
-        // fix, if maxlength is less than minlength
-        if (maxlength < minLength) {
-            maxlength = minLength;
-        }
+        // Calculate length of table (pad each field with 3 extra spaces)
+        int tableLength = fieldsWithLength.values().stream().mapToInt(a->a+3).sum();
 
         // Print table header line
-        System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
+        System.out.println("+" + "-".repeat(tableLength)  + "+");
         System.out.print("| ");
-        // copy maxlength to a final variabel for use in forEach()
-        int finalMaxlength = maxlength;
 
         // Iterate through fieldList and print field names in the table header
-        fieldList.forEach(k -> {
+        fieldsWithLength.forEach((k,v) -> {
             // print field names
-            System.out.printf(" %-" + finalMaxlength + "s |", k);
+            System.out.printf(" %-" + v + "s |", k);
         });
 
         System.out.println();
-        System.out.println("+" + "-".repeat((maxlength + 3) * fieldList.size()) + "+");
+        System.out.println("+" + "-".repeat(tableLength)  + "+");
 
         // print rows, by first putting them into a LinkedHashMap: printList
         Map<String, E> printList = new LinkedHashMap<>();
@@ -154,14 +149,14 @@ public class HelperMethods {
                     var theValue = printList.get(b);
 
                     if (theValue.getClass().getName().contains("Integer")) {
-                        System.out.printf(" %-" + finalMaxlength + "d |", theValue);
+                        System.out.printf(" %-" + fieldsWithLength.get(d) + "d |", theValue);
                     } else {
-                        System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                        System.out.printf(" %-" + fieldsWithLength.get(d) + "s |", theValue);
                     }
                 } catch (Exception e) {
                  // No value for field, so print null
                     String theValue =  "null";
-                    System.out.printf(" %-" + finalMaxlength + "s |", theValue);
+                    System.out.printf(" %-" + fieldsWithLength.get(d)+ "s |", theValue);
                 }
 
 
@@ -172,15 +167,11 @@ public class HelperMethods {
         });
 
         // Print table footer
-        System.out.println("+" + "-".repeat((finalMaxlength + 3) * fieldList.size()) + "+");
+        System.out.println("+" + "-".repeat(tableLength) + "+");
         // print number of rows returned
         System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
 
     } // end printAsciiTable
-
-
-
-
 
 
     // print HTML-table with optional header and footer
