@@ -90,19 +90,15 @@ public class HelperMethods {
             fieldWithLengths.put(fieldName,fieldName.length());
         }
 
+
         for(Row row: rows) {
-            for(int i=0 ; i< row.getRow().size();i++) {
 
-                for(int j=0; j<row.getRow().entrySet().size();j++) {
+        int valueLength  =   row.getRow().values().stream().mapToInt(a->a.toString().length()).max().getAsInt();
 
-                }
-
-            }
-
-            for (Object field: row.getRow().entrySet()) {
-                if(field)
-            }
         }
+
+
+
 
 
 
@@ -113,7 +109,7 @@ public class HelperMethods {
 //                .max().getAsInt();
 
         // Calculate minimum field width from field names
-        int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
+//        int minLength = fieldList.stream().mapToInt(a -> a.length()).max().getAsInt();
 
         // fix, if maxlength is less than minlength
         if (maxlength < minLength) {
