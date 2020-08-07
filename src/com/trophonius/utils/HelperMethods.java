@@ -98,10 +98,22 @@ public class HelperMethods {
         // iterate each object in row
             final int[] maxLength = {0};
             a.getRow().forEach((k,v) -> {
-            int valueLength  = v.toString().length();
+                int valueLength;
+                try {
+                    valueLength = v.toString().length();
+                } catch (Exception e) {
+                    valueLength = 4;
+                }
             if (valueLength > maxLength[0]) maxLength[0] = valueLength;
             String fieldName = k.toString();
-            int fieldLength = fieldsWithLength.get(fieldName).intValue();
+
+            int fieldLength = 0;
+            try {
+               fieldLength = fieldsWithLength.get(fieldName).intValue();
+            } catch (Exception e) {
+                fieldLength = 0;
+            }
+
             // If length of value is greater than length of field name put it in fieldsWithLength HashMap
             if(maxLength[0] > fieldLength) {
                fieldsWithLength.put(fieldName,valueLength);
