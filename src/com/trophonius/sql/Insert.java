@@ -98,7 +98,6 @@ public class Insert {
                                     validFields.set(false);
                                     return;
                                 }
-
                             }
 
                             if (storedClassName.equals("LocalDate")) {
