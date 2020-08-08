@@ -92,7 +92,7 @@ public class Insert {
                             if (storedClassName.equals("Integer") || storedClassName.equals("int")) {
                                 try {
                                     Integer value = Integer.parseInt(valueMap.get(storedFieldName));
-                                    row.addToRow(storedFieldName, value);
+                                    row.addToRow(storedFieldName, String.valueOf(value));
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Integer format:\n" + e.getMessage());
                                     validFields.set(false);
@@ -106,7 +106,7 @@ public class Insert {
                                 dateString = dateString.replaceAll("\"", "");
                                 try {
                                     LocalDate value = LocalDate.parse(dateString);
-                                    row.addToRow(storedFieldName, value);
+                                    row.addToRow(storedFieldName, String.valueOf(value));
                                 } catch (Exception e) {
                                     System.out.println("Not a valid date format:\n" + e.getMessage());
                                     validFields.set(false);
@@ -120,7 +120,7 @@ public class Insert {
 
                                 try {
                                     LocalDateTime value = LocalDateTime.parse(dateTimeString);
-                                    row.addToRow(storedFieldName, value);
+                                    row.addToRow(storedFieldName, String.valueOf(value));
                                 } catch (Exception e) {
                                     System.out.println("Not a valid datetime format:\n" + e.getMessage());
                                     validFields.set(false);
@@ -132,7 +132,7 @@ public class Insert {
                             if (storedClassName.equals("Double")) {
                                 try {
                                     Double value = Double.parseDouble(valueMap.get(storedFieldName));
-                                    row.addToRow(storedFieldName, value);
+                                    row.addToRow(storedFieldName, String.valueOf(value));
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Double format:\n" + e.getMessage());
                                     validFields.set(false);
@@ -143,7 +143,7 @@ public class Insert {
                             if (storedClassName.equals("Float")) {
                                 try {
                                     Float value = Float.parseFloat(valueMap.get(storedFieldName));
-                                    row.addToRow(storedFieldName, value);
+                                    row.addToRow(storedFieldName, String.valueOf(value));
                                 } catch (Exception e) {
                                     System.out.println("Not a valid Float format:\n" + e.getMessage());
                                     validFields.set(false);
