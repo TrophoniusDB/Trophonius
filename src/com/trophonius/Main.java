@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static boolean timing = false;
+    public static boolean timing = true;
     public static long startTime = 0;
 
     public static String prompt = "";
