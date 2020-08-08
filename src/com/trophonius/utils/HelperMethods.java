@@ -13,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static com.trophonius.Main.timing;
+
 public class HelperMethods {
 
     // Rounding doubles with decimals, like round() in sql
@@ -191,10 +193,10 @@ public class HelperMethods {
         // Print table footer
         System.out.println("+" + "-".repeat(tableLength) + "+");
         // print number of rows returned
-        System.out.println(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
+        System.out.print(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
+        if(!timing) System.out.println();
 
     } // end printAsciiTable
-
 
     // print HTML-table with optional header and footer
     public static <E> void printHTMLTable(String[] fields, E[][] data, boolean header , boolean footer) {

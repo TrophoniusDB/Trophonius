@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static com.trophonius.Main.timing;
+
 public class SqlParser {
     public String prompt = "/";
     public Database currentDB;
@@ -59,14 +61,24 @@ public class SqlParser {
             DCL parser = new DCL(prompt, currentDB, sql);
         }
 
-
         // SQL Client Helper methods
 
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
         String charset = "", collation = "";
 
-        // SQL: help or \h
+        // TOGGLE TIMING ON/OFF
+        if (sql.toLowerCase().equals("\\timing")) {
+            if(timing) {
+                System.out.println("Timing is off");
+                timing = false;
+            } else {
+                System.out.println("Timing is on");
+                timing = true;
+            }
+        } // END TIMING
+
+            // SQL: help or \h
         if (sql.toLowerCase().equals("help") || sql.toLowerCase().equals("\\h")) {
             // print common commands
             System.out.println("-".repeat(120));
@@ -144,8 +156,7 @@ public class SqlParser {
         } // end describe database
 
         // SQL: DESCRIBE <table name>
-        if (sql.toLowerCase().startsWith("describe") && this.prompt.length() > 2) {
-
+        if ((sql.toLowerCase().startsWith("describe") || sql.toLowerCase().startsWith("\\dt")) && this.prompt.length() > 2) {
             String tableName = words[1];
             AtomicBoolean tableExists = new AtomicBoolean(false);
             currentDB.getTables().forEach((k, v) -> {

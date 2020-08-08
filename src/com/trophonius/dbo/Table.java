@@ -11,6 +11,8 @@ import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 
+import static com.trophonius.Main.currentDB;
+
 public class Table implements Serializable {
     private static final long serialVersionUID = 9134175559420903358L;
     private String tableName, charSet, collation;
@@ -49,6 +51,46 @@ public class Table implements Serializable {
     public void addField (Field field) {
         this.tableStructure.put(field.getName(),field);
     }
+
+    public void addField(String tableName, String fieldProps) {
+
+        // configure datatype
+        String[] props = fieldProps.split(" ");
+        DataType newType = new DataType();
+        newType.setName(props[1]);
+        newType.setClassAndComplex(newType, props[1]);
+
+        // configure field with obligatory name and data type
+        Field newField = new Field();
+        newField.setFieldProperties(newField, fieldProps);
+
+        /*  TODO move to test
+        System.out.println("Database: " + currentDB.getDbName());
+        System.out.println("Table: " + tableName);
+        System.out.println("Field Name: " + newField.getName());
+        System.out.println("Field Data Type: " + newField.getDataType().getName());
+        System.out.println("Field Class: " + newField.getDataType().getClassName());
+        System.out.println("Complex Data Type: " + newField.getDataType().isComplex());
+        System.out.println("Primary Key: " + newField.isPrimaryKey());
+        System.out.println("Identity/Auto_increment: " + newField.isAutoIncrement());
+        System.out.println("Unique: " + newField.isUnique());
+        System.out.println("Not Null: " + newField.isNotNull());
+        */
+
+        // Add Field to Table Structure
+        currentDB.getTables().get(tableName).addField(newField);
+        try {
+            // And save to Data Base File
+            Database.saveDatabase(currentDB);
+            System.out.println("Column "+newField.getName()+" added to table "+tableName);
+        } catch (IOException e) {
+            System.out.println("Database file not saved, because: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+    }
+
+
 
     public String getTableName() {
         return tableName;

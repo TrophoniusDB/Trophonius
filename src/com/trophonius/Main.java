@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
+    public static boolean timing = false;
+    public static long startTime = 0;
 
     public static String prompt = "";
     public static Database currentDB = new Database();

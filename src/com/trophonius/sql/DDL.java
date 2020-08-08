@@ -122,7 +122,7 @@ public class DDL {
                     // Create field
                     Field f1 = new Field();
                     // Set field properties
-                    setFieldProperties(f1, field);
+                    f1.setFieldProperties(f1, field);
 
                     // Add field to table
                     t1.addField(f1);
@@ -158,194 +158,16 @@ public class DDL {
             // Add field to table
             if (tableAction.equals("add")) {
                 // Add field to table
-                addField(tableName, fieldProps);
+                currentDB.getTables().get(tableName).addField(tableName, fieldProps);
             }
 
             // Drop field from table
             if (tableAction.equals("drop")) {
                 // TODO
             }
-
-        }
+        } // END ALTER TABLE
 
     } // end parseSql
 
-    private void setFieldProperties(Field f1, String field) {
-
-        // strip extra blanks
-        field = field.strip();
-        // Split into array of each word in field statement
-        String[] fieldElement = field.split(" ");
-
-        f1.setName(fieldElement[0]);
-
-        // Data Type Conversion
-
-        String dataTypeString = fieldElement[1].toLowerCase();
-
-        DataType dataType = new DataType();
-        dataType.setName(dataTypeString);
-
-        setClassAndComplex(dataType, dataTypeString);
-
-        f1.setDataType(dataType);
-
-                if (field.contains("primary key")) {
-            f1.setPrimaryKey(true);
-            f1.setNotNull(true);
-        }
-
-        if (field.contains("auto_increment") || field.contains("identity")) {
-            f1.setAutoIncrement(true);
-        }
-
-        if (field.contains("not null")) {
-            f1.setNotNull(true);
-        }
-
-        if (field.contains("unique")) {
-            f1.setUnique(true);
-        }
-
-    }
-
-    private void addField(String tableName, String fieldProps) {
-
-        // configure datatype
-        String[] props = fieldProps.split(" ");
-        DataType newType = new DataType();
-        newType.setName(props[1]);
-        setClassAndComplex(newType, props[1]);
-
-        // configure field with obligatory name and data type
-        Field newField = new Field();
-        setFieldProperties(newField, fieldProps);
-
-        /*  TODO move to test
-        System.out.println("Database: " + currentDB.getDbName());
-        System.out.println("Table: " + tableName);
-        System.out.println("Field Name: " + newField.getName());
-        System.out.println("Field Data Type: " + newField.getDataType().getName());
-        System.out.println("Field Class: " + newField.getDataType().getClassName());
-        System.out.println("Complex Data Type: " + newField.getDataType().isComplex());
-        System.out.println("Primary Key: " + newField.isPrimaryKey());
-        System.out.println("Identity/Auto_increment: " + newField.isAutoIncrement());
-        System.out.println("Unique: " + newField.isUnique());
-        System.out.println("Not Null: " + newField.isNotNull());
-        */
-
-        // Add Field to Table Structure
-        currentDB.getTables().get(tableName).addField(newField);
-        try {
-            // And save to Data Base File
-            Database.saveDatabase(currentDB);
-        } catch (IOException e) {
-            System.out.println("Database file not saved, because: " + e.getMessage());
-            e.printStackTrace();
-        }
-
-    }
-
-
-    private void setClassAndComplex(DataType dataType, String dataTypeString) {
-
-        // Map Trophonius/SQL data types to Java classes
-        // Set className and complex (if array, list, map or set)
-
-        if (dataTypeString.equals("text") || dataTypeString.equals("string")) {
-            dataType.setClassName("String");
-        }
-
-        if (dataTypeString.equals("date")) {
-            dataType.setClassName("LocalDate");
-        }
-
-        if (dataTypeString.equals("datetime")) {
-            dataType.setClassName("LocalDateTime");
-        }
-
-        if (dataTypeString.equals("int")) {
-            dataType.setClassName("Integer");
-        }
-
-        if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
-            dataType.setClassName("Double");
-        }
-
-        if (dataTypeString.equals("float")) {
-            dataType.setClassName("Float");
-        }
-
-        if (dataTypeString.equals("object")) {
-            dataType.setClassName("Object");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("array(int)")) {
-            dataType.setClassName("ArrayList<Integer>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("array(text)")) {
-            dataType.setClassName("ArrayList<String>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("array(decimal)")) {
-            dataType.setClassName("ArrayList<Double>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(int,int)")) {
-            dataType.setClassName("LinkedHashMap<Integer,Integer>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(int,text)")) {
-            dataType.setClassName("LinkedHashMap<Integer,String>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(text,text)")) {
-            dataType.setClassName("LinkedHashMap<String,String>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(text,int)")) {
-            dataType.setClassName("LinkedHashMap<String, Integer>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(int,decimal)")) {
-            dataType.setClassName("LinkedHashMap<Integer,Double>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(decimal,decimal)")) {
-            dataType.setClassName("LinkedHashMap<Double,Double>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(decimal,int)")) {
-            dataType.setClassName("LinkedHashMap<Double,Integer>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(text,decimal)")) {
-            dataType.setClassName("LinkedHashMap<String,Double>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(decimal,text)")) {
-            dataType.setClassName("LinkedHashMap<Double,String>");
-            dataType.setComplex(true);
-        }
-
-        if (dataTypeString.equals("map(object,object)")) {
-            dataType.setClassName("LinkedHashMap<Object,Object>");
-            dataType.setComplex(true);
-        }
-
-    }
 
 }

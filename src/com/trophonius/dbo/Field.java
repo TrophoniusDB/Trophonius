@@ -77,4 +77,43 @@ public class Field implements Serializable {
     public void setUnique(boolean unique) {
         this.unique = unique;
     }
+
+    public void setFieldProperties(Field f1, String field) {
+
+        // strip extra blanks
+        field = field.strip();
+        // Split into array of each word in field statement
+        String[] fieldElement = field.split(" ");
+
+        f1.setName(fieldElement[0]);
+
+        // Data Type Conversion
+
+        String dataTypeString = fieldElement[1].toLowerCase();
+
+        DataType dataType = new DataType();
+        dataType.setName(dataTypeString);
+        dataType.setClassAndComplex(dataType, dataTypeString);
+
+        f1.setDataType(dataType);
+
+        if (field.contains("primary key")) {
+            f1.setPrimaryKey(true);
+            f1.setNotNull(true);
+        }
+
+        if (field.contains("auto_increment") || field.contains("identity")) {
+            f1.setAutoIncrement(true);
+        }
+
+        if (field.contains("not null")) {
+            f1.setNotNull(true);
+        }
+
+        if (field.contains("unique")) {
+            f1.setUnique(true);
+        }
+
+    }
+
 }
