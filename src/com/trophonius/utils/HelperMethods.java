@@ -182,9 +182,6 @@ public class HelperMethods {
                     String theValue =  "null";
                     System.out.printf(" %-" + theLength+ "s |", theValue);
                 }
-
-
-
             });
 
             System.out.println();

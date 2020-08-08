@@ -1,6 +1,7 @@
 package com.trophonius.dbo;
 
 import com.trophonius.utils.AppendableObjectOutputStream;
+import org.apache.http.impl.EnglishReasonPhraseCatalog;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -19,6 +20,7 @@ public class Table implements Serializable {
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
+    private DBEngine engine;
 
     public Table() {
     }
@@ -36,6 +38,21 @@ public class Table implements Serializable {
         this.tableName = tableName;
         this.charSet = charSet;
         this.collation = collation;
+    }
+
+    public Table(String tableName, String charSet, String collation, DBEngine engine) {
+        this.tableName = tableName;
+        this.charSet = charSet;
+        this.collation = collation;
+        this.engine = engine;
+    }
+
+    public DBEngine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(DBEngine engine) {
+        this.engine = engine;
     }
 
     public <T> Object getPrimaryKey(T value) {
@@ -89,7 +106,6 @@ public class Table implements Serializable {
         }
 
     }
-
 
 
     public String getTableName() {
@@ -161,7 +177,7 @@ public class Table implements Serializable {
 
             try {
                 // create table file and write table stats
-                FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
+                FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + engine.getTableSuffix(),true);
                 AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
                 oStr.writeObject(stats);
                 oStr.flush();
