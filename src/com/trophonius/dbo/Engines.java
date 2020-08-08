@@ -23,11 +23,7 @@ public class Engines {
         objectEngine.setTableSuffix("dat");
         objectEngine.setComment("Fast and binary, but not feature rich");
 
-
         }
-
-
-
 
 
 }
