@@ -14,6 +14,7 @@ public class Database implements Serializable {
     // to allow different new versions of this class to access the database
     private static final long serialVersionUID = 3353993616667352381L;
     private String dbName, charSet, collation;
+    private Engines engine = new Engines();
     private Map users;
     private LocalDateTime created;
     private HashMap<String, Table> tables = new HashMap<>();

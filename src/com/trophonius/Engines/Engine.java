@@ -1,16 +1,16 @@
-package com.trophonius.dbo;
+package com.trophonius.Engines;
 
-public class DBEngine {
+public class Engine {
 
     private String name;
     private String tableSuffix;
     private boolean binaryFormat;
     private String comment;
 
-    public DBEngine() {
+    public Engine() {
     }
 
-    public DBEngine(String name) {
+    public Engine(String name) {
         this.name = name;
     }
 

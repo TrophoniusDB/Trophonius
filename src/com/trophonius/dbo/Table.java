@@ -1,16 +1,14 @@
 package com.trophonius.dbo;
 
+import com.trophonius.Engines.Engine;
 import com.trophonius.utils.AppendableObjectOutputStream;
-import org.apache.http.impl.EnglishReasonPhraseCatalog;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Stream;
 
 import static com.trophonius.Main.currentDB;
 
@@ -20,7 +18,7 @@ public class Table implements Serializable {
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
-    private DBEngine engine;
+    private Engine engine;
 
     public Table() {
     }
@@ -40,18 +38,18 @@ public class Table implements Serializable {
         this.collation = collation;
     }
 
-    public Table(String tableName, String charSet, String collation, DBEngine engine) {
+    public Table(String tableName, String charSet, String collation, Engine engine) {
         this.tableName = tableName;
         this.charSet = charSet;
         this.collation = collation;
         this.engine = engine;
     }
 
-    public DBEngine getEngine() {
+    public Engine getEngine() {
         return engine;
     }
 
-    public void setEngine(DBEngine engine) {
+    public void setEngine(Engine engine) {
         this.engine = engine;
     }
 
