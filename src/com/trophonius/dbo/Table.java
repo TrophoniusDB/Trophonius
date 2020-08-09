@@ -1,12 +1,12 @@
 package com.trophonius.dbo;
 
+import com.trophonius.Engines.ByteEngine;
+import com.trophonius.Engines.CsvEngine;
 import com.trophonius.Engines.Engine;
 import com.trophonius.Engines.ObjectEngine;
-import com.trophonius.utils.AppendableObjectOutputStream;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
@@ -19,7 +19,7 @@ public class Table implements Serializable {
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
-    private Engine engine;
+    private String engineName;
 
     public Table() {
     }
@@ -39,19 +39,19 @@ public class Table implements Serializable {
         this.collation = collation;
     }
 
-    public Table(String tableName, String charSet, String collation, Engine engine) {
+    public Table(String tableName, String charSet, String collation, String engine) {
         this.tableName = tableName;
         this.charSet = charSet;
         this.collation = collation;
-        this.engine = engine;
+        this.engineName = engine;
     }
 
-    public Engine getEngine() {
-        return engine;
+    public String getEngineName() {
+        return engineName;
     }
 
-    public void setEngine(Engine engine) {
-        this.engine = engine;
+    public void setEngineName(String engineName) {
+        this.engineName = engineName;
     }
 
     public <T> Object getPrimaryKey(T value) {
@@ -168,23 +168,29 @@ public class Table implements Serializable {
     // Create new table with ObjectEngine
     // create the physical table file
     public <E> void createTableOnDisk(String dbName) {
-        // check that table file not  exists in data directory
-        if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
 
         //Create initial Table Stats
         TableStats stats = new TableStats();
         stats.setNumberOfRows(0);
         stats.setPreviousFileSize(0);
 
-        ObjectEngine engine = new ObjectEngine();
-        engine.createTableOnDisc(dbName,tableName);
+        Engine engine;
 
-        } else {
-            // Table file exists
-            System.out.println("Table already exists");
+        switch(this.engineName) {
+            case "ObjectEngine":
+                engine = new ObjectEngine();
+                ((ObjectEngine) engine).createTableOnDisc(dbName, tableName);
+                break;
+            case "ByteEngine":
+                engine = new ByteEngine();
+                break;
+            default:
+                engine = new CsvEngine();
         }
 
-    } // END createTableOnDisk
+
+
+        } // END createTableOnDisk
 
 
 }

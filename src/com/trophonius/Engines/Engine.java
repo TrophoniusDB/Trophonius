@@ -1,48 +1,19 @@
 package com.trophonius.Engines;
 
-public class Engine {
+public interface Engine {
+    String getName();
 
-    private String name;
-    private String tableSuffix;
-    private boolean binaryFormat;
-    private String comment;
+    void setName(String name);
 
-    public Engine() {
-    }
+    String getTableSuffix();
 
-    public Engine(String name) {
-        this.name = name;
-    }
+    void setTableSuffix(String tableSuffix);
 
-    public String getName() {
-        return name;
-    }
+    boolean isBinaryFormat();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    void setBinaryFormat(boolean binaryFormat);
 
-    public String getTableSuffix() {
-        return tableSuffix;
-    }
+    String getComment();
 
-    public void setTableSuffix(String tableSuffix) {
-        this.tableSuffix = tableSuffix;
-    }
-
-    public boolean isBinaryFormat() {
-        return binaryFormat;
-    }
-
-    public void setBinaryFormat(boolean binaryFormat) {
-        this.binaryFormat = binaryFormat;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
+    void setComment(String comment);
 }

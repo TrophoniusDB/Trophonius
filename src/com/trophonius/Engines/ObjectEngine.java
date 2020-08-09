@@ -1,29 +1,33 @@
 package com.trophonius.Engines;
 
-import com.trophonius.dbo.TableStats;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.BufferedOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 // OBJECT ENGINE
-public class ObjectEngine extends Engine {
+public class ObjectEngine implements Engine {
 
         public ObjectEngine() {
 
-                super.setName("objectEngine");
-                super.setBinaryFormat(true);
-                super.setTableSuffix("tbl");
-                super.setComment("Not suitable for large tables, but good for storing serializable java objects");
+                setName("objectEngine");
+                setBinaryFormat(true);
+                setTableSuffix("tbl");
+                setComment("Not suitable for large tables, but good for storing serializable java objects");
 
-        }
+        } // END CONSTRUCTOR
 
         public void createTableOnDisc(String dbName, String tableName) {
 
+                // check that table file not  exists in data directory
+        if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+
                 try {
                         // create table file and write table stats
-                        FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + this.getTableSuffix(), true);
+                        FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + "."+ this.getTableSuffix(), true);
                         AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
                         oStr.flush();
                         oStr.close();
@@ -35,8 +39,51 @@ public class ObjectEngine extends Engine {
                         e.printStackTrace();
                 }
 
-        } // END  createTableOnDisc
+        } else {
+                // Table file exists
+                System.out.println("Table \""+tableName+"\" already exists");
+        }
+
+} // END  createTableOnDisc
 
 
+        @Override
+        public String getName() {
+                return null;
+        }
 
-}
+        @Override
+        public void setName(String name) {
+
+        }
+
+        @Override
+        public String getTableSuffix() {
+                return null;
+        }
+
+        @Override
+        public void setTableSuffix(String tableSuffix) {
+
+        }
+
+        @Override
+        public boolean isBinaryFormat() {
+                return false;
+        }
+
+        @Override
+        public void setBinaryFormat(boolean binaryFormat) {
+
+        }
+
+        @Override
+        public String getComment() {
+                return null;
+        }
+
+        @Override
+        public void setComment(String comment) {
+
+        }
+} // END CLASS
