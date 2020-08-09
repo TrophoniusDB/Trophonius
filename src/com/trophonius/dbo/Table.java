@@ -1,6 +1,7 @@
 package com.trophonius.dbo;
 
 import com.trophonius.Engines.Engine;
+import com.trophonius.Engines.ObjectEngine;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.*;
@@ -175,19 +176,8 @@ public class Table implements Serializable {
         stats.setNumberOfRows(0);
         stats.setPreviousFileSize(0);
 
-            try {
-                // create table file and write table stats
-                FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + engine.getTableSuffix(),true);
-                AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
-                oStr.writeObject(stats);
-                oStr.flush();
-                oStr.close();
-                dbFileOut.flush();
-                dbFileOut.close();
-            } catch (IOException e) {
-                System.out.println("Table could not we written to disk: ");
-                e.printStackTrace();
-            }
+        ObjectEngine engine = new ObjectEngine();
+        engine.createTableOnDisc(dbName,tableName);
 
         } else {
             // Table file exists

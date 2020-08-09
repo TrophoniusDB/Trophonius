@@ -75,7 +75,7 @@ public class Select {
                 // Breaks graciously when no more records to read
 
                 // Read in TableStats
-                TableStats stats = (TableStats) is.readObject();
+                //TableStats stats = (TableStats) is.readObject();
 
                 // Read in Rows and put them in an ArrayList of Rows
                 List<Row> rows = new ArrayList<>();
