@@ -8,6 +8,8 @@ import com.trophonius.dbo.Table;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
 
 public class DDL {
 
@@ -85,6 +87,16 @@ public class DDL {
                 // Create new table in memory
                 Table t1 = new Table();
                 t1.setTableName(tableName);
+                // Set database engine
+                if(sql.toLowerCase().contains("engine")) {
+                    List<String> wordList  = Arrays.asList(words);
+                    int i = wordList.indexOf("engine")+1;
+                    String engineName = words[i];
+                    t1.setEngineName(engineName);
+                } else {
+
+                    //TODO set engine to database default
+                }
 
                 // Extract table properties from sql
                 String propertiesString = sql.substring(sql.lastIndexOf(")") + 1);
