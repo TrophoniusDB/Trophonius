@@ -15,11 +15,10 @@ import static com.trophonius.Main.currentDB;
 
 public class Table implements Serializable {
     private static final long serialVersionUID = 9134175559420903358L;
-    private String tableName, charSet, collation;
+    private String tableName, charSet, collation, engineName;
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
-    private String engineName;
 
     public Table() {
     }
