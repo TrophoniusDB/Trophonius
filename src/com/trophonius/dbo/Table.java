@@ -179,13 +179,15 @@ public class Table implements Serializable {
         switch(this.engineName) {
             case "ObjectEngine":
                 engine = new ObjectEngine();
-                ((ObjectEngine) engine).createTableOnDisc(dbName, tableName);
+                ((ObjectEngine) engine).createTableFile(dbName, tableName);
                 break;
             case "ByteEngine":
                 engine = new ByteEngine();
+                ((ByteEngine) engine).createTableFile(dbName, tableName);
                 break;
             default:
                 engine = new CsvEngine();
+                ((CsvEngine) engine).createTableFile(dbName, tableName);
         }
 
 

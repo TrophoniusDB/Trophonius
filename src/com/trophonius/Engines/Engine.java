@@ -16,4 +16,7 @@ public interface Engine {
     String getComment();
 
     void setComment(String comment);
+
+    void createTableFile(String dbName, String tableName);
+
 }

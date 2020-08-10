@@ -20,10 +20,10 @@ public class ObjectEngine implements Engine {
 
         } // END CONSTRUCTOR
 
-        public void createTableOnDisc(String dbName, String tableName) {
+        public void createTableFile(String dbName, String tableName) {
 
                 // check that table file not  exists in data directory
-        if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+        if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + "."+ this.getTableSuffix()))) {
 
                 try {
                         // create table file and write table stats
@@ -44,7 +44,10 @@ public class ObjectEngine implements Engine {
                 System.out.println("Table \""+tableName+"\" already exists");
         }
 
-} // END  createTableOnDisc
+        } // END  createTableFile
+
+
+
 
 
         @Override

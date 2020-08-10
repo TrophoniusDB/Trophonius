@@ -18,6 +18,7 @@ public class Database implements Serializable {
     private Map users;
     private LocalDateTime created;
     private HashMap<String, Table> tables = new HashMap<>();
+    private String engineName;
 
     public Database() {
     }
@@ -43,7 +44,6 @@ public class Database implements Serializable {
         this.collation = collation;
         this.users = users;
     }
-
 
     public static void deleteDatabase(String dbName) {
 
@@ -112,6 +112,14 @@ public class Database implements Serializable {
 
     public void setCollation(String collation) {
         this.collation = collation;
+    }
+
+    public String getEngineName() {
+        return engineName;
+    }
+
+    public void setEngineName(String engineName) {
+        this.engineName = engineName;
     }
 
     public Map getUsers() {
