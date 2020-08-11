@@ -26,10 +26,25 @@ public class DDL {
 
     private void parseSql(Database currentDB, String sql) {
 
-
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
-        String charset = "", collation = "";
+        String charset = "", collation = "", engineName = "objectEngine";
+
+        for (int i = 0; i < words.length; i++) {
+            // Find Character set
+            if (words[i].equals("charset")) {
+                charset = words[i + 1];
+            }
+            // Find Collation
+            if (words[i].equals("collation")) {
+                collation = words[i + 1];
+            }
+            // Find Default Engine
+            if (words[i].equals("engine")) {
+                engineName = words[i + 1];
+            }
+
+        }
 
         // DDL SQL METHODS
 
@@ -44,22 +59,10 @@ public class DDL {
                 return;
             } else {
 
-                for (int i = 0; i < words.length; i++) {
-                    // Find Character set
-                    if (words[i].equals("charset")) {
-                        charset = words[i + 1];
-                    }
-                    // Find Collation
-                    if (words[i].equals("collation")) {
-                        collation = words[i + 1];
-                    }
-
-                }
-
                 Database db1 = new Database(dbName);
                 if (charset != "") db1.setCharSet(charset);
                 if (collation != "") db1.setCollation(collation);
-
+                db1.setEngineName(engineName);
                 db1.setCreated(created);
 
                 try {
@@ -87,38 +90,29 @@ public class DDL {
                 // Create new table in memory
                 Table t1 = new Table();
                 t1.setTableName(tableName);
-                // Set database engine
-                if(sql.toLowerCase().contains("engine")) {
-                    List<String> wordList  = Arrays.asList(words);
-                    int i = wordList.indexOf("engine")+1;
-                    String engineName = words[i];
-                    t1.setEngineName(engineName);
-                } else {
-
-                    //TODO set engine to database default
-                }
-
-                // Extract table properties from sql
-                String propertiesString = sql.substring(sql.lastIndexOf(")") + 1);
 
                 // Set Character Set
-                if (propertiesString.contains("charset")) {
-                    String charSetString = propertiesString.substring(propertiesString.indexOf("charset"));
-                    String[] charSetCode = charSetString.split("[= ]");
-                    t1.setCharSet(charSetCode[1]);
+                if (charset!="") {
+                    t1.setCharSet(charset);
                 } else {
                     // set character set to database default
                     t1.setCharSet(currentDB.getCharSet());
                 }
 
                 // Set Collation Language Code
-                if (propertiesString.contains("collation")) {
-                    String collationString = propertiesString.substring(propertiesString.indexOf("collation"));
-                    String[] langCode = collationString.split("[= ]");
-                    t1.setCollation(langCode[1]);
+                if (collation!="") {
+                    t1.setCollation(collation);
                 } else {
                     // set collation to database default
                     t1.setCollation(currentDB.getCollation());
+                }
+
+                // Set Engine for table
+                if (engineName!="") {
+                    t1.setEngineName(engineName);
+                } else {
+                    // set collation to database default
+                    t1.setEngineName(currentDB.getEngineName());
                 }
 
                 // Extract fields from sql

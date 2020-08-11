@@ -22,7 +22,7 @@ public class ObjectEngine implements Engine {
 
         public void createTableFile(String dbName, String tableName) {
 
-                // check that table file not  exists in data directory
+        // check that table file not  exists in data directory
         if (!Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + "."+ this.getTableSuffix()))) {
 
                 try {

@@ -14,6 +14,11 @@ public class CsvEngine implements Engine {
     }
 
     @Override
+    public void createTableFile(String dbName, String tableName) {
+
+    }
+
+    @Override
     public String getName() {
         return null;
     }
