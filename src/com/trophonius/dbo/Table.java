@@ -79,19 +79,6 @@ public class Table implements Serializable {
         Field newField = new Field();
         newField.setFieldProperties(newField, fieldProps);
 
-        /*  TODO move to test
-        System.out.println("Database: " + currentDB.getDbName());
-        System.out.println("Table: " + tableName);
-        System.out.println("Field Name: " + newField.getName());
-        System.out.println("Field Data Type: " + newField.getDataType().getName());
-        System.out.println("Field Class: " + newField.getDataType().getClassName());
-        System.out.println("Complex Data Type: " + newField.getDataType().isComplex());
-        System.out.println("Primary Key: " + newField.isPrimaryKey());
-        System.out.println("Identity/Auto_increment: " + newField.isAutoIncrement());
-        System.out.println("Unique: " + newField.isUnique());
-        System.out.println("Not Null: " + newField.isNotNull());
-        */
-
         // Add Field to Table Structure
         currentDB.getTables().get(tableName).addField(newField);
         try {
@@ -103,8 +90,7 @@ public class Table implements Serializable {
             e.printStackTrace();
         }
 
-    }
-
+    } // END addField
 
     public String getTableName() {
         return tableName;
@@ -157,6 +143,7 @@ public class Table implements Serializable {
                 v.isPrimaryKey(),
                 v.isAutoIncrement()));
         System.out.println("+" + "-".repeat(94) + "+");
+        System.out.println("Storage Engine: "+engine.getName()+" Character Set: "+charSet+" Collation: "+collation);
     }
 
     public LinkedHashMap<String, Field> getTableStructure() {

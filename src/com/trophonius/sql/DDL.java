@@ -20,7 +20,7 @@ public class DDL {
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
-    private String defaultEngineName = "objectEngine";
+    private Engine defaultEngine = new CsvEngine();
     private String defaultCharset = "utf8";
     private String defaultCollation = "en_US";
 
@@ -53,8 +53,6 @@ public class DDL {
         }
 
 
-
-
         // DDL SQL METHODS
 
         // SQL: CREATE DATABASE <dbname>
@@ -80,11 +78,28 @@ public class DDL {
                 } else {
                     db1.setCollation(defaultCollation);
                 }
-                if (engineName!= "") {
-                    db1.setEngineName(engineName);
-                } else {
-                    db1.setEngineName(defaultEngineName);
+
+                // Set Engine for table
+                Engine engine;
+                switch(engineName) {
+                    case "objectEngine":
+                        engine = new ObjectEngine();
+                        break;
+                    case "byteEngine":
+                        engine = new ByteEngine();
+                        break;
+                    default:
+                        engine = new CsvEngine();
                 }
+
+
+                if (engineName!= "") {
+                    db1.setEngine(engine);
+                } else {
+                    db1.setEngine(defaultEngine);
+                }
+
+
 
                 db1.setCreated(created);
 
@@ -131,6 +146,18 @@ public class DDL {
                 }
 
                 // Set Engine for table
+                Engine engine;
+                switch(engineName) {
+                    case "objectEngine":
+                        engine = new ObjectEngine();
+                        break;
+                    case "byteEngine":
+                        engine = new ByteEngine();
+                        break;
+                    default:
+                        engine = new CsvEngine();
+                }
+
                 if (engineName!="") {
                     t1.setEngine(engine);
                 } else {
@@ -162,20 +189,7 @@ public class DDL {
                 currentDB.addTable(currentDB, t1);
 
                 // Call the method for creating the Table File on the relevant engine
-                Engine engine;
-                switch(t1.getEngineName()) {
-                    case "objectEngine":
-                        engine = new ObjectEngine();
-                        ((ObjectEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
-                        break;
-                    case "byteEngine":
-                        engine = new ByteEngine();
-                        ((ByteEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
-                        break;
-                    default:
-                        engine = new CsvEngine();
-                        ((CsvEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
-                }
+                engine.createTableFile(currentDB.getDbName(), t1.getTableName());
 
             } // end else
         } // end create table
