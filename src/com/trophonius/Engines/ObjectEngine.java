@@ -11,12 +11,18 @@ import java.nio.file.Paths;
 // OBJECT ENGINE
 public class ObjectEngine implements Engine {
 
+        private String name;
+        private String tableSuffix;
+        private boolean binaryFormat = false;
+        private String comment;
+
+
         public ObjectEngine() {
 
-                setName("objectEngine");
-                setBinaryFormat(true);
-                setTableSuffix("tbl");
-                setComment("Not suitable for large tables, but good for storing serializable java objects");
+                this.setName("objectEngine");
+                this.setBinaryFormat(true);
+                this.setTableSuffix("tbl");
+                this.setComment("Not suitable for large tables, but good for storing serializable java objects");
 
         } // END CONSTRUCTOR
 
@@ -47,46 +53,45 @@ public class ObjectEngine implements Engine {
         } // END  createTableFile
 
 
-
-
-
         @Override
         public String getName() {
-                return null;
+                return name;
         }
 
         @Override
         public void setName(String name) {
-
+                this.name = name;
         }
 
         @Override
         public String getTableSuffix() {
-                return null;
+                return tableSuffix;
         }
 
         @Override
         public void setTableSuffix(String tableSuffix) {
-
+                this.tableSuffix = tableSuffix;
         }
 
         @Override
         public boolean isBinaryFormat() {
-                return false;
+                return binaryFormat;
         }
 
         @Override
         public void setBinaryFormat(boolean binaryFormat) {
-
+                this.binaryFormat = binaryFormat;
         }
 
         @Override
         public String getComment() {
-                return null;
+                return comment;
         }
 
         @Override
         public void setComment(String comment) {
-
+                this.comment = comment;
         }
+
+
 } // END CLASS

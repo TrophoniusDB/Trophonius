@@ -111,7 +111,7 @@ public class DDL {
                 if (engineName!="") {
                     t1.setEngineName(engineName);
                 } else {
-                    // set collation to database default
+                    // set engine to database default
                     t1.setEngineName(currentDB.getEngineName());
                 }
 
@@ -137,7 +137,8 @@ public class DDL {
 
                 // Add newly created table to currentDB
                 currentDB.addTable(currentDB, t1);
-                t1.createTableOnDisk(currentDB.getDbName());
+                System.out.println("t1.getEngineNAme(): " +t1.getEngineName());
+                t1.createTableOnDisk(currentDB.getDbName(),t1);
             } // end else
         } // end create table
 

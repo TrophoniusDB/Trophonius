@@ -166,7 +166,7 @@ public class Table implements Serializable {
 
     // Create new table with ObjectEngine
     // create the physical table file
-    public <E> void createTableOnDisk(String dbName) {
+    public <E> void createTableOnDisk(String dbName, Table table) {
 
         //Create initial Table Stats
         TableStats stats = new TableStats();
@@ -174,13 +174,15 @@ public class Table implements Serializable {
         stats.setPreviousFileSize(0);
 
         Engine engine;
-
-        switch(this.engineName) {
-            case "ObjectEngine":
+        engineName= table.getEngineName();
+        tableName = table.getTableName();
+        switch(engineName) {
+            case "objectEngine":
                 engine = new ObjectEngine();
+                System.out.println("objectEngine");
                 ((ObjectEngine) engine).createTableFile(dbName, tableName);
                 break;
-            case "ByteEngine":
+            case "byteEngine":
                 engine = new ByteEngine();
                 ((ByteEngine) engine).createTableFile(dbName, tableName);
                 break;
@@ -188,8 +190,6 @@ public class Table implements Serializable {
                 engine = new CsvEngine();
                 ((CsvEngine) engine).createTableFile(dbName, tableName);
         }
-
-
 
         } // END createTableOnDisk
 
