@@ -240,7 +240,7 @@ public class Database implements Serializable {
             System.out.println("+" + "-".repeat(27) + "+" + "-".repeat(32) + "+");
             System.out.printf("| %-25s | %-30s |\n", "Default Character Set", db.getCharSet());
             System.out.printf("| %-25s | %-30s |\n", "Default Collation ", db.getCollation());
-            System.out.printf("| %-25s | %-30s |\n", "Default Engine ", db.getEngineName());
+            System.out.printf("| %-25s | %-30s |\n", "Default Engine ", db.getEngine().getName());
             System.out.printf("| %-25s | %-30s |\n", "Created ", db.getCreated());
             System.out.printf("| %-25s | %-30s |\n", "Tables", db.tables.size());
             System.out.println("+" + "-".repeat(27) + "+" + "-".repeat(32) + "+");
