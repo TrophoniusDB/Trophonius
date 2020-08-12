@@ -113,6 +113,8 @@ public class DDL {
                 } else {
                     // set engine to database default
                     t1.setEngineName(currentDB.getEngineName());
+                    System.out.println("currentDB.getEngineName() = "+currentDB.getEngineName());
+
                 }
 
                 // Extract fields from sql
