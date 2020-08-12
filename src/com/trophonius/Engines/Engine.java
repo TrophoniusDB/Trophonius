@@ -2,7 +2,9 @@ package com.trophonius.Engines;
 
 import com.trophonius.dbo.Row;
 
-public interface Engine {
+import java.io.Serializable;
+
+public interface Engine extends Serializable {
     String getName();
 
     void setName(String name);

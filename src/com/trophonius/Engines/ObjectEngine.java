@@ -10,7 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 // OBJECT ENGINE
-public class ObjectEngine implements Engine {
+public class ObjectEngine implements Engine   {
 
         private String name;
         private String tableSuffix;
