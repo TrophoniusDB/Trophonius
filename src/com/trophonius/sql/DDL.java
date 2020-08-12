@@ -1,5 +1,9 @@
 package com.trophonius.sql;
 
+import com.trophonius.Engines.ByteEngine;
+import com.trophonius.Engines.CsvEngine;
+import com.trophonius.Engines.Engine;
+import com.trophonius.Engines.ObjectEngine;
 import com.trophonius.dbo.DataType;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
@@ -16,6 +20,9 @@ public class DDL {
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
+    private String defaultEngineName = "objectEngine";
+    private String defaultCharset = "utf8";
+    private String defaultCollation = "en_US";
 
     public DDL(String prompt, Database currentDB, String sql) {
         this.sql = sql;
@@ -28,7 +35,7 @@ public class DDL {
 
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
-        String charset = "", collation = "", engineName = "objectEngine";
+        String charset = "", collation = "", engineName = "";
 
         for (int i = 0; i < words.length; i++) {
             // Find Character set
@@ -43,7 +50,6 @@ public class DDL {
             if (words[i].equals("engine")) {
                 engineName = words[i + 1];
             }
-
         }
 
         // DDL SQL METHODS
@@ -60,9 +66,23 @@ public class DDL {
             } else {
 
                 Database db1 = new Database(dbName);
-                if (charset != "") db1.setCharSet(charset);
-                if (collation != "") db1.setCollation(collation);
-                db1.setEngineName(engineName);
+                if (charset != "") {
+                    db1.setCharSet(charset);
+                } else {
+                    db1.setCharSet(defaultCharset);
+                }
+
+                if (collation != "") {
+                    db1.setCollation(collation);
+                } else {
+                    db1.setCollation(defaultCollation);
+                }
+                if (engineName!= "") {
+                    db1.setEngineName(engineName);
+                } else {
+                    db1.setEngineName(defaultEngineName);
+                }
+
                 db1.setCreated(created);
 
                 try {
@@ -113,8 +133,6 @@ public class DDL {
                 } else {
                     // set engine to database default
                     t1.setEngineName(currentDB.getEngineName());
-                    System.out.println("currentDB.getEngineName() = "+currentDB.getEngineName());
-
                 }
 
                 // Extract fields from sql
@@ -139,8 +157,23 @@ public class DDL {
 
                 // Add newly created table to currentDB
                 currentDB.addTable(currentDB, t1);
-                System.out.println("t1.getEngineNAme(): " +t1.getEngineName());
-                t1.createTableOnDisk(currentDB.getDbName(),t1);
+
+                // Call the method for creating the Table File on the relevant engine
+                Engine engine;
+                switch(t1.getEngineName()) {
+                    case "objectEngine":
+                        engine = new ObjectEngine();
+                        ((ObjectEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
+                        break;
+                    case "byteEngine":
+                        engine = new ByteEngine();
+                        ((ByteEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
+                        break;
+                    default:
+                        engine = new CsvEngine();
+                        ((CsvEngine) engine).createTableFile(currentDB.getDbName(), t1.getTableName());
+                }
+
             } // end else
         } // end create table
 

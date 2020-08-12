@@ -63,8 +63,8 @@ public class Table implements Serializable {
     }
 
     // Add Fields to the tableStructure HashMap
-    public void addField (Field field) {
-        this.tableStructure.put(field.getName(),field);
+    public void addField(Field field) {
+        this.tableStructure.put(field.getName(), field);
     }
 
     public void addField(String tableName, String fieldProps) {
@@ -97,7 +97,7 @@ public class Table implements Serializable {
         try {
             // And save to Data Base File
             Database.saveDatabase(currentDB);
-            System.out.println("Column "+newField.getName()+" added to table "+tableName);
+            System.out.println("Column " + newField.getName() + " added to table " + tableName);
         } catch (IOException e) {
             System.out.println("Database file not saved, because: " + e.getMessage());
             e.printStackTrace();
@@ -132,14 +132,14 @@ public class Table implements Serializable {
 
     public ArrayList<String> getFieldNames() {
         ArrayList<String> names = new ArrayList<>();
-        tableStructure.forEach((k,v) -> {
+        tableStructure.forEach((k, v) -> {
             names.add(k);
         });
         return names;
     }
 
-    public int getMaxFieldNameSize () {
-        return tableStructure.entrySet().stream().map(a -> a.getKey().length()).mapToInt(a->a).max().getAsInt();
+    public int getMaxFieldNameSize() {
+        return tableStructure.entrySet().stream().map(a -> a.getKey().length()).mapToInt(a -> a).max().getAsInt();
     }
 
     public void printTableStructure() {
@@ -162,36 +162,5 @@ public class Table implements Serializable {
     public LinkedHashMap<String, Field> getTableStructure() {
         return tableStructure;
     }
-
-
-    // Create new table with ObjectEngine
-    // create the physical table file
-    public <E> void createTableOnDisk(String dbName, Table table) {
-
-        //Create initial Table Stats
-        TableStats stats = new TableStats();
-        stats.setNumberOfRows(0);
-        stats.setPreviousFileSize(0);
-
-        Engine engine;
-        engineName= table.getEngineName();
-        tableName = table.getTableName();
-        switch(engineName) {
-            case "objectEngine":
-                engine = new ObjectEngine();
-                System.out.println("objectEngine");
-                ((ObjectEngine) engine).createTableFile(dbName, tableName);
-                break;
-            case "byteEngine":
-                engine = new ByteEngine();
-                ((ByteEngine) engine).createTableFile(dbName, tableName);
-                break;
-            default:
-                engine = new CsvEngine();
-                ((CsvEngine) engine).createTableFile(dbName, tableName);
-        }
-
-        } // END createTableOnDisk
-
 
 }
