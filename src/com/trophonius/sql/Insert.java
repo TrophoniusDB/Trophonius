@@ -1,5 +1,9 @@
 package com.trophonius.sql;
 
+import com.trophonius.Engines.ByteEngine;
+import com.trophonius.Engines.CsvEngine;
+import com.trophonius.Engines.Engine;
+import com.trophonius.Engines.ObjectEngine;
 import com.trophonius.dbo.Row;
 import com.trophonius.dbo.Table;
 
@@ -166,9 +170,27 @@ public class Insert {
                      System.out.println("Primary key value "+primaryKeyValue);
                     */
 
-                // If all field values are valid, write row to table file
+                // If all field values are valid, let engine write row to table file
                 if(validFields.get()) {
-                    row.writeRowToDisk(row, currentDB.getDbName(), currentTable.getTableName());
+
+                    // Call the method for storing a new row on the relevant engine
+                    Engine engine;
+                    switch(currentTable.getEngineName()) {
+                        case "objectEngine":
+                            engine = new ObjectEngine();
+                            ((ObjectEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);
+                            break;
+                        case "byteEngine":
+                            engine = new ByteEngine();
+                            ((ByteEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);
+                            break;
+                        default:
+                            engine = new CsvEngine();
+                            ((CsvEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);;
+                    }
+
+
+
                 } else {
                     System.out.println("Row not saved in table");
                 }

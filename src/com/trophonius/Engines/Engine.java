@@ -21,6 +21,6 @@ public interface Engine {
 
     void createTableFile(String dbName, String tableName);
 
-    void storeNewRow(String dbName, String tableName, Row row);
+    void writeRowToDisk(String dbName, String tableName, Row row);
 
 }

@@ -55,7 +55,33 @@ public class ObjectEngine implements Engine {
 
 
         @Override
-        public void storeNewRow(String dbName, String tableName, Row row) {
+        public void writeRowToDisk(String dbName, String tableName, Row row) {
+
+                try {
+                        // check that table file exists in data directory
+                        if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + ".tbl"))) {
+
+                                // Open table file for writing, and append map of primary key + row to the file
+
+                                FileOutputStream dbFileOut = new FileOutputStream("data/" + dbName + "/" + tableName + ".tbl",true);
+                                AppendableObjectOutputStream oStr = new AppendableObjectOutputStream(new BufferedOutputStream(dbFileOut));
+                                oStr.writeObject(row);
+                                oStr.flush();
+                                oStr.close();
+                                dbFileOut.flush();
+                                dbFileOut.close();
+                                System.out.println("Success: 1 row written to table: "+tableName);
+                        } else  {
+                                // Table file does not exists
+                                System.out.println("Table file does not exist");
+                                return;
+                        }
+
+                } catch (IOException e) {
+                        System.out.println("Row could not we written to file for table: "+tableName);
+                        e.printStackTrace();
+
+                }
 
         }
 
