@@ -206,7 +206,7 @@ public class Database implements Serializable {
 
         } catch (IOException e) {
             System.out.println("Not able to save database file. Message: " + e.getMessage());
-            e.setStackTrace();
+            e.printStackTrace();
         }
 
     }
