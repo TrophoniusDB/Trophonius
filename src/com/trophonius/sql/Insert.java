@@ -174,22 +174,8 @@ public class Insert {
                 if(validFields.get()) {
 
                     // Call the method for storing a new row on the relevant engine
-                    Engine engine;
-                    switch(currentTable.getEngineName()) {
-                        case "objectEngine":
-                            engine = new ObjectEngine();
-                            ((ObjectEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);
-                            break;
-                        case "byteEngine":
-                            engine = new ByteEngine();
-                            ((ByteEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);
-                            break;
-                        default:
-                            engine = new CsvEngine();
-                            ((CsvEngine) engine).writeRowToDisk(currentDB.getDbName(), tableName,row);;
-                    }
-
-
+                    Engine engine = currentTable.getEngine();
+                    engine.writeRowToDisk(currentDB.getDbName(), tableName,row);
 
                 } else {
                     System.out.println("Row not saved in table");

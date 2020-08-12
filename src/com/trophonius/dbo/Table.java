@@ -15,10 +15,12 @@ import static com.trophonius.Main.currentDB;
 
 public class Table implements Serializable {
     private static final long serialVersionUID = 9134175559420903358L;
-    private String tableName, charSet, collation, engineName;
+    private String tableName, charSet, collation;
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
+    private Engine engine;
+
 
     public Table() {
     }
@@ -38,19 +40,27 @@ public class Table implements Serializable {
         this.collation = collation;
     }
 
-    public Table(String tableName, String charSet, String collation, String engine) {
+    public Table(String tableName, String charSet, String collation, Engine engine) {
         this.tableName = tableName;
         this.charSet = charSet;
         this.collation = collation;
-        this.engineName = engine;
+        this.engine = engine;
     }
 
     public String getEngineName() {
-        return engineName;
+        return this.engine.getName();
     }
 
     public void setEngineName(String engineName) {
-        this.engineName = engineName;
+        this.engine.setName(engineName);
+    }
+
+    public Engine getEngine() {
+        return engine;
+    }
+
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
     public <T> Object getPrimaryKey(T value) {
