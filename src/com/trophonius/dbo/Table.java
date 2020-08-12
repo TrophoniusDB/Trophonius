@@ -1,9 +1,6 @@
 package com.trophonius.dbo;
 
-import com.trophonius.Engines.ByteEngine;
-import com.trophonius.Engines.CsvEngine;
 import com.trophonius.Engines.Engine;
-import com.trophonius.Engines.ObjectEngine;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -47,13 +44,6 @@ public class Table implements Serializable {
         this.engine = engine;
     }
 
-    public String getEngineName() {
-        return this.engine.getName();
-    }
-
-    public void setEngineName(String engineName) {
-        this.engine.setName(engineName);
-    }
 
     public Engine getEngine() {
         return engine;

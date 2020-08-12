@@ -71,9 +71,7 @@ public class DML<E> {
                 }
             }
 
-        Table thisTable = currentDB.getTables().get(tableName);
-            String engineName = thisTable.getEngineName().substring(0,1).toUpperCase()+thisTable.getEngineName().substring(1);
-
+            Table thisTable = currentDB.getTables().get(tableName);
 
             // Get table suffix to find the table
             String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();

@@ -52,6 +52,9 @@ public class DDL {
             }
         }
 
+
+
+
         // DDL SQL METHODS
 
         // SQL: CREATE DATABASE <dbname>
@@ -129,10 +132,10 @@ public class DDL {
 
                 // Set Engine for table
                 if (engineName!="") {
-                    t1.setEngineName(engineName);
+                    t1.setEngine(engine);
                 } else {
                     // set engine to database default
-                    t1.setEngineName(currentDB.getEngineName());
+                    t1.setEngine(currentDB.getEngine());
                 }
 
                 // Extract fields from sql

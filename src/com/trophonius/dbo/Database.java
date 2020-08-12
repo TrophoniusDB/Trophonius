@@ -18,7 +18,7 @@ public class Database implements Serializable {
     private Map users;
     private LocalDateTime created;
     private HashMap<String, Table> tables = new HashMap<>();
-    private String engineName;
+    private Engine engine;
 
     public Database() {
     }
@@ -64,9 +64,11 @@ public class Database implements Serializable {
 
     public static void deleteTable(Database currentDB, String tableName) {
 
+        String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
+
         try {
             // Delete table file
-            java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"));
+            java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix));
             System.out.println("Table file deleted from disk.");
         } catch (IOException e) {
             System.out.println("Table file " + tableName + " could not be deleted.");
@@ -114,12 +116,12 @@ public class Database implements Serializable {
         this.collation = collation;
     }
 
-    public String getEngineName() {
-        return engineName;
+    public Engine getEngine() {
+        return engine;
     }
 
-    public void setEngineName(String engineName) {
-        this.engineName = engineName;
+    public void setEngine(Engine engine) {
+        this.engine = engine;
     }
 
     public Map getUsers() {
