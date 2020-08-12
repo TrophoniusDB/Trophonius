@@ -166,9 +166,9 @@ public class Database implements Serializable {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         if (tables.size() > 0) {
             System.out.println("+" + "-".repeat(65) + "+");
-            System.out.printf("| %-3s | %-25s | %-15s | %-10s  |\n", "#", "Table Name", "Character set", "Collation");
+            System.out.printf("| %-3s | %-25s | %-15s | %-10s | %-10s |\n", "#", "Table Name", "Character set", "Collation","Engine");
             System.out.println("+" + "-".repeat(65) + "+");
-            tables.forEach((k, v) -> System.out.printf("| %-3d | %-25s | %-15s | %-10s  |\n", i.getAndSet(i.get() + 1), v.getTableName(), v.getCharSet(), v.getCollation()));
+            tables.forEach((k, v) -> System.out.printf("| %-3d | %-25s | %-15s | %-10s | %-10s |\n", i.getAndSet(i.get() + 1), v.getTableName(), v.getCharSet(), v.getCollation(),v.getEngine().getName()));
             System.out.println("+" + "-".repeat(65) + "+");
         } else {
             System.out.println("No tables found");
