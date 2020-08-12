@@ -1,5 +1,7 @@
 package com.trophonius.Engines;
 
+import com.trophonius.dbo.Row;
+
 // BYTE ENGINE
 public class ByteEngine implements Engine {
 
@@ -14,6 +16,11 @@ public class ByteEngine implements Engine {
 
     @Override
     public void createTableFile(String dbName, String tableName) {
+
+    }
+
+    @Override
+    public void storeNewRow(String dbName, String tableName, Row row) {
 
     }
 

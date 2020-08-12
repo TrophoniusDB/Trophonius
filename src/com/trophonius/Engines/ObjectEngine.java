@@ -1,5 +1,6 @@
 package com.trophonius.Engines;
 
+import com.trophonius.dbo.Row;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
 import java.io.BufferedOutputStream;
@@ -52,6 +53,11 @@ public class ObjectEngine implements Engine {
 
         } // END  createTableFile
 
+
+        @Override
+        public void storeNewRow(String dbName, String tableName, Row row) {
+
+        }
 
         @Override
         public String getName() {

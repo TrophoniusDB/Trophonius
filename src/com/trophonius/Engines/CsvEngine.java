@@ -1,5 +1,7 @@
 package com.trophonius.Engines;
 
+import com.trophonius.dbo.Row;
+
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -45,6 +47,10 @@ public class CsvEngine implements Engine {
 
     } // END  createTableFile
 
+    @Override
+    public void storeNewRow(String dbName, String tableName, Row row) {
+
+    }
 
     @Override
     public String getName() {

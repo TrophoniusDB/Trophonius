@@ -1,5 +1,7 @@
 package com.trophonius.Engines;
 
+import com.trophonius.dbo.Row;
+
 public interface Engine {
     String getName();
 
@@ -18,5 +20,7 @@ public interface Engine {
     void setComment(String comment);
 
     void createTableFile(String dbName, String tableName);
+
+    void storeNewRow(String dbName, String tableName, Row row);
 
 }
