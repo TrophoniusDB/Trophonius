@@ -4,7 +4,6 @@ import com.trophonius.Engines.ByteEngine;
 import com.trophonius.Engines.CsvEngine;
 import com.trophonius.Engines.Engine;
 import com.trophonius.Engines.ObjectEngine;
-import com.trophonius.dbo.DataType;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Table;
@@ -12,8 +11,6 @@ import com.trophonius.dbo.Table;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
 
 public class DDL {
 

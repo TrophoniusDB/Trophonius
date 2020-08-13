@@ -25,4 +25,5 @@ public interface Engine extends Serializable {
 
     void writeRowToDisk(String dbName, String tableName, Row row);
 
+    void fetcHRows(String tableName, String sql);
 }

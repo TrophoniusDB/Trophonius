@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 // CSV ENGINE
 public class CsvEngine implements Engine {
@@ -80,6 +82,16 @@ public class CsvEngine implements Engine {
             e.printStackTrace();
 
         }
+    }
+
+    @Override
+    public void fetcHRows(String tableName, String sql) {
+        // Split sql into separate words
+        String[] words = sql.split("[= ]");
+
+        // make a list to hold field names from sql
+        List<String> fieldList = new ArrayList<>();
+
     }
 
     @Override
