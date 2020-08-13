@@ -68,9 +68,9 @@ public class CsvEngine implements Engine {
                     System.out.println(field.toString());
                 }
 
-                final String rowString2 = String.copyValueOf(rowString);
 
-                try(fileOut.write(rowString2)) {
+                try  {
+                    fileOut.write(rowString)
                 fileOut.flush();
                 fileOut.close();
                 System.out.println("Success: 1 row written to table: "+tableName);
