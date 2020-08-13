@@ -1,5 +1,6 @@
 package com.trophonius.Engines;
 
+import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
 
 import java.io.FileWriter;
@@ -9,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -60,11 +62,15 @@ public class CsvEngine implements Engine {
 
                 FileWriter fileOut = new FileWriter("data/" + dbName + "/" + tableName + ".tbl",true);
 
-                System.out.println(Stream.of(row.getRow()).map(String::valueOf).collect(Collectors.joining(",")));
+                var rowString="";
+                for(Object field: row.getRow().values()) {
+                     rowString+=field.toString()+",";
+                    System.out.println(field.toString());
+                }
 
-                try {
-                fileOut.write(Stream.of(row.getRow()).map(String::valueOf).collect(Collectors.joining(",")));
+                final String rowString2 = String.copyValueOf(rowString);
 
+                try(fileOut.write(rowString2)) {
                 fileOut.flush();
                 fileOut.close();
                 System.out.println("Success: 1 row written to table: "+tableName);
