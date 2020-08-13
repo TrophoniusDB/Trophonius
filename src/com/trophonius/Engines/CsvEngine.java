@@ -1,10 +1,7 @@
 package com.trophonius.Engines;
 
 import com.trophonius.dbo.Row;
-import com.trophonius.utils.AppendableObjectOutputStream;
 
-import java.io.BufferedOutputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -12,6 +9,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 // CSV ENGINE
 public class CsvEngine implements Engine {
@@ -61,16 +60,18 @@ public class CsvEngine implements Engine {
 
                 FileWriter fileOut = new FileWriter("data/" + dbName + "/" + tableName + ".tbl",true);
 
-                row.getRow().forEach((k,v) -> {
+                System.out.println(Stream.of(row.getRow()).map(String::valueOf).collect(Collectors.joining(",")));
 
-                    System.out.println(k+" - "+v);
-
-                });
-
+                try {
+                fileOut.write(Stream.of(row.getRow()).map(String::valueOf).collect(Collectors.joining(",")));
 
                 fileOut.flush();
                 fileOut.close();
                 System.out.println("Success: 1 row written to table: "+tableName);
+                } catch (IOException ioException) {
+                    ioException.printStackTrace();
+                }
+
             } else  {
                 // Table file does not exists
                 System.out.println("Table file does not exist");
