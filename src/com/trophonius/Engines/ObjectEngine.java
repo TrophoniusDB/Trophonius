@@ -20,6 +20,7 @@ import static com.trophonius.Main.currentDB;
 // OBJECT ENGINE
 public class ObjectEngine implements Engine   {
 
+        private static final long serialVersionUID = -2645684320509863174L;
         private String name;
         private String tableSuffix;
         private boolean binaryFormat = false;
@@ -94,7 +95,7 @@ public class ObjectEngine implements Engine   {
         }
 
         @Override
-        public void fetcHRows(String tableName, String sql) {
+        public void fetchRows(String tableName, String sql) {
                 // Split sql into separate words
                 String[] words = sql.split("[= ]");
 

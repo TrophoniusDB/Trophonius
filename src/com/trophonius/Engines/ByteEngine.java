@@ -8,6 +8,8 @@ import java.util.List;
 // BYTE ENGINE
 public class ByteEngine implements Engine {
 
+    private static final long serialVersionUID = -8292584544996693690L;
+
     public ByteEngine() {
 
         setName("byteEngine");
@@ -28,7 +30,7 @@ public class ByteEngine implements Engine {
     }
 
     @Override
-    public void fetcHRows(String tableName, String sql) {
+    public void fetchRows(String tableName, String sql) {
         // Split sql into separate words
         String[] words = sql.split("[= ]");
 

@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 // CSV ENGINE
 public class CsvEngine implements Engine {
 
+    private static final long serialVersionUID = 7555115851235997327L;
     private String name;
     private String tableSuffix;
     private boolean binaryFormat = false;
@@ -78,7 +79,7 @@ public class CsvEngine implements Engine {
     }
 
     @Override
-    public void fetcHRows(String tableName, String sql) {
+    public void fetchRows(String tableName, String sql) {
         // Split sql into separate words
         String[] words = sql.split("[= ]");
 
