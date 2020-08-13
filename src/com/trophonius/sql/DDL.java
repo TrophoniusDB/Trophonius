@@ -76,27 +76,24 @@ public class DDL {
                     db1.setCollation(defaultCollation);
                 }
 
-                // Set Engine for table
-                Engine engine;
-                switch(engineName) {
-                    case "objectEngine":
-                        engine = new ObjectEngine();
-                        break;
-                    case "byteEngine":
-                        engine = new ByteEngine();
-                        break;
-                    default:
-                        engine = new CsvEngine();
-                }
-
+                // Set default Engine for database
 
                 if (engineName!= "") {
+                    Engine engine;
+                    switch(engineName) {
+                        case "objectEngine":
+                            engine = new ObjectEngine();
+                            break;
+                        case "byteEngine":
+                            engine = new ByteEngine();
+                            break;
+                        default:
+                            engine = new CsvEngine();
+                    }
                     db1.setEngine(engine);
                 } else {
                     db1.setEngine(defaultEngine);
                 }
-
-
 
                 db1.setCreated(created);
 
@@ -117,8 +114,21 @@ public class DDL {
             // Determine table name
             String tableName = words[2];
 
+            // Determine table file suffix
+            String tableSuffix;
+            switch (engineName) {
+                case "objectEngine":
+                    tableSuffix = "tbl";
+                    break;
+                case "byteEngine":
+                    tableSuffix = "dat";
+                    break;
+                default:
+                    tableSuffix = "csv";
+            }
+
             // Check if table already exists
-            if (java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
+            if (java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
                 System.out.println("Table " + tableName + " already exists in database " + currentDB.getDbName());
                 return;
             } else {
@@ -143,6 +153,7 @@ public class DDL {
                 }
 
                 // Set Engine for table
+
                 Engine engine;
                 switch(engineName) {
                     case "objectEngine":
@@ -155,8 +166,8 @@ public class DDL {
                         engine = new CsvEngine();
                 }
 
-                if (engineName!="") {
-                    t1.setEngine(engine);
+               if (engineName!="") {
+                   t1.setEngine(engine);
                 } else {
                     // set engine to database default
                     t1.setEngine(currentDB.getEngine());
