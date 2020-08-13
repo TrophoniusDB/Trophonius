@@ -54,35 +54,21 @@ public class CsvEngine implements Engine {
     // Append a row to an existing table file
     public void writeRowToDisk(String dbName, String tableName,Row row) {
 
-        try {
-            // check that table file exists in data directory
-            if (java.nio.file.Files.isRegularFile(Paths.get("data/" + dbName + "/" + tableName + "."+getTableSuffix()))) {
 
-                // Open table file for writing, and append map of primary key + row to the file
-
-                FileWriter fileOut = new FileWriter("data/" + dbName + "/" + tableName + ".tbl",true);
+        try (FileWriter outFile = new FileWriter("data/" + dbName + "/" + tableName + "."+getTableSuffix(),true)){
+               // Open table file for writing, and append map of primary key + row to the file
 
                 var rowString="";
                 for(Object field: row.getRow().values()) {
                      rowString+=field.toString()+",";
-                    System.out.println(field.toString());
                 }
 
+                rowString = rowString.substring(0,rowString.length()-1)+'\n';
 
-                try  {
-                    fileOut.write(rowString)
-                fileOut.flush();
-                fileOut.close();
-                System.out.println("Success: 1 row written to table: "+tableName);
-                } catch (IOException ioException) {
-                    ioException.printStackTrace();
-                }
+                outFile.append(rowString);
 
-            } else  {
-                // Table file does not exists
-                System.out.println("Table file does not exist");
-                return;
-            }
+               // System.out.println("Success: 1 row written to table: "+tableName);
+
 
         } catch (IOException e) {
             System.out.println("Row could not we written to file for table: "+tableName);
