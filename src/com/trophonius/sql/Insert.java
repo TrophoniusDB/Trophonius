@@ -36,8 +36,11 @@ public class Insert {
             tableName = words[1];
         }
 
+        // Get table suffix to find the table
+        String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
+
         // Check if table not found
-        if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + ".tbl"))) {
+        if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
             // Table file not found. Return to sender
             System.out.println("Table not found.");
             return;

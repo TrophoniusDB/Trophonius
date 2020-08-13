@@ -1,7 +1,5 @@
 package com.trophonius.sql;
 
-import com.trophonius.Engines.Engine;
-import com.trophonius.Engines.ObjectEngine;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
@@ -12,14 +10,9 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.concurrent.atomic.AtomicReference;
 
-import static com.trophonius.Main.timing;
 import static com.trophonius.Main.startTime;
+import static com.trophonius.Main.timing;
 
 public class DML<E> {
 
