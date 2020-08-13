@@ -1,9 +1,6 @@
 package com.trophonius.sql;
 
-import com.trophonius.Engines.ByteEngine;
-import com.trophonius.Engines.CsvEngine;
 import com.trophonius.Engines.Engine;
-import com.trophonius.Engines.ObjectEngine;
 import com.trophonius.dbo.Row;
 import com.trophonius.dbo.Table;
 
@@ -16,6 +13,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.trophonius.Main.currentDB;
 
+// This class parses an sql select statements and prepares a row
+// with fields and values to be dispatched to the table's engine for storage
 public class Insert {
 
     public Insert() {
