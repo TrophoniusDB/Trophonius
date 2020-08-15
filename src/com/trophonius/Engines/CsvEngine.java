@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
-import com.trophonius.dbo.Field;
+
+import static com.trophonius.Main.currentDB;
 import com.trophonius.dbo.Row;
 
 import java.io.FileWriter;
@@ -10,9 +11,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 // CSV ENGINE
 public class CsvEngine implements Engine {
@@ -68,7 +67,7 @@ public class CsvEngine implements Engine {
 
                 outFile.append(rowString);
 
-               // System.out.println("Success: 1 row written to table: "+tableName);
+                System.out.println("Success: 1 row written to table: "+tableName);
 
 
         } catch (IOException e) {
@@ -85,6 +84,17 @@ public class CsvEngine implements Engine {
 
         // make a list to hold field names from sql
         List<String> fieldList = new ArrayList<>();
+
+
+
+        try {
+           List valueList =  Files.lines(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+"."+getTableSuffix())).collect(Collectors.toList());
+
+            System.out.println(valueList.stream().collect(Collectors.joining(",")).toString());;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

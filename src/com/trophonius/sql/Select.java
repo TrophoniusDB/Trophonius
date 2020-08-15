@@ -35,7 +35,7 @@ public class Select {
 
         // Check if table file is present and dispatch to engine for fetching rows
         if(Files.exists(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
-            engine.fetcHRows(tableName,sql);
+            engine.fetchRows(tableName,sql);
         } else {
             System.out.println("Table file not found...");
             return;
