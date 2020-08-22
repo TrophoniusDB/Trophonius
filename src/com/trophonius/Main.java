@@ -8,6 +8,11 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Main Class that controls input and dispatches commands to other classes
+ * @author Terje Berg-Hansen
+ * @version 0.0.1
+ */
 public class Main {
     public static boolean timing = true;
     public static long startTime = 0;
@@ -23,7 +28,9 @@ public class Main {
         logger.info("Trophonius started");
 
 
-        // Main Menu
+        /**
+         * Loop that produces a menu
+         */
         while (true) {
             // print prompt
             System.out.print(prompt + "> ");
