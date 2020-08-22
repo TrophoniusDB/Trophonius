@@ -33,6 +33,7 @@ public class Main {
             if (inputText.equals("quit") || inputText.equals("\\q") ) {
                 // Say goodbye and exit
                 System.out.println("Goodbye...");
+                logger.info("Trophonius stopped");
                 System.exit(0);
             } else {
                 // Dispatch to SQL-parser

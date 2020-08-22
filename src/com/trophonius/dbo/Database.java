@@ -2,6 +2,8 @@ package com.trophonius.dbo;
 
 import com.trophonius.Engines.Engine;
 import com.trophonius.utils.HelperMethods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Paths;
@@ -12,6 +14,8 @@ import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class Database implements Serializable {
+
+    Logger logger = LoggerFactory.getLogger(Database.class);
     // to allow different new versions of this class to access the database
     private static final long serialVersionUID = 3353993616667352381L;
     private String dbName, charSet, collation;
@@ -45,7 +49,7 @@ public class Database implements Serializable {
         this.users = users;
     }
 
-    public static void deleteDatabase(String dbName) {
+    public void deleteDatabase(String dbName) {
 
         try {
 
@@ -54,7 +58,7 @@ public class Database implements Serializable {
 
             java.nio.file.Files.deleteIfExists(Paths.get(dbName));
             System.out.println("Database deleted.");
-
+            logger.info("Database "+dbName+" successfully deleted");
         } catch (IOException e) {
             System.out.println("Database " + dbName + " could not be deleted.");
             e.printStackTrace();
@@ -62,7 +66,7 @@ public class Database implements Serializable {
 
     }
 
-    public static void deleteTable(Database currentDB, String tableName) {
+    public void deleteTable(Database currentDB, String tableName) {
 
         String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
 
@@ -70,8 +74,10 @@ public class Database implements Serializable {
             // Delete table file
             java.nio.file.Files.delete(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix));
             System.out.println("Table file deleted from disk.");
+            logger.info("Table "+tableName+" in db: "+currentDB.getDbName()+" deleted from disk");
         } catch (IOException e) {
             System.out.println("Table file " + tableName + " could not be deleted.");
+            logger.error("Table file " + tableName + " in db: "+currentDB.getDbName()+" could not be deleted.");
             e.printStackTrace();
         }
         // Delete record of the table in database file
@@ -84,6 +90,7 @@ public class Database implements Serializable {
         try {
             saveDatabase(currentDB);
             System.out.println("Table deleted. Database updated");
+
         } catch (IOException e) {
             System.out.println("Database not updated...");
             e.printStackTrace();

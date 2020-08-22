@@ -206,13 +206,13 @@ public class DDL {
         // SQL: DROP DATABASE
         if (sql.toLowerCase().startsWith("drop database")) {
             String dbName = words[2];
-            Database.deleteDatabase(dbName);
+            currentDB.deleteDatabase(dbName);
         }
 
         // SQL: DROP TABLE
         if (sql.toLowerCase().startsWith("drop table")) {
             String tableName = words[2];
-            Database.deleteTable(currentDB, tableName);
+            currentDB.deleteTable(currentDB, tableName);
         }
 
         // SQL: ALTER TABLE

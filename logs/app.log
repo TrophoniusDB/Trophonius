@@ -1,1 +1,3 @@
-2020-08-22 22:18:31,998 INFO com.trophonius.Main [main] Trophonius started
+2020-08-23 00:07:05,104 INFO com.trophonius.Main [main] Trophonius started
+2020-08-23 00:08:11,289 INFO com.trophonius.dbo.Database [main] Table file test in db: com.trophonius.dbo.Database@1e3d8a70 deleted from disk
+2020-08-23 00:11:03,297 INFO com.trophonius.Main [main] Trophonius started
