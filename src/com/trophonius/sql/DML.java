@@ -99,7 +99,7 @@ public class DML<E> {
 
     /**
      * Method for importing a SQL file with only insert statements
-     * @param filename
+     * @param filename Path to file with SQL statements
      */
     public void importSql(String filename) {
 
