@@ -1,0 +1,53 @@
+Index: src/com/trophonius/Main.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.trophonius;\n\nimport com.trophonius.dbo.Database;\nimport com.trophonius.sql.SqlParser;\n\nimport java.io.IOException;\nimport java.util.Scanner;\n\npublic class Main {\n    public static boolean timing = true;\n    public static long startTime = 0;\n    public static String prompt = \"\";\n    public static Database currentDB = new Database();\n\n    public static void main(String[] args) throws IOException, ClassNotFoundException {\n\n        System.out.println(\"Welcome to Trophonius - a Simple and Fast Database\");\n        System.out.println(\"Version 0.0.1\");\n        System.out.println(\"Type 'help' or '\\\\h' for help and 'quit' or '\\\\q' to exit\");\n\n        // Main Menu\n        while (true) {\n            // print prompt\n            System.out.print(prompt + \"> \");\n            Scanner input = new Scanner(System.in);\n            // Wait for input from user\n            String inputText = input.nextLine();\n            if (inputText.equals(\"quit\") || inputText.equals(\"\\\\q\") ) {\n                // Say goodbye and exit\n                System.out.println(\"Goodbye...\");\n                System.exit(0);\n            } else {\n                // Dispatch to SQL-parser\n                SqlParser sql = new SqlParser(prompt, currentDB, inputText);\n                prompt = sql.prompt;\n                currentDB = sql.currentDB;\n            }\n\n        }\n\n    }\n\n}
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/com/trophonius/Main.java	(revision 59fc96bd098c1c938c2e0c0cb2c9bc7d5630b4e8)
++++ src/com/trophonius/Main.java	(date 1598092165682)
+@@ -6,6 +6,11 @@
+ import java.io.IOException;
+ import java.util.Scanner;
+ 
++/**
++ * Main Class that controls input and dispatches commands to other classes
++ * @author Terje Berg-Hansen
++ * @version 0.0.1
++ */
+ public class Main {
+     public static boolean timing = true;
+     public static long startTime = 0;
+@@ -18,7 +23,9 @@
+         System.out.println("Version 0.0.1");
+         System.out.println("Type 'help' or '\\h' for help and 'quit' or '\\q' to exit");
+ 
+-        // Main Menu
++        /**
++         * Loop that produces a menu
++         */
+         while (true) {
+             // print prompt
+             System.out.print(prompt + "> ");
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"ProjectRootManager\" version=\"2\" languageLevel=\"JDK_14\" default=\"false\" project-jdk-name=\"14\" project-jdk-type=\"JavaSDK\">\n    <output url=\"file://$PROJECT_DIR$/out\" />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- .idea/misc.xml	(revision 59fc96bd098c1c938c2e0c0cb2c9bc7d5630b4e8)
++++ .idea/misc.xml	(date 1598092197194)
+@@ -1,5 +1,11 @@
+ <?xml version="1.0" encoding="UTF-8"?>
+ <project version="4">
++  <component name="JavadocGenerationManager">
++    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/out" />
++    <option name="OPTION_DOCUMENT_TAG_USE" value="true" />
++    <option name="OPTION_DOCUMENT_TAG_AUTHOR" value="true" />
++    <option name="OPTION_DOCUMENT_TAG_VERSION" value="true" />
++  </component>
+   <component name="ProjectRootManager" version="2" languageLevel="JDK_14" default="false" project-jdk-name="14" project-jdk-type="JavaSDK">
+     <output url="file://$PROJECT_DIR$/out" />
+   </component>
