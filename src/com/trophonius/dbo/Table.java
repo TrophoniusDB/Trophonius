@@ -143,7 +143,7 @@ public class Table implements Serializable {
                 v.isPrimaryKey(),
                 v.isAutoIncrement()));
         System.out.println("+" + "-".repeat(94) + "+");
-        System.out.println("Storage Engine: "+engine.getName()+" Character Set: "+charSet+" Collation: "+collation);
+        System.out.println("Storage Engine: "+engine.getName()+" | Character Set: "+charSet+" | Collation: "+collation);
     }
 
     public LinkedHashMap<String, Field> getTableStructure() {
