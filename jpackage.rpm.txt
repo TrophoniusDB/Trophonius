@@ -2,4 +2,4 @@ RPM
 jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type rpm --vendor "ITFakultetet AS" --linux-shortcut
 
 Windows
-jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type exe --vendor "ITFakultetet AS"  --win-console --win-shortcut
+jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type exe --vendor "ITFakultetet AS"  --win-console --win-shortcut --win-menu --win-per-user-install --win-dir-chooser --description "Fast and Simple Database"
