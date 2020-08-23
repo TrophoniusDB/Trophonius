@@ -1,0 +1,2 @@
+jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type rpm --vendor "ITFakultetet AS" --linux-shortcut
+
