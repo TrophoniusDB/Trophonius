@@ -14,6 +14,10 @@ import java.nio.file.Paths;
 import static com.trophonius.Main.startTime;
 import static com.trophonius.Main.timing;
 
+/**
+ * Class for SQL DML Statements - select, insert, update delete
+ * @param <E> generic type for handling fields
+ */
 public class DML<E> {
 
     public String prompt = "/";
@@ -23,6 +27,12 @@ public class DML<E> {
     private Field tableField;
     private Row<Serializable> row = new Row<>();
 
+    /***
+     * Constructor that calls method to parse SQL
+     * @param prompt prompt that will be changed when a database is selected
+     * @param currentDB DBO selected by user
+     * @param sql supplied SQL Statement
+     */
     public DML(String prompt, Database currentDB, String sql) {
         this.sql = sql;
         this.prompt = prompt;
@@ -87,8 +97,13 @@ public class DML<E> {
 
     } // end parseSQL
 
+    /**
+     * Method for importing a SQL file with only insert statements
+     * @param filename
+     */
     public void importSql(String filename) {
 
+        // TODO check for other statements than insert
         try {
             Files.lines(Path.of(filename)).forEach(line -> {
                 // insert into tableName

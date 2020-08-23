@@ -21,6 +21,12 @@ public class DDL {
     private String defaultCharset = "utf8";
     private String defaultCollation = "en_US";
 
+    /***
+     * Constructor that calls method to parse SQL
+     * @param prompt prompt that will be changed when a database is selected
+     * @param currentDB DBO selected by user
+     * @param sql supplied SQL Statement
+     */
     public DDL(String prompt, Database currentDB, String sql) {
         this.sql = sql;
         this.prompt = prompt;
