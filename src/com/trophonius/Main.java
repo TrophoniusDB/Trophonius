@@ -1,3 +1,6 @@
+/**
+ * Simple and efficient Database
+ */
 package com.trophonius;
 
 import com.trophonius.dbo.Database;
