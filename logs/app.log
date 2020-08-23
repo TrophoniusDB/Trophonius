@@ -5,3 +5,7 @@
 2020-08-23 01:59:19,977 INFO com.trophonius.dbo.Database [main] Database terje successfully deleted
 2020-08-23 02:00:42,877 INFO com.trophonius.Main [main] Trophonius started
 2020-08-23 02:00:48,103 INFO com.trophonius.Main [main] Trophonius stopped
+2020-08-23 03:46:07,603 INFO com.trophonius.Main [main] Trophonius started
+2020-08-23 03:46:53,554 INFO com.trophonius.dbo.Database [main] Database ooops successfully deleted
+2020-08-23 03:47:58,741 INFO com.trophonius.dbo.Database [main] Database t successfully deleted
+2020-08-23 03:51:10,216 INFO com.trophonius.Main [main] Trophonius stopped
