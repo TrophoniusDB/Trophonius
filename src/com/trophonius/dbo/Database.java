@@ -168,7 +168,6 @@ public class Database implements Serializable {
 
     }
 
-
     public void printTables() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         if (tables.size() > 0) {
