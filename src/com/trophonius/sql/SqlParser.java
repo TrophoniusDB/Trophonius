@@ -9,12 +9,23 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static com.trophonius.Main.timing;
 
+/**
+ * Main SQL Parser Class. Contains non-SQL methods, like <i>show databases</i>,
+ * and dispatches SQL to parsers for DML, DDL or DCL
+ * @author Terje Berg-Hansen
+ * @version 0.0.1
+ */
 public class SqlParser {
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
 
-
+    /**
+     * Sets prompt, currentDB and calls method parseSql(currentDB, sql).
+     * @param prompt Sets the command line prompt
+     * @param currentDB A Database Object that SQL will be applied to
+     * @param sql Current SQL statement supplied by user
+     */
     public SqlParser(String prompt, Database currentDB, String sql) {
         this.sql = sql;
         this.prompt = prompt;
@@ -22,7 +33,11 @@ public class SqlParser {
         parseSql(currentDB, sql);
     }
 
-
+    /**
+     * First responder command parser. Contains helper methods and dispatches SQL to parsers for DDL, DML and DCL
+     * @param currentDB
+     * @param sql
+     */
     private void parseSql(Database currentDB, String sql) {
 
         // DDL Statements
