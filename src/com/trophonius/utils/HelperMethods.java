@@ -242,6 +242,17 @@ public class HelperMethods {
     System.out.println("-".repeat(115));
 }
 
+    /**
+     * Prints ascii-box with names of existing databases
+     * @param dbNames ArrayList of database names from HelperMethods.findDatabases
+     */
+    public static void printDatabaseList(List dbNames) {
+        System.out.println("+" + "-".repeat(30) + "+");
+        System.out.printf("| %-28s |\n", "Database");
+        System.out.println("+" + "-".repeat(30) + "+");
+        dbNames.forEach(name -> System.out.printf("| %-28s |\n", name));
+        System.out.println("+" + "-".repeat(30) + "+");
+    }
 
 } // END CLASS
 
