@@ -1,8 +1,8 @@
 RPM
-jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type rpm --vendor "ITFakultetet AS" --linux-shortcut --linux-menu-group database --icon --icon logo_400.png
+jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type rpm --vendor "ITFakultetet AS" --linux-shortcut --linux-menu-group Office --icon img/icon_logo.png --app-version 0.1.0 --description "Fast and Simple Database"
 
 Windows
-jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type exe --icon logo_400.png --vendor "ITFakultetet AS"  --win-console --win-shortcut --win-menu --win-per-user-install --win-dir-chooser --description "Fast and Simple Database"
+jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type exe --icon img/icon_logo.ico --vendor "ITFakultetet AS"  --win-console --win-shortcut --win-menu --app-version 0.1.0 --win-per-user-install --win-dir-chooser --description "Fast and Simple Database"
 
 DEB
-jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type deb --vendor "ITFakultetet AS" --linux-shortcut --linux-menu-group utilities --icon logo_400.png
+jpackage -i out/artifacts/Trophonius_jar/ -d .. --main-jar Trophonius.jar --name Trophonius --type deb --vendor "ITFakultetet AS" --linux-shortcut --linux-menu-group utilities --icon img/icon_logo.png --app-version 0.1.0 --description "Fast and Simple Database"

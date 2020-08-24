@@ -5,7 +5,6 @@
       <element id="archive" name="Trophonius.jar">
         <element id="module-output" name="Trophonius" />
       </element>
-      <element id="library" level="project" name="org.apache.calcite:calcite-core:1.23.0" />
       <element id="library" level="project" name="lib" />
     </root>
   </artifact>
