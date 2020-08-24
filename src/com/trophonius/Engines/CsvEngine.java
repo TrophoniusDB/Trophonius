@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -83,14 +84,13 @@ public class CsvEngine implements Engine {
         String[] words = sql.split("[= ]");
 
         // make a list to hold field names from sql
-        List<String> fieldList = new ArrayList<>();
+        List<String> fieldList = new LinkedList<>();
 
-
-
+        // Open database file
         try {
            List valueList =  Files.lines(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+"."+getTableSuffix())).collect(Collectors.toList());
 
-            System.out.println(valueList.stream().collect(Collectors.joining(",")).toString());;
+            valueList.forEach(System.out::println);
 
         } catch (IOException e) {
             e.printStackTrace();

@@ -39,6 +39,13 @@ public class SqlParser {
      * @param sql the sql to send to the database
      */
     private void parseSql(Database currentDB, String sql) {
+         // trim extra spaces
+        sql = sql.trim();
+        // Determine end of SQL statement
+        if(sql.contains(";")) {
+            // remove ;
+            sql = sql.substring(0,sql.length()-1);
+        }
 
         // DDL Statements
         if (
