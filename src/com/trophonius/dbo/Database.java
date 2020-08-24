@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * contains methods for creating, updating and deleting Database objects
+ */
 public class Database implements Serializable {
 
     Logger logger = LoggerFactory.getLogger(Database.class);
@@ -49,6 +52,10 @@ public class Database implements Serializable {
         this.users = users;
     }
 
+    /**
+     * deletes all files belonging to a database
+     * @param dbName name of the database to be deleted
+     */
     public void deleteDatabase(String dbName) {
 
         try {
