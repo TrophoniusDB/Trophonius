@@ -223,7 +223,24 @@ public class HelperMethods {
 
     } // end printHTMLTable
 
-
+    /**
+     * Print help text to console
+     */
+    public static void printHelpText() {
+    // print common commands
+    System.out.println("-".repeat(115));
+    System.out.printf("%-50s %-10s","Command  (shortcut)","Description\n");
+    System.out.println("-".repeat(115));
+    System.out.printf("%-50s %-10s","show databases (\\l)","List all databases\n");
+    System.out.printf("%-50s %-10s","use <dbname>","Select a database\n");
+    System.out.printf("%-50s %-10s","show tables (\\d)","List all tables in selected database\n");
+    System.out.printf("%-50s %-10s","describe (\\dt) <table name>","Show table structure of <table name>\n");
+    System.out.printf("%-50s %-10s","describe database <dbname> (\\db <dbname>)","Show database and table info from <table name>\n");
+    System.out.printf("%-50s %-10s","describe full database <dbname> (\\db+ <dbname>)","Show database and table structures from <table name>\n");
+    System.out.printf("%-50s %-10s","import (\\i) <filename.sql>","import sql insert statements from file into table in current db\n");
+    System.out.printf("%-50s %-10s","\\timing","toggles timing on or off\n");
+    System.out.println("-".repeat(115));
+}
 
 
 } // END CLASS
