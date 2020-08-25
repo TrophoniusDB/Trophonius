@@ -143,10 +143,14 @@ public class SqlParser {
             if (words.length == 3) {
                 dbName = words[2];
                 // if sql = \db <dbname> or \db+ <dbname>
-            } else {
+            } else if(words.length == 2) {
                 dbName = words[1];
-                showDB.setDbName(dbName);
+            } else {
+                // if sql = \db or \db+ - use currentDB
+                dbName = currentDB.getDbName();
             }
+            // call method to show database description
+            showDB.setDbName(dbName);
 
             if (sql.toLowerCase().contains("full")  || sql.toLowerCase().startsWith("\\db+")) {
                 full = true;
