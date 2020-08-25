@@ -249,9 +249,11 @@ public class HelperMethods {
     System.out.printf("%-50s %-10s","describe (\\dt) <table name>","Show table structure of <table name>\n");
     System.out.printf("%-50s %-10s","describe database <dbname> (\\db <dbname>)","Show database and table info from <table name>\n");
     System.out.printf("%-50s %-10s","describe full database <dbname> (\\db+ <dbname>)","Show database and table structures from <table name>\n");
-    System.out.printf("%-50s %-10s","import (\\i) <filename.sql>","import sql insert statements from file into table in current db\n");
+    System.out.printf("%-50s %-10s","import (\\i) <filename.sql>","Import sql insert statements from file into table in current db\n");
     System.out.printf("%-50s %-10s","\\timing","toggles timing on or off\n");
-    System.out.println("-".repeat(115));
+    System.out.printf("%-50s %-10s","show log (\\log)","Display log entries in console\n");
+
+        System.out.println("-".repeat(115));
 }
 
     /**
