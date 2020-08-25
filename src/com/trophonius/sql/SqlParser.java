@@ -194,7 +194,11 @@ public class SqlParser {
             }
         } // end use
 
-        // populate testbase
+        // SQL: show log or \l
+        if (sql.toLowerCase().startsWith("show log") || sql.toLowerCase().startsWith("\\log")) {
+            HelperMethods.showLog();
+        }
+            // populate testbase
         if (sql.toLowerCase().startsWith("populate")) {
             int numberofRows = Integer.valueOf(words[1]);
             String outFile = words[2];
