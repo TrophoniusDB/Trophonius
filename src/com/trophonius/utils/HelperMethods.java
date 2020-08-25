@@ -17,7 +17,10 @@ import static com.trophonius.Main.timing;
 
 public class HelperMethods {
 
-
+    /**
+     * Deletes a file or if directory - all files in the directory - recursively. Used for deleting databases
+     * @param file File or Directory to be deleted.
+     */
     public static void recursiveDelete(File file) {
         //to end the recursive loop
         if (!file.exists())
@@ -35,6 +38,10 @@ public class HelperMethods {
         System.out.println("Deleted file/folder: " + file.getAbsolutePath());
     }
 
+    /**
+     * Finds names of all databases and put them in an ArrayList
+     * @return ArrayList of all Database Names
+     */
     public static ArrayList<String> findDatabases() {
 
         ArrayList<String> dbNames = new ArrayList<>();
@@ -54,6 +61,11 @@ public class HelperMethods {
         return dbNames;
     }
 
+    /**
+     * Writes insert statements to an SQL file
+     * @param rows Number of insert statements
+     * @param filename Name of SQL file
+     */
     public static void populate(int rows, String filename) {
         try (FileWriter outFile = new FileWriter(filename)){
             Random rand = new Random();
