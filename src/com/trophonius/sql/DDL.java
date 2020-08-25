@@ -120,6 +120,7 @@ public class DDL {
             // Determine table name
             String tableName = words[2];
 
+
             // Determine table file suffix
             String tableSuffix;
             switch (engineName) {
@@ -129,8 +130,12 @@ public class DDL {
                 case "byteEngine":
                     tableSuffix = "dat";
                     break;
-                default:
+                case "csvEngine":
                     tableSuffix = "csv";
+                    break;
+                default:
+                    // If no engine is specified, use Database default engine
+                    tableSuffix = currentDB.getEngine().getTableSuffix();
             }
 
             // Check if table already exists
@@ -158,6 +163,7 @@ public class DDL {
                     t1.setCollation(currentDB.getCollation());
                 }
 
+
                 // Set Engine for table
 
                 Engine engine;
@@ -168,12 +174,15 @@ public class DDL {
                     case "byteEngine":
                         engine = new ByteEngine();
                         break;
-                    default:
+                    case "csvEngine":
                         engine = new CsvEngine();
+                        break;
+                    default:
+                        engine = currentDB.getEngine();
                 }
 
-               if (engineName!="") {
-                   t1.setEngine(engine);
+                if (engineName!="") {
+                    t1.setEngine(engine);
                 } else {
                     // set engine to database default
                     t1.setEngine(currentDB.getEngine());
