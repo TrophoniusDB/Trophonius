@@ -17,7 +17,7 @@ public class DDL {
     public String prompt = "/";
     public Database currentDB;
     private String sql = "";
-    private Engine defaultEngine = new CsvEngine();
+    private Engine defaultEngine = new ObjectEngine();
     private String defaultCharset = "utf8";
     private String defaultCollation = "en_US";
 
