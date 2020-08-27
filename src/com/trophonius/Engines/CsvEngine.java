@@ -2,6 +2,7 @@ package com.trophonius.Engines;
 
 
 import static com.trophonius.Main.currentDB;
+
 import com.trophonius.dbo.Row;
 
 import java.io.FileWriter;
@@ -34,45 +35,44 @@ public class CsvEngine implements Engine {
     @Override
     public void createTableFile(String dbName, String tableName) {
 
-        Path filePath = Paths.get("data/" + dbName + "/" + tableName + "."+ this.getTableSuffix());
+        Path filePath = Paths.get("data/" + dbName + "/" + tableName + "." + this.getTableSuffix());
         if (!Files.isRegularFile(filePath)) {
 
             try {
                 Files.createFile(filePath);
             } catch (IOException e) {
-                System.out.println("Table file could not be created, because: "+e.getMessage());
+                System.out.println("Table file could not be created, because: " + e.getMessage());
                 e.printStackTrace();
             }
 
         } else {
             // Table file exists
-            System.out.println("Table \""+tableName+"\" already exists");
+            System.out.println("Table \"" + tableName + "\" already exists");
         }
 
     } // END  createTableFile
 
     @Override
     // Append a row to an existing table file
-    public void writeRowToDisk(String dbName, String tableName,Row row, boolean verbose) {
+    public void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose) {
 
 
-        try (FileWriter outFile = new FileWriter("data/" + dbName + "/" + tableName + "."+getTableSuffix(),true)){
-               // Open table file for writing, and append map of primary key + row to the file
+        try (FileWriter outFile = new FileWriter("data/" + dbName + "/" + tableName + "." + getTableSuffix(), true)) {
+            // Open table file for writing, and append map of primary key + row to the file
 
-                var rowString="";
-                for(Object field: row.getRow().values()) {
-                     rowString+=field.toString()+",";
-                }
+            var rowString = "";
+            for (Object field : row.getRow().values()) {
+                rowString += field.toString() + ",";
+            }
 
-                rowString = rowString.substring(0,rowString.length()-1)+'\n';
-
-                outFile.append(rowString);
-
-                System.out.println("Success: 1 row written to table: "+tableName);
-
+            rowString = rowString.substring(0, rowString.length() - 1) + '\n';
+            outFile.append(rowString);
+            if (verbose) {
+                System.out.println("Success: 1 row written to table: " + tableName);
+            }
 
         } catch (IOException e) {
-            System.out.println("Row could not we written to file for table: "+tableName);
+            System.out.println("Row could not we written to file for table: " + tableName);
             e.printStackTrace();
 
         }
@@ -87,15 +87,16 @@ public class CsvEngine implements Engine {
         List<String> fieldList = new LinkedList<>();
 
         // Open database file
+        long numberOfRows = 0;
         try {
-           List valueList =  Files.lines(Paths.get("data/"+currentDB.getDbName()+"/"+tableName+"."+getTableSuffix())).collect(Collectors.toList());
-
+            List valueList = Files.lines(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
+            numberOfRows = valueList.size();
             valueList.forEach(System.out::println);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        System.out.print("Returned "+numberOfRows+ (numberOfRows>1? " rows" : " row"));
     }
 
     @Override
