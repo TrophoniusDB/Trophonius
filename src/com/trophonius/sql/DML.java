@@ -74,24 +74,34 @@ public class DML<E> {
                 }
             }
 
-            Table thisTable = currentDB.getTables().get(tableName);
 
-            // Get table suffix to find the table
-            String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
+            ;
+            try {
+                Table thisTable = currentDB.getTables().get(tableName);
+                // Get table suffix to find the table
+                String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
 
-            // Check if table not found
-            if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
-                // Table file not found. Return to sender
-                System.out.println("Table not found.");
+                // Check if table not found
+                if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
+                    // Table file not found. Return to sender
+                    System.out.println("Table not found.");
+                    return;
+                } else {
+                    // Table exists - open it, fetch row and return fields.
+                    // If timing is on - set start time
+                    if(timing) startTime = System.currentTimeMillis();
+                    Select select = new Select(tableName, sql);
+                    // Add timing info
+                    if(timing) System.out.println(" in "+(System.currentTimeMillis()-startTime)+ " millis");
+                }
+
+
+
+            } catch (Exception e) {
+                System.out.println("Table "+tableName+" is not in this database");
                 return;
-            } else {
-                // Table exists - open it, fetch row and return fields.
-                // If timing is on - set start time
-                if(timing) startTime = System.currentTimeMillis();
-                Select select = new Select(tableName, sql);
-                // Add timing info
-                if(timing) System.out.println(" in "+(System.currentTimeMillis()-startTime)+ " millis");
             }
+
 
         } // end Select
 

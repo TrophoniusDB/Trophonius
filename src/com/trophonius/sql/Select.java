@@ -29,17 +29,25 @@ public class Select {
     public Select (String tableName, String sql) {
 
         // Find table engine
-        Engine engine = currentDB.getTables().get(tableName).getEngine();
-        // Find table file suffix
-        String tableSuffix = engine.getTableSuffix();
+        try {
+            Engine engine = currentDB.getTables().get(tableName).getEngine();
 
-        // Check if table file is present and dispatch to engine for fetching rows
-        if(Files.exists(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
-            engine.fetchRows(tableName,sql);
-        } else {
-            System.out.println("Table file not found...");
+            // Find table file suffix
+            String tableSuffix = engine.getTableSuffix();
+
+            // Check if table file is present and dispatch to engine for fetching rows
+            if(Files.exists(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
+                engine.fetchRows(tableName,sql);
+            } else {
+                System.out.println("Table file not found...");
+                return;
+            }
+
+         } catch (Exception e) {
+            System.out.println("Table doesn't exist in this database");
             return;
-        }
+         }
+
 
 
     } // END SELECT
