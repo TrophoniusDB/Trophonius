@@ -64,7 +64,7 @@ public class ObjectEngine implements Engine   {
 
 
         @Override
-        public void writeRowToDisk(String dbName, String tableName, Row row) {
+        public void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose) {
 
                 try {
                         // check that table file exists in data directory
@@ -79,7 +79,9 @@ public class ObjectEngine implements Engine   {
                                 oStr.close();
                                 dbFileOut.flush();
                                 dbFileOut.close();
-                                System.out.println("Success: 1 row written to table: "+tableName);
+                                if(verbose) {
+                                        System.out.println("Success: 1 row written to table: " + tableName);
+                                }
                         } else  {
                                 // Table file does not exists
                                 System.out.println("Table file does not exist");

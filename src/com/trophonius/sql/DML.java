@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.stream.Collectors;
 
 import static com.trophonius.Main.startTime;
 import static com.trophonius.Main.timing;
@@ -52,7 +53,7 @@ public class DML<E> {
         // SQL INSERT <INTO> <TABLENAME>
         if (sql.toLowerCase().startsWith("insert") || sql.toLowerCase().startsWith("insert into")) {
             // Method to insert new row into existing table
-          Insert insert = new Insert(sql);
+          Insert insert = new Insert(sql,true);
 
         } // END INSERT INTO
 
@@ -112,17 +113,20 @@ public class DML<E> {
     public void importSql(String filename) {
 
         // TODO check for other statements than insert
+        if(timing) { startTime = System.currentTimeMillis(); }
         try {
             Files.lines(Path.of(filename)).forEach(line -> {
                 // insert into tableName
-             Insert in = new Insert(line.toString());
+                Insert in = new Insert(line.toString(),false);
             });
-
+                  // Insert as List<String>
+           // Insert in = new Insert(Files.lines(Path.of(filename)).collect(Collectors.toList()));
         } catch (IOException e) {
             System.out.println("SQL File not found");
             e.printStackTrace();
         }
-        System.out.println("All rows from file inserted");
+        System.out.print("All rows from file inserted");
+        System.out.println(timing ? " in "+(System.currentTimeMillis()-startTime)+ " millis" : "");
     } // end importSQL
 
     }  // end class

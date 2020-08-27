@@ -25,7 +25,7 @@ public class ByteEngine implements Engine {
     }
 
     @Override
-    public void writeRowToDisk(String dbName, String tableName, Row row) {
+    public void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose) {
 
     }
 

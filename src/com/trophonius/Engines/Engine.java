@@ -23,7 +23,7 @@ public interface Engine extends Serializable {
 
     void createTableFile(String dbName, String tableName);
 
-    void writeRowToDisk(String dbName, String tableName, Row row);
+    void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose);
 
     void fetchRows(String tableName, String sql);
 }

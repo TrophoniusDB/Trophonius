@@ -53,7 +53,7 @@ public class CsvEngine implements Engine {
 
     @Override
     // Append a row to an existing table file
-    public void writeRowToDisk(String dbName, String tableName,Row row) {
+    public void writeRowToDisk(String dbName, String tableName,Row row, boolean verbose) {
 
 
         try (FileWriter outFile = new FileWriter("data/" + dbName + "/" + tableName + "."+getTableSuffix(),true)){

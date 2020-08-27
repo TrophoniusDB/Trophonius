@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.trophonius.Main.currentDB;
@@ -17,10 +18,15 @@ import static com.trophonius.Main.currentDB;
 // with fields and values to be dispatched to the table's engine for storage
 public class Insert {
 
-    public Insert() {
+
+    // Bulk insert from List of SQL statements from file
+    public Insert(List<String> sqlList) {
+        // TODO Bulk insert
+
     }
 
-    public Insert (String sql) {
+
+    public Insert (String sql, boolean verbose) {
         Row row = new Row();
         // Prepare SQL - Create Array of words and remove =
         String[] words = sql.split("[= ]");
@@ -177,7 +183,7 @@ public class Insert {
 
                     // Call the method for storing a new row on the relevant engine
                     Engine engine = currentTable.getEngine();
-                    engine.writeRowToDisk(currentDB.getDbName(), tableName,row);
+                    engine.writeRowToDisk(currentDB.getDbName(), tableName,row,verbose);
 
                 } else {
                     System.out.println("Row not saved in table");
