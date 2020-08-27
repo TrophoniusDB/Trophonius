@@ -95,10 +95,8 @@ public class DML<E> {
                     if(timing) System.out.println(" in "+(System.currentTimeMillis()-startTime)+ " millis");
                 }
 
-
-
             } catch (Exception e) {
-                System.out.println("Table "+tableName+" is not in this database");
+                System.out.println("Could not find able "+tableName+" database "+currentDB.getDbName());
                 return;
             }
 
