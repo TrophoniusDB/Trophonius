@@ -14,8 +14,10 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import static com.trophonius.Main.currentDB;
 
-// This class parses an sql select statements and prepares a row
-// with fields and values to be dispatched to the table's engine for storage
+/**
+ * This class parses an sql insert statement and prepares a row
+ * with fields and values to be dispatched to the table's engine for storage
+ */
 public class Insert {
 
 
@@ -24,7 +26,6 @@ public class Insert {
         // TODO Bulk insert
 
     }
-
 
     public Insert (String sql, boolean verbose) {
         Row row = new Row();

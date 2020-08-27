@@ -21,6 +21,9 @@ import java.util.stream.Collectors;
 
 import static com.trophonius.Main.currentDB;
 
+/**
+ * Parses an SQL SELECT statement and dispatches it to the table's storage engine for retrieval
+ */
 public class Select {
 
     public Select() {

@@ -17,7 +17,9 @@ import java.util.stream.Collectors;
 
 import static com.trophonius.Main.currentDB;
 
-// OBJECT ENGINE
+/**
+ * OBJECT ENGINE - a storage engine that stores serialized Java Objects.
+ */
 public class ObjectEngine implements Engine   {
 
         private static final long serialVersionUID = -2645684320509863174L;
@@ -36,6 +38,11 @@ public class ObjectEngine implements Engine   {
 
         } // END CONSTRUCTOR
 
+        /**
+         * Creates the physical table file
+         * @param dbName Name of the Database to which the table belongs
+         * @param tableName Name of the Table for which to create a file
+         */
         public void createTableFile(String dbName, String tableName) {
 
         // check that table file not  exists in data directory
