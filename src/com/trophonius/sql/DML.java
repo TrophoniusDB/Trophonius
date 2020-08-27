@@ -4,6 +4,7 @@ import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
 import com.trophonius.dbo.Table;
+import org.w3c.dom.ls.LSOutput;
 
 import java.io.IOException;
 import java.io.Serializable;
@@ -96,7 +97,8 @@ public class DML<E> {
                 }
 
             } catch (Exception e) {
-                System.out.println("Could not find able "+tableName+" database "+currentDB.getDbName());
+                System.out.println(currentDB.getDbName() == null ? "No Database selected. Select one first..." :
+                "Could not find table \""+tableName+"\" in database \""+currentDB.getDbName()+"\"");
                 return;
             }
 
