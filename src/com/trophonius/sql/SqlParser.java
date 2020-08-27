@@ -183,7 +183,8 @@ public class SqlParser {
         }
 
         // SQL: USE <dbname>
-        if (sql.toLowerCase().startsWith("use")) {
+        if (sql.toLowerCase().startsWith("use") && words.length>1) {
+
             String dbName = words[1];
 
             if ((currentDB = currentDB.openDatabase(dbName)).getDbName() != null) {
