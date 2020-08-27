@@ -190,7 +190,6 @@ public class SqlParser {
             if ((currentDB = currentDB.openDatabase(dbName)).getDbName() != null) {
                 this.currentDB = currentDB;
                 prompt = currentDB.getDbName() + "/";
-                // this.currentDBName = currentDB.getDbName();
                 System.out.println("Database changed to " + currentDB.getDbName());
             }
         } // end use

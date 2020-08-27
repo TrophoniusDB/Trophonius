@@ -65,7 +65,7 @@ public class DML<E> {
 
 
         // SQL SELECT <fields...> FROM <TABLENAME>
-        if (sql.toLowerCase().startsWith("select")) {
+        if (sql.toLowerCase().startsWith("select") && words.length>3) {
 
             // Determine tablename
             String tableName = null;
@@ -75,8 +75,6 @@ public class DML<E> {
                 }
             }
 
-
-            ;
             try {
                 Table thisTable = currentDB.getTables().get(tableName);
                 // Get table suffix to find the table

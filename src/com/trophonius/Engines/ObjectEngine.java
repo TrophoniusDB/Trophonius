@@ -167,6 +167,7 @@ public class ObjectEngine implements Engine   {
                                 // If no rows are found, print message and return to prompt
                                 if (rows.size() == 0) {
                                         System.out.println("Table contains no rows...");
+                                        System.out.print("0 rows returned");
                                         return;
                                 }
 
