@@ -73,6 +73,11 @@ public class Database implements Serializable {
 
     }
 
+    /**
+     * Deletes a table in the current Database
+     * @param currentDB The current database object
+     * @param tableName Name of table to be deleted
+     */
     public void deleteTable(Database currentDB, String tableName) {
 
         String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
@@ -162,6 +167,11 @@ public class Database implements Serializable {
         this.tables = tables;
     }
 
+    /**
+     * Adds a table to the current Database by calling tables.put() and saveDatabase()
+     * @param db Current database Object
+     * @param table Table object to be added
+     */
     public void addTable(Database db, Table table) {
 
         try {
@@ -175,6 +185,9 @@ public class Database implements Serializable {
 
     }
 
+    /**
+     * Prints a box with the name, character set, collation and storage Engine of the tables in the current database to console
+     */
     public void printTables() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
         if (tables.size() > 0) {
@@ -189,6 +202,11 @@ public class Database implements Serializable {
 
     }
 
+    /**
+     * Saves the serialized current database object to a .db file
+     * @param outDB Database object to be saved
+     * @throws IOException
+     */
     public static void saveDatabase(Database outDB) throws IOException {
 
         try {
@@ -224,6 +242,11 @@ public class Database implements Serializable {
 
     }
 
+    /**
+     * Opens a database by reading its .db file into a Database object.
+     * @param dbName Name of database to open
+     * @return Returns a Database Object
+     */
     public Database openDatabase(String dbName) {
         ObjectInputStream dbIs;
         Database openedDB = new Database();
@@ -241,6 +264,13 @@ public class Database implements Serializable {
         return openedDB;
     }
 
+    /**
+     * Prints a box to console, containing all the characteristics of a Database object, including the names of its tables
+     * @param dbName Name of database til describe
+     * @param full Denotes that individual table structures should also be written to console
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public void describeDatabase(String dbName, boolean full) throws IOException, ClassNotFoundException {
 
         ObjectInputStream is;
