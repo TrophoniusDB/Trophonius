@@ -12,6 +12,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
 
 // CSV ENGINE
@@ -82,16 +84,24 @@ public class CsvEngine implements Engine {
         List<Row> rows = new ArrayList<>();
 
         // Open database file
-        long numberOfRows = 0;
+        AtomicInteger numberOfRows = new AtomicInteger();
+
+
         try {
             List valueList = Files.lines(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
-            numberOfRows = valueList.size();
-            valueList.forEach(System.out::println);
+            if(limit==0) {
+                numberOfRows.set(valueList.size());
+            }
+            valueList.forEach(a-> {
+                numberOfRows.getAndIncrement();
+                rows.add(new Row().addToRow());
+
+            });
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.print("Returned "+numberOfRows+ (numberOfRows>1? " rows" : " row"));
+        System.out.print("Returned "+numberOfRows+ (numberOfRows.get() >1? " rows" : " row"));
         return rows;
     }
 
