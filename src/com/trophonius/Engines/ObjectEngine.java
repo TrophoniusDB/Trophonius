@@ -27,7 +27,7 @@ public class ObjectEngine implements Engine   {
         private String tableSuffix;
         private boolean binaryFormat = false;
         private String comment;
-        private int limit = Integer.MAX_VALUE;
+        private int limit;
 
 
         public ObjectEngine() {
@@ -111,6 +111,8 @@ public class ObjectEngine implements Engine   {
 
                 // make a list to hold field names from sql
                 List<String> fieldList = new ArrayList<>();
+                // Set limit to MAX_VAlUE and change it if LIMIT is in SQL
+                limit = Integer.MAX_VALUE;
 
                 // Check for LIMIT
                 for (int i = 0; i < words.length; i++) {
@@ -118,6 +120,7 @@ public class ObjectEngine implements Engine   {
                                 limit = Integer.valueOf(words[i + 1]);
                         }
                 }
+
 
                 // Open Table file to read in rows
                 try {
@@ -168,6 +171,8 @@ public class ObjectEngine implements Engine   {
 
                                 // Read in Rows and put them in an ArrayList of Rows
                                 List<Row> rows = new ArrayList<>();
+
+                                System.out.println("Limit 2: "+limit);
 
                                 long rowCount = 0;
                                 while (rowCount<limit) {
