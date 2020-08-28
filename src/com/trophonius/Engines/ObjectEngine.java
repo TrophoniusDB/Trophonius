@@ -172,9 +172,7 @@ public class ObjectEngine implements Engine   {
                                 // Read in Rows and put them in an ArrayList of Rows
                                 List<Row> rows = new ArrayList<>();
 
-                                System.out.println("Limit 2: "+limit);
-
-                                long rowCount = 0;
+                               long rowCount = 0;
                                 while (rowCount<limit) {
                                         try {
                                              Row theRow = (Row) is.readObject();
