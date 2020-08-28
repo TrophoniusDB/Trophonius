@@ -3,6 +3,7 @@ package com.trophonius.Engines;
 import com.trophonius.dbo.Row;
 
 import java.io.Serializable;
+import java.util.List;
 
 public interface Engine extends Serializable {
     String getName();
@@ -25,5 +26,5 @@ public interface Engine extends Serializable {
 
     void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose);
 
-    void fetchRows(String tableName, String sql);
+    List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset);
 }

@@ -10,8 +10,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,12 +77,7 @@ public class CsvEngine implements Engine {
     }
 
     @Override
-    public void fetchRows(String tableName, String sql) {
-        // Split sql into separate words
-        String[] words = sql.split("[= ]");
-
-        // make a list to hold field names from sql
-        List<String> fieldList = new LinkedList<>();
+    public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
 
         // Open database file
         long numberOfRows = 0;
@@ -97,6 +90,7 @@ public class CsvEngine implements Engine {
             e.printStackTrace();
         }
         System.out.print("Returned "+numberOfRows+ (numberOfRows>1? " rows" : " row"));
+        return null;
     }
 
     @Override

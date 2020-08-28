@@ -2,7 +2,6 @@ package com.trophonius.Engines;
 
 import com.trophonius.dbo.Row;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // BYTE ENGINE
@@ -30,13 +29,9 @@ public class ByteEngine implements Engine {
     }
 
     @Override
-    public void fetchRows(String tableName, String sql) {
-        // Split sql into separate words
-        String[] words = sql.split("[= ]");
+    public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
 
-        // make a list to hold field names from sql
-        List<String> fieldList = new ArrayList<>();
-
+        return null;
     }
 
     @Override

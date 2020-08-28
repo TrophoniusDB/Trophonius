@@ -1,19 +1,14 @@
 package com.trophonius.Engines;
 
-import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
 import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.AppendableObjectOutputStream;
-import com.trophonius.utils.HelperMethods;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.trophonius.Main.currentDB;
 
@@ -27,7 +22,6 @@ public class ObjectEngine implements Engine   {
         private String tableSuffix;
         private boolean binaryFormat = false;
         private String comment;
-        private int limit;
 
 
         public ObjectEngine() {
@@ -105,107 +99,39 @@ public class ObjectEngine implements Engine   {
         }
 
         @Override
-        public void fetchRows(String tableName, String sql) {
-                // Split sql into separate words
-                String[] words = sql.split("[= ]");
+        public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
 
-                // make a list to hold field names from sql
-                List<String> fieldList = new ArrayList<>();
-                // Set limit to MAX_VAlUE and change it if LIMIT is in SQL
-                limit = Integer.MAX_VALUE;
+                List<Row> rows = new ArrayList<>();
 
-                // Check for LIMIT
-                for (int i = 0; i < words.length; i++) {
-                        if (words[i].toLowerCase().equals("limit")) {
-                                limit = Integer.valueOf(words[i + 1]);
-                        }
-                }
-
-
-                // Open Table file to read in rows
+                // Open Table file to find fields and check with SQL that all fields are present in table
                 try {
-                        FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix);
+                        FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
                         AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
 
-                        try {
-                                // Read fieldNames and Fields from tableStructure
-                                LinkedHashMap<String, Field> tableStructure = currentDB.getTables().get(tableName).getTableStructure();
 
-                                // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
-                                if (words[1].equals("*")) {
-                                        fieldList.addAll(tableStructure.keySet());
-                                } else {
-                                        // Or else determine fields to be fetched and put them into the variable fieldList
-                                        // First substring the fields frm sql
-                                        String fields = sql.toLowerCase()
-                                                .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
-                                        // Then split the fields string and add Fields into fieldList
-                                        fieldList.addAll(Arrays.stream(fields.split(",")).map(a -> a.trim()).collect(Collectors.toList()));
-
-                                        // Check if all fields from SQL exists in tableStructure of currentTable
-                                        Boolean found = tableStructure.keySet().containsAll(fieldList);
-
-                                        if (found == false) {
-                                                // Not all field names were found in table structure. Print message and go back to prompt
-                                                System.out.println("ERROR: One or more field names are not present in table");
-                                                System.out.println("Fields in table: " + tableStructure.keySet());
-                                                System.out.println("Fields in SQL statement: " + fieldList);
-                                                return;
-                                        }
+                        long rowCount = 0;
+                        while (rowCount < limit) {
+                                try {
+                                        Row theRow = (Row) is.readObject();
+                                        rows.add(theRow);
+                                        rowCount++;
+                                } catch (EOFException e) {
+                                        break;
+                                } catch (ClassNotFoundException e) {
+                                        e.printStackTrace();
                                 }
-                                System.out.println("Fields to be fetched: " + fieldList);
+                        } // end while
 
-                                // get primary key field
-                                // String primaryKeyField = tableStructure
-                        /*        .values().stream()
-                                .filter(a -> a.isPrimaryKey())
-                                .map(a -> a.getName())
-                                .collect(Collectors.joining());
-                        */
+                        is.close();
+                        dbFileIn.close();
 
-                                // Read row objects from table file and put them into an ArrayList
-                                // Breaks graciously when no more records to read
-
-                                // Read in TableStats
-                                //TableStats stats = (TableStats) is.readObject();
-
-                                // Read in Rows and put them in an ArrayList of Rows
-                                List<Row> rows = new ArrayList<>();
-
-                               long rowCount = 0;
-                                while (rowCount<limit) {
-                                        try {
-                                             Row theRow = (Row) is.readObject();
-                                                rows.add(theRow);
-                                                rowCount++;
-                                        } catch (EOFException e) {
-                                                break;
-                                        }
-                                } // end while
-
-                                is.close();
-                                dbFileIn.close();
-
-                                // If no rows are found, print message and return to prompt
-                                if (rows.size() == 0) {
-                                        System.out.println("Table contains no rows...");
-                                        System.out.print("0 rows returned");
-                                        return;
-                                }
-
-                                // Print result as Ascii Table through helper method printAsciiTable
-                                HelperMethods.printAsciiTable (fieldList, rows);
-
-                        } catch (ClassNotFoundException | IOException e) {
-                                e.printStackTrace();
-                        }
 
                 } catch (IOException e) {
                         System.out.println("Error! Could not open table file...");
                         e.printStackTrace();
                 }
-
-        }
+                return rows;
+        } // end
 
         @Override
         public String getName() {
