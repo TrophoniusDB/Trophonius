@@ -93,15 +93,17 @@ public class CsvEngine implements Engine {
                 numberOfRows.set(valueList.size());
             }
             valueList.forEach(a-> {
-                numberOfRows.getAndIncrement();
-                rows.add(new Row().addToRow());
 
+                Row row = new Row();
+                row.addToRow(fieldList.get(numberOfRows.get()),a.toString());
+                System.out.println(row.toString());
+                rows.add(row);
+                numberOfRows.getAndIncrement();
             });
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        System.out.print("Returned "+numberOfRows+ (numberOfRows.get() >1? " rows" : " row"));
+             } catch (IOException e) {
+                e.printStackTrace();
+            }
         return rows;
     }
 

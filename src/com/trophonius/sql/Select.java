@@ -95,7 +95,8 @@ public class Select {
         // Find table engine
         try {
             Engine engine = currentDB.getTables().get(tableName).getEngine();
-            rows =  engine.fetchRows(tableName, fieldList, limit, offset);
+            System.out.println("Engine:"+engine.getName());
+            rows = engine.fetchRows(tableName, fieldList, limit, offset);
             HelperMethods.printAsciiTable(fieldList,rows);
 
         } catch (Exception e) {
