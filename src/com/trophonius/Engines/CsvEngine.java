@@ -1,8 +1,6 @@
 package com.trophonius.Engines;
 
 
-import static com.trophonius.Main.currentDB;
-
 import com.trophonius.dbo.Row;
 
 import java.io.FileWriter;
@@ -13,8 +11,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.atomic.AtomicLong;
 import java.util.stream.Collectors;
+
+import static com.trophonius.Main.currentDB;
 
 // CSV ENGINE
 public class CsvEngine implements Engine {
@@ -86,19 +85,18 @@ public class CsvEngine implements Engine {
         // Open database file
         AtomicInteger numberOfRows = new AtomicInteger();
 
-
         try {
             List valueList = Files.lines(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
-            if(limit==Integer.MAX_VALUE) {
+            if (limit == Integer.MAX_VALUE) {
                 numberOfRows.set(valueList.size());
             }
 
-            valueList.stream().limit(limit).forEach(a-> {
+            valueList.stream().limit(limit).forEach(a -> {
 
                 String[] fieldValues = a.toString().split(",");
 
                 Row row = new Row();
-                for(int j = 0;j<fieldList.size(); j++) {
+                for (int j = 0; j < fieldList.size(); j++) {
                     row.addToRow(fieldList.get(j), fieldValues[j]);
                 }
 
@@ -107,9 +105,9 @@ public class CsvEngine implements Engine {
                 numberOfRows.getAndIncrement();
             });
 
-             } catch (IOException e) {
-                e.printStackTrace();
-            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         return rows;
     }
 
