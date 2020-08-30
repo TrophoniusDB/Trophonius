@@ -89,14 +89,20 @@ public class CsvEngine implements Engine {
 
         try {
             List valueList = Files.lines(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
-            if(limit==0) {
+            if(limit==Integer.MAX_VALUE) {
                 numberOfRows.set(valueList.size());
             }
-            valueList.forEach(a-> {
+
+            valueList.stream().limit(limit).forEach(a-> {
+
+                String[] fieldValues = a.toString().split(",");
 
                 Row row = new Row();
-                row.addToRow(fieldList.get(numberOfRows.get()),a.toString());
-                System.out.println(row.toString());
+                for(int j = 0;j<fieldList.size(); j++) {
+                    row.addToRow(fieldList.get(j), fieldValues[j]);
+                }
+
+                //           System.out.println(row.toString());
                 rows.add(row);
                 numberOfRows.getAndIncrement();
             });
