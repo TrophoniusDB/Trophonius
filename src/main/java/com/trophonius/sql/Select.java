@@ -55,18 +55,26 @@ public class Select {
             }
             // Check for WHERE start
             if (words[i].toLowerCase().equals("where")) {
-                whereStart = i;
+                whereStart = i+1;
             }
             // Check for WHERE End
             if (words[i].toLowerCase().equals("group")) {
-                whereEnd = i - 1;
+                whereEnd = i;
             }
             if (words[i].toLowerCase().equals("order") && whereEnd==0) {
-                whereEnd = i - 1;
+                whereEnd = i;
             }
+            if (words[i].toLowerCase().equals("limit") && whereEnd==0) {
+                whereEnd = i;
+            }
+
 
         }
 
+        // if whereStart is present and no whereEnd is set, set it to the end of the SQL-sentence
+        whereEnd = whereStart!=0 && whereEnd == 0 ? words.length : whereEnd;
+        System.out.println("whereStart: "+whereStart);
+        System.out.println("whereEnd: "+whereEnd);
         // Where-terms
         for(int i = whereStart; i< whereEnd;i++) {
             System.out.println(words[i]);
