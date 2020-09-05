@@ -24,19 +24,13 @@ import static com.trophonius.Main.currentDB;
 public class Select {
     private int limit, offset, whereStart=0, whereEnd=0;
 
-
     public Select() {
     }
-
 
     public Select (String tableName, String sql) {
 
         // Split sql into separate words
         String[] words = sql.split("[= ]");
-
-        // Find WHERE terms
-
-
 
         // make a list to hold field names from sql
         List<String> fieldList = new ArrayList<>();
@@ -49,8 +43,9 @@ public class Select {
         // set initial offset value to 0 and change it if OFFSET is in SQL
         offset = 0;
 
-        // Check for LIMIT and set value
+        //Parse words
         for (int i = 0; i < words.length; i++) {
+            // Check for LIMIT and set value
             if (words[i].toLowerCase().equals("limit")) {
                 limit = Integer.valueOf(words[i + 1]);
             }
@@ -70,11 +65,11 @@ public class Select {
                 whereEnd = i - 1;
             }
 
-            }
+        }
 
         // Where-terms
         for(int i = whereStart; i< whereEnd;i++) {
-
+            System.out.println(words[i]);
         }
 
 
@@ -114,7 +109,7 @@ public class Select {
 
         }  catch (Exception e) {
             System.out.println("Table \""+ tableName  +"\" doesn't exist in this database");
-        return;
+            return;
         }
 
         // Find table engine
