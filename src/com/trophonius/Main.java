@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * Main Class that controls input and dispatches commands to other classes
  * @author Terje Berg-Hansen
- * @version 0.1.4
+ * @version 0.1.5
  */
 public class Main {
     public static boolean timing = true;
