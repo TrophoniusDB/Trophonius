@@ -28,4 +28,8 @@
         <appender-ref ref="FILE-ROLLING"/>
     </root>
 
+    <root level="info">
+        <appender-ref ref="FILE-ROLLING"/>
+    </root>
+
 </configuration>
