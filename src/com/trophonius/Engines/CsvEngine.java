@@ -111,6 +111,11 @@ public class CsvEngine implements Engine {
     }
 
     @Override
+    public long getRowCount(String dbName, String tableName) {
+        return 0;
+    }
+
+    @Override
     public String getName() {
         return name;
     }

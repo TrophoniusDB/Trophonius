@@ -18,6 +18,8 @@ public class ByteEngine implements Engine {
 
     }
 
+
+
     @Override
     public void createTableFile(String dbName, String tableName) {
 
@@ -32,6 +34,11 @@ public class ByteEngine implements Engine {
     public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
 
         return null;
+    }
+
+    @Override
+    public long getRowCount(String dbName, String tableName) {
+        return 0;
     }
 
     @Override

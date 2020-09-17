@@ -75,9 +75,6 @@ public class Select {
         // Check for functions
         // now()
 
-
-
-
         try {
             // Read fieldNames and Fields from tableStructure
             LinkedHashMap<String, Field> tableStructure = Main.currentDB.getTables().get(tableName).getTableStructure();
@@ -114,8 +111,14 @@ public class Select {
         // Find table engine
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-            rows = engine.fetchRows(tableName, fieldList, limit, offset);
-            HelperMethods.printAsciiTable(fieldList,rows);
+            // count(*)
+            if(words[1].equals("count(*)")) {
+                long rowCount = engine.getRowCount(Main.currentDB.getDbName(),  tableName);
+                HelperMethods.printAsciiTable(rowCount);
+            } else {
+                rows = engine.fetchRows(tableName, fieldList, limit, offset);
+                HelperMethods.printAsciiTable(fieldList, rows);
+            }
 
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");

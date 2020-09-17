@@ -81,6 +81,17 @@ public class HelperMethods {
     } // end printHTMLTable
 
 
+    // Print ASCII Table Row Count
+    public static void printAsciiTable(long rowCount) {
+
+        System.out.println("+-----------------------+");
+        System.out.println("|         count(*)      |");
+        System.out.println("+-----------------------+");
+        System.out.println("| "+rowCount +"         |");
+        System.out.println("+-----------------------+");
+
+    }
+
     // Print ASCII Table from a list of fields names and a list of rows
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {
         // Calculate field widths for length of ascii-box
@@ -277,6 +288,7 @@ public class HelperMethods {
         }
 
     } // END showLog
+
 
 } // END CLASS
 

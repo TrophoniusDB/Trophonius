@@ -27,4 +27,6 @@ public interface Engine extends Serializable {
     void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose);
 
     List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset);
+
+    long getRowCount(String dbName, String tableName);
 }
