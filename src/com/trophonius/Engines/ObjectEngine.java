@@ -1,5 +1,6 @@
 package com.trophonius.Engines;
 
+import com.trophonius.Main;
 import com.trophonius.dbo.Row;
 import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.AppendableObjectOutputStream;
@@ -9,8 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.trophonius.Main.currentDB;
 
 /**
  * OBJECT ENGINE - a storage engine that stores serialized Java Objects.
@@ -105,7 +104,7 @@ public class ObjectEngine implements Engine   {
 
                 // Open Table file to find fields and check with SQL that all fields are present in table
                 try {
-                        FileInputStream dbFileIn = new FileInputStream("data/" + currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
+                        FileInputStream dbFileIn = new FileInputStream("data/" + Main.currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
                         AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
 
 

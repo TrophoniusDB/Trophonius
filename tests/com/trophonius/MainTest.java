@@ -1,12 +1,10 @@
 package com.trophonius;
 
-import com.trophonius.dbo.Database;
 import com.trophonius.sql.SqlParser;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static com.trophonius.Main.currentDB;
-import static com.trophonius.Main.prompt;
 import static org.junit.jupiter.api.Assertions.*;
 
 class MainTest {

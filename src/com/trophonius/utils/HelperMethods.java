@@ -1,19 +1,15 @@
 package com.trophonius.utils;
 
-import com.trophonius.dbo.Field;
+import com.trophonius.Main;
 import com.trophonius.dbo.Row;
-import com.trophonius.sql.DML;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.trophonius.Main.timing;
 
 public class HelperMethods {
 
@@ -194,7 +190,7 @@ public class HelperMethods {
         System.out.println("+" + "-".repeat(tableLength) + "+");
         // print number of rows returned
         System.out.print(rows.size() > 1 ? rows.size() + " rows returned" : rows.size() + " row returned");
-        if(!timing) System.out.println();
+        if(!Main.timing) System.out.println();
 
     } // end printAsciiTable
 

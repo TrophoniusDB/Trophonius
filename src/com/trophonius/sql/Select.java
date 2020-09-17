@@ -1,22 +1,13 @@
 package com.trophonius.sql;
 
 import com.trophonius.Engines.Engine;
+import com.trophonius.Main;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
-import com.trophonius.dbo.TableStats;
-import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.HelperMethods;
 
-import java.io.BufferedInputStream;
-import java.io.EOFException;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-
-import static com.trophonius.Main.currentDB;
 
 /**
  * Parses an SQL SELECT statement and dispatches it to the table's storage engine for retrieval
@@ -89,7 +80,7 @@ public class Select {
 
         try {
             // Read fieldNames and Fields from tableStructure
-            LinkedHashMap<String, Field> tableStructure = currentDB.getTables().get(tableName).getTableStructure();
+            LinkedHashMap<String, Field> tableStructure = Main.currentDB.getTables().get(tableName).getTableStructure();
 
             // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
             if (words[1].equals("*")) {
@@ -122,7 +113,7 @@ public class Select {
 
         // Find table engine
         try {
-            Engine engine = currentDB.getTables().get(tableName).getEngine();
+            Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
             rows = engine.fetchRows(tableName, fieldList, limit, offset);
             HelperMethods.printAsciiTable(fieldList,rows);
 

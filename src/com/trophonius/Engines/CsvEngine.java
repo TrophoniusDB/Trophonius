@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
 
+import com.trophonius.Main;
 import com.trophonius.dbo.Row;
 
 import java.io.FileWriter;
@@ -12,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-
-import static com.trophonius.Main.currentDB;
 
 // CSV ENGINE
 public class CsvEngine implements Engine {
@@ -86,7 +85,7 @@ public class CsvEngine implements Engine {
         AtomicInteger numberOfRows = new AtomicInteger();
 
         try {
-            List valueList = Files.lines(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
+            List valueList = Files.lines(Paths.get("data/" + Main.currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
             if (limit == Integer.MAX_VALUE) {
                 numberOfRows.set(valueList.size());
             }
