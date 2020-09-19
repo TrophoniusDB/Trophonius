@@ -85,7 +85,7 @@ public class HelperMethods {
     public static void printAsciiTable(long rowCount) {
         int len = String.valueOf(rowCount).length();
         len = len < "count(*)".length() ? "count(*)".length() : len;
-       System.out.println("+"+ "-".repeat(len+2)+"+");
+        System.out.println("+"+ "-".repeat(len+2)+"+");
         System.out.println("| count(*) |");
         System.out.println("+"+ "-".repeat(len+2)+"+");
         System.out.printf("| %-"+len+"s |\n",rowCount);
