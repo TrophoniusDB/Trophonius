@@ -101,7 +101,7 @@ public class HelperMethods {
         Map<String,Integer> fieldsWithLength = new LinkedHashMap<>();
         for(String fieldName: fieldList) {
             int fieldLength = fieldName.length();
-            // if field length is equal to or less than null (4), make it same length as "null"
+            // if field length is equal to or less than "null" (4), make it same length as "null"
             if(fieldLength<5) fieldLength = 4;
             fieldsWithLength.put(fieldName,fieldLength);
         }
