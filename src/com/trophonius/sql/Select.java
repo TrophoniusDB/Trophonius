@@ -82,6 +82,12 @@ public class Select {
             // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
             if (words[1].equals("*")) {
                 fieldList.addAll(tableStructure.keySet());
+            } else if (words[1].equals("count(*)")) {
+                // get and print row count
+                Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
+                long rowCount = engine.getRowCount(Main.currentDB.getDbName(),  tableName);
+                HelperMethods.printAsciiTable(rowCount);
+                return;
             } else {
                 // Or else determine fields to be fetched and put them into the variable fieldList
                 // First substring the fields frm sql
@@ -111,15 +117,8 @@ public class Select {
         // Find table engine
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-            // count(*)
-            if(words[1].equals("count(*)")) {
-                long rowCount = engine.getRowCount(Main.currentDB.getDbName(),  tableName);
-                HelperMethods.printAsciiTable(rowCount);
-            } else {
-                rows = engine.fetchRows(tableName, fieldList, limit, offset);
-                HelperMethods.printAsciiTable(fieldList, rows);
-            }
-
+            rows = engine.fetchRows(tableName, fieldList, limit, offset);
+            HelperMethods.printAsciiTable(fieldList, rows);
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
         }

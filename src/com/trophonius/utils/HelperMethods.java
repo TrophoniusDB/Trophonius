@@ -83,12 +83,13 @@ public class HelperMethods {
 
     // Print ASCII Table Row Count
     public static void printAsciiTable(long rowCount) {
-
-        System.out.println("+-----------------------+");
-        System.out.println("|         count(*)      |");
-        System.out.println("+-----------------------+");
-        System.out.println("| "+rowCount +"         |");
-        System.out.println("+-----------------------+");
+        int len = String.valueOf(rowCount).length();
+        len = len < "count(*)".length() ? "count(*)".length() : len;
+       System.out.println("+"+ "-".repeat(len+2)+"+");
+        System.out.println("| count(*) |");
+        System.out.println("+"+ "-".repeat(len+2)+"+");
+        System.out.printf("| %-"+len+"s |\n",rowCount);
+        System.out.println("+"+ "-".repeat(len+2)+"+");
 
     }
 
