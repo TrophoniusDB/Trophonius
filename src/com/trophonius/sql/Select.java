@@ -70,27 +70,21 @@ public class Select {
         Map<String,String> whereTerms = new LinkedHashMap<>();
 
         // Where-terms
-        for(int i = whereStart; i< whereEnd;i+=3) {
+        for(int i = whereStart; i< whereEnd;) {
             System.out.println("initial words[i]: "+words[i]);
+
             if (words[i].contains("=")) {
-                System.out.println("words[i] inneholder=");
-                String[] term = words[i].split("=");
-                System.out.println("term[0]: "+term[0]);
-                words[i]=term[0];
-                System.out.println("words[i]: "+words[i]);
-
-                words[i+1]="=";
-                System.out.println("words[i+1]: "+words[i+1]);
-
-                if(term.length>2) {
-                    words[i+2] = term[1];
-                    System.out.println("term[1]: "+term[1]);
-                    System.out.println("words[i+2]: "+words[i+2]);
-
-                }
-
+                System.out.println("words[i] inneholder =");
+                String key = words[i].substring(0,words[i].indexOf("="));
+                System.out.println("key: "+key);
+                String value = words[i].substring(words[i].indexOf("="));
+                System.out.println("value: "+value);
+                whereTerms.put(key,value);
+                i++;
+            } else {
+                whereTerms.put(words[i], words[i + 1] + words[i + 2]);
+                i+=3;
             }
-            whereTerms.put(words[i],words[i+1]+words[i+2]);
         }
 
         System.out.println(whereTerms);
