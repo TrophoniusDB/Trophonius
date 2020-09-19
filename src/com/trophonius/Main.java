@@ -26,7 +26,7 @@ public class Main {
         Logger logger = LoggerFactory.getLogger(Main.class);
 
         System.out.println("Welcome to Trophonius - a Simple and Fast Database");
-        System.out.println("Version 0.1.4");
+        System.out.println("Version 0.1.5");
         System.out.println("Type 'help' or '\\h' for help and 'quit' or '\\q' to exit");
         logger.info("Trophonius started");
 
