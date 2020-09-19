@@ -21,7 +21,7 @@ public class Select {
     public Select (String tableName, String sql) {
 
         // Split sql into separate words
-        String[] words = sql.split("[= ]");
+        String[] words = sql.split("[ ]");
 
         // make a list to hold field names from sql
         List<String> fieldList = new ArrayList<>();
@@ -59,18 +59,41 @@ public class Select {
                 whereEnd = i;
             }
 
-
-        }
+        } // end parse words
 
         // if whereStart is present and no whereEnd is set, set it to the end of the SQL-sentence
         whereEnd = whereStart!=0 && whereEnd == 0 ? words.length : whereEnd;
-        System.out.println("whereStart: "+whereStart);
-        System.out.println("whereEnd: "+whereEnd);
+        //System.out.println("whereStart: "+whereStart);
+        //System.out.println("whereEnd: "+whereEnd);
+
+        // create map of where-terms
+        Map<String,String> whereTerms = new LinkedHashMap<>();
+
         // Where-terms
-        for(int i = whereStart; i< whereEnd;i++) {
-            System.out.println(words[i]);
+        for(int i = whereStart; i< whereEnd;i+=3) {
+            System.out.println("initial words[i]: "+words[i]);
+            if (words[i].contains("=")) {
+                System.out.println("words[i] inneholder=");
+                String[] term = words[i].split("=");
+                System.out.println("term[0]: "+term[0]);
+                words[i]=term[0];
+                System.out.println("words[i]: "+words[i]);
+
+                words[i+1]="=";
+                System.out.println("words[i+1]: "+words[i+1]);
+
+                if(term.length>2) {
+                    words[i+2] = term[1];
+                    System.out.println("term[1]: "+term[1]);
+                    System.out.println("words[i+2]: "+words[i+2]);
+
+                }
+
+            }
+            whereTerms.put(words[i],words[i+1]+words[i+2]);
         }
 
+        System.out.println(whereTerms);
 
         // Check for functions
         // now()
