@@ -44,50 +44,38 @@ public class Select {
             if (words[i].toLowerCase().equals("offset")) {
                 offset = Integer.valueOf(words[i + 1]);
             }
-            // Check for WHERE start
-            if (words[i].toLowerCase().equals("where")) {
-                whereStart = i+1;
-            }
-            // Check for WHERE End
-            if (words[i].toLowerCase().equals("group")) {
-                whereEnd = i;
-            }
-            if (words[i].toLowerCase().equals("order") && whereEnd==0) {
-                whereEnd = i;
-            }
-            if (words[i].toLowerCase().equals("limit") && whereEnd==0) {
-                whereEnd = i;
-            }
-
         } // end parse words
 
-        // if whereStart is present and no whereEnd is set, set it to the end of the SQL-sentence
-        whereEnd = whereStart!=0 && whereEnd == 0 ? words.length : whereEnd;
-        //System.out.println("whereStart: "+whereStart);
-        //System.out.println("whereEnd: "+whereEnd);
-
-        // create map of where-terms
-        Map<String,String> whereTerms = new LinkedHashMap<>();
-
-        // Where-terms
-        for(int i = whereStart; i< whereEnd;) {
-            System.out.println("initial words[i]: "+words[i]);
-
-            if (words[i].contains("=")) {
-                System.out.println("words[i] inneholder =");
-                String key = words[i].substring(0,words[i].indexOf("="));
-                System.out.println("key: "+key);
-                String value = words[i].substring(words[i].indexOf("="));
-                System.out.println("value: "+value);
-                whereTerms.put(key,value);
-                i++;
+        // Check for WHERE start and end
+        if (sql.toLowerCase().contains("where")) {
+            whereStart = sql.toLowerCase().indexOf("where")+6;
+            if (sql.toLowerCase().contains("group")) {
+                whereEnd = sql.toLowerCase().indexOf("group");
+            } else if (sql.toLowerCase().contains("order")) {
+                whereEnd = sql.toLowerCase().indexOf("order");
+            } else if (sql.toLowerCase().contains("limit")) {
+                whereEnd = sql.toLowerCase().indexOf("limit");
             } else {
-                whereTerms.put(words[i], words[i + 1] + words[i + 2]);
-                i+=3;
+                whereEnd = sql.length();
             }
+
         }
 
-        System.out.println(whereTerms);
+        String whereTerms = sql.toLowerCase().substring(whereStart,whereEnd);
+
+        String relTerms ="";
+        if(whereTerms.contains("=")) {
+            relTerms = whereTerms.replace("=", ".equals(");
+            relTerms = relTerms.replaceAll(" ","");
+            relTerms += ")";
+        }
+
+
+        System.out.println(relTerms);
+
+
+
+
 
         // Check for functions
         // now()
