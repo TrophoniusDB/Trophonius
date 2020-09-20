@@ -191,9 +191,27 @@ public class ObjectEngine implements Engine {
      } else {
 
          for (FilterTerm term : filterTerms) {
-              if (row.getRow().get(term.getFieldName()).toString().toLowerCase().equals(term.getValue())) {
-              retrieve = true;
+
+             if(term.getOperand().equals("=")) {
+                 if (row.getRow().get(term.getFieldName()).toString().toLowerCase().equals(term.getValue())) {
+                     retrieve = true;
+                 }
              }
+
+             if(term.getOperand().equals(">") | term.getOperand().equals("<")) {
+                 Integer fieldValue = Integer.valueOf(row.getRow().get(term.getFieldName()).toString());
+                 Integer termValue = Integer.valueOf(term.getValue());
+                 if(term.getOperand().equals(">")) {
+                     if (fieldValue > termValue) {
+                         retrieve = true;
+                     }
+                 } else {
+                     if ( fieldValue < termValue ) {
+                         retrieve = true;
+                     }
+                 }
+             }
+
          }
      }
         return  retrieve;

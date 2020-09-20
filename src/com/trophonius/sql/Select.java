@@ -63,17 +63,25 @@ public class Select {
 
         String whereTerms = sql.toLowerCase().substring(whereStart,whereEnd);
         List<FilterTerm> filterTerms = new LinkedList<>();
-        String relTerms ="";
+        String terms ="";
+        String operand = "";
         if(whereTerms.contains("=")) {
-
-            whereTerms = whereTerms.replaceAll(" ","");
-            String fieldName = whereTerms.substring(0,whereTerms.indexOf("="));
-            String operand = "=";
-            String value = whereTerms.substring(whereTerms.indexOf("=")+1);
-            FilterTerm filter = new FilterTerm(fieldName,operand,value);
-            filterTerms.add(filter);
+            operand = "=";
+        } else if (whereTerms.contains(">")) {
+            operand = ">";
+        } else if (whereTerms.contains("<")) {
+            operand = "<";
+        } else if (whereTerms.contains("!=") || whereTerms.contains("<>")) {
+            operand = "!=";
         }
 
+        if(operand!="") {
+            terms = whereTerms.replaceAll(" ", "");
+            String fieldName = terms.substring(0, terms.indexOf(operand));
+            String value = terms.substring(terms.indexOf(operand) + 1);
+            FilterTerm filter = new FilterTerm(fieldName, operand, value);
+            filterTerms.add(filter);
+        }
         // Check for functions
         // now()
 
