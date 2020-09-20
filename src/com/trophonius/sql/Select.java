@@ -120,7 +120,11 @@ public class Select {
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
             rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
-            HelperMethods.printAsciiTable(fieldList, rows);
+            if(!rows.isEmpty()) {
+                HelperMethods.printAsciiTable(fieldList, rows);
+            } else {
+                System.out.println("No rows found...");
+            }
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
         }

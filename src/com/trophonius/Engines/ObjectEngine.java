@@ -191,15 +191,13 @@ public class ObjectEngine implements Engine {
      } else {
 
          for (FilterTerm term : filterTerms) {
-             System.out.println("sjekker: " + term.toString());
-             if (row.getRow().get(term.getFieldName()).equals(term.getValue())) {
-                 retrieve = true;
+              if (row.getRow().get(term.getFieldName()).toString().toLowerCase().equals(term.getValue())) {
+              retrieve = true;
              }
          }
-         System.out.println("retrieve is: "+retrieve);
      }
         return  retrieve;
-    }
+    } // END filterRow
 
 
     @Override
