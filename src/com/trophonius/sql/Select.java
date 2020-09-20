@@ -123,7 +123,7 @@ public class Select {
             if(!rows.isEmpty()) {
                 HelperMethods.printAsciiTable(fieldList, rows);
             } else {
-                System.out.println("No rows found...");
+                System.out.print("0 rows found ");
             }
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
