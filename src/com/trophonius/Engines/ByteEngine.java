@@ -31,7 +31,7 @@ public class ByteEngine implements Engine {
     }
 
     @Override
-    public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
+    public List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset) {
 
         return null;
     }

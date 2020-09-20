@@ -70,12 +70,7 @@ public class Select {
             relTerms += ")";
         }
 
-
         System.out.println(relTerms);
-
-
-
-
 
         // Check for functions
         // now()
@@ -122,7 +117,7 @@ public class Select {
         // Find table engine
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-            rows = engine.fetchRows(tableName, fieldList, limit, offset);
+            rows = engine.fetchRows(tableName, fieldList, relTerms, limit, offset);
             HelperMethods.printAsciiTable(fieldList, rows);
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");

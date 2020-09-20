@@ -75,9 +75,9 @@ public class DML<E> {
             }
 
             try {
-                Table thisTable = currentDB.getTables().get(tableName);
+                Table currentTable = currentDB.getTables().get(tableName);
                 // Get table suffix to find the table
-                String tableSuffix = currentDB.getTables().get(tableName).getEngine().getTableSuffix();
+                String tableSuffix = currentTable.getEngine().getTableSuffix();
 
                 // Check if table not found
                 if (!java.nio.file.Files.isRegularFile(Paths.get("data/" + currentDB.getDbName() + "/" + tableName + "."+tableSuffix))) {
@@ -88,6 +88,7 @@ public class DML<E> {
                     // Table exists - open it, fetch row and return fields.
                     // If timing is on - set start time
                     if(timing) startTime = System.currentTimeMillis();
+                    // dispatch to Select
                     Select select = new Select(tableName, sql);
                     // Add timing info
                     if(timing) System.out.println(" in "+(System.currentTimeMillis()-startTime)+ " millis");

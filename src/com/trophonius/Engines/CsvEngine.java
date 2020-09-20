@@ -78,7 +78,7 @@ public class CsvEngine implements Engine {
     }
 
     @Override
-    public List<Row> fetchRows(String tableName, List<String> fieldList, int limit, int offset) {
+    public List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset) {
         List<Row> rows = new ArrayList<>();
 
         // Open database file
