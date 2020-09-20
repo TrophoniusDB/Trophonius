@@ -144,7 +144,7 @@ public class ObjectEngine implements Engine {
      * Fetches rows from table according to SQL terms and returns them as a List
      * @param tableName Name of the Table
      * @param fieldList List of table fields to be teched
-     * @param relTermMap Search terms converted from SQL to Java
+     * @param filterTerms List of FilterTerm objects
      * @param limit Number of rows to fecth
      * @param offset Number of rows to skip
      * @return Returns a List of row - objects
@@ -186,14 +186,18 @@ public class ObjectEngine implements Engine {
 
     private <E> boolean filterRow(Row row, List<FilterTerm> filterTerms) {
      boolean retrieve = false;
+     if (filterTerms.isEmpty()) {
+         retrieve = true;
+     } else {
 
-      for (FilterTerm term : filterTerms) {
-          System.out.println("sjekker: "+term.toString());
-          if (row.getRow().get(term.getFieldName()).equals(term.getValue())) {
-              retrieve = true;
-          }
-      }
-        System.out.println("retrieve is: "+retrieve);
+         for (FilterTerm term : filterTerms) {
+             System.out.println("sjekker: " + term.toString());
+             if (row.getRow().get(term.getFieldName()).equals(term.getValue())) {
+                 retrieve = true;
+             }
+         }
+         System.out.println("retrieve is: "+retrieve);
+     }
         return  retrieve;
     }
 
