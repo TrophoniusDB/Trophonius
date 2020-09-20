@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
 import com.trophonius.dbo.Row;
+import com.trophonius.sql.FilterTerm;
 
 import java.io.Serializable;
 import java.util.List;
@@ -26,7 +27,7 @@ public interface Engine extends Serializable {
 
     void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose);
 
-    List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset);
+    List<Row> fetchRows(String tableName, List<String> fieldList, List<FilterTerm> relTerms, int limit, int offset);
 
     long getRowCount(String dbName, String tableName);
 }

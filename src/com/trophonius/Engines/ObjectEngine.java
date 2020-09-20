@@ -1,8 +1,8 @@
 package com.trophonius.Engines;
 
 import com.trophonius.Main;
-import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
+import com.trophonius.sql.FilterTerm;
 import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.AppendableObjectOutputStream;
 
@@ -12,7 +12,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 /**
  * OBJECT ENGINE - a storage engine that stores serialized Java Objects.
@@ -145,13 +144,13 @@ public class ObjectEngine implements Engine {
      * Fetches rows from table according to SQL terms and returns them as a List
      * @param tableName Name of the Table
      * @param fieldList List of table fields to be teched
-     * @param relTerms Search terms converted from SQL to Java
+     * @param relTermMap Search terms converted from SQL to Java
      * @param limit Number of rows to fecth
      * @param offset Number of rows to skip
      * @return Returns a List of row - objects
      */
     @Override
-    public List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset) {
+    public List<Row> fetchRows(String tableName, List<String> fieldList, List<FilterTerm> filterTerms, int limit, int offset) {
 
         List<Row> rows = new ArrayList<>();
 
@@ -164,7 +163,7 @@ public class ObjectEngine implements Engine {
             while (rowCount < limit+offset) {
                 try {
                     Row theRow = (Row) is.readObject();
-                    if(rowCount >= offset & filterRow(theRow,relTerms)) {
+                    if(rowCount >= offset & filterRow(theRow,filterTerms)) {
                         rows.add(theRow);
                     }
                     rowCount++;
@@ -185,9 +184,16 @@ public class ObjectEngine implements Engine {
         return rows;
     } // end
 
-    private <E> boolean filterRow(Row row, String relTerms) {
-     boolean retrieve = true;
-        System.out.println("Henter: "+relTerms);
+    private <E> boolean filterRow(Row row, List<FilterTerm> filterTerms) {
+     boolean retrieve = false;
+
+      for (FilterTerm term : filterTerms) {
+          System.out.println("sjekker: "+term.toString());
+          if (row.getRow().get(term.getFieldName()).equals(term.getValue())) {
+              retrieve = true;
+          }
+      }
+        System.out.println("retrieve is: "+retrieve);
         return  retrieve;
     }
 

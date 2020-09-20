@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
 import com.trophonius.dbo.Row;
+import com.trophonius.sql.FilterTerm;
 
 import java.util.List;
 
@@ -31,7 +32,7 @@ public class ByteEngine implements Engine {
     }
 
     @Override
-    public List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset) {
+    public List<Row> fetchRows(String tableName, List<String> fieldList, List<FilterTerm> relTerms, int limit, int offset) {
 
         return null;
     }

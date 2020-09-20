@@ -3,6 +3,7 @@ package com.trophonius.Engines;
 
 import com.trophonius.Main;
 import com.trophonius.dbo.Row;
+import com.trophonius.sql.FilterTerm;
 
 import java.io.FileWriter;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class CsvEngine implements Engine {
     }
 
     @Override
-    public List<Row> fetchRows(String tableName, List<String> fieldList, String relTerms, int limit, int offset) {
+    public List<Row> fetchRows(String tableName, List<String> fieldList, List<FilterTerm> relTerms, int limit, int offset) {
         List<Row> rows = new ArrayList<>();
 
         // Open database file

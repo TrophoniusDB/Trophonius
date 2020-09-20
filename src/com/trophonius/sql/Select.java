@@ -62,15 +62,17 @@ public class Select {
         }
 
         String whereTerms = sql.toLowerCase().substring(whereStart,whereEnd);
-
+        List<FilterTerm> filterTerms = new LinkedList<>();
         String relTerms ="";
         if(whereTerms.contains("=")) {
-            relTerms = whereTerms.replace("=", ".equals(");
-            relTerms = relTerms.replaceAll(" ","");
-            relTerms += ")";
-        }
 
-        System.out.println(relTerms);
+            whereTerms = whereTerms.replaceAll(" ","");
+            String fieldName = whereTerms.substring(0,whereTerms.indexOf("="));
+            String operand = "=";
+            String value = whereTerms.substring(whereTerms.indexOf("=")+1);
+            FilterTerm filter = new FilterTerm(fieldName,operand,value);
+            filterTerms.add(filter);
+        }
 
         // Check for functions
         // now()
@@ -117,7 +119,7 @@ public class Select {
         // Find table engine
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-            rows = engine.fetchRows(tableName, fieldList, relTerms, limit, offset);
+            rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
             HelperMethods.printAsciiTable(fieldList, rows);
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
