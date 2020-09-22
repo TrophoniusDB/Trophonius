@@ -87,6 +87,7 @@ public class Select {
         // round()
         // / * + -
 
+
         try {
             // Read fieldNames and Fields from tableStructure
             LinkedHashMap<String, Field> tableStructure = Main.currentDB.getTables().get(tableName).getTableStructure();
@@ -138,8 +139,6 @@ public class Select {
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
         }
-
-
 
     } // END SELECT
 
