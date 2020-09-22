@@ -84,6 +84,8 @@ public class Select {
         }
         // Check for functions
         // now()
+        // round()
+        // / * + -
 
         try {
             // Read fieldNames and Fields from tableStructure
