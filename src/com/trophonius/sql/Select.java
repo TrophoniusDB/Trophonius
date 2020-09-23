@@ -135,7 +135,6 @@ public class Select {
                 rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
             } catch (Exception e) {
                 System.out.println("Rows could not be retrieved.");
-                System.out.println(e.getMessage());
             }
 
             if(!rows.isEmpty()) {
