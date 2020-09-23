@@ -130,7 +130,14 @@ public class Select {
         // Find table engine
         try {
             Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-            rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
+
+            try {
+                rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
+            } catch (Exception e) {
+                System.out.println("Rows could not be retrieved.");
+                System.out.println(e.getMessage());
+            }
+
             if(!rows.isEmpty()) {
                 HelperMethods.printAsciiTable(fieldList, rows);
             } else {
@@ -138,6 +145,7 @@ public class Select {
             }
         } catch (Exception e) {
             System.out.println("ERROR: Table Storage Engine not found");
+            System.out.println(e.getMessage());
         }
 
     } // END SELECT
