@@ -248,7 +248,7 @@ public class DDL {
             if (tableAction.equals("add")) {
                 // Add field to table
                 currentDB.getTables().get(tableName).addField(tableName, fieldProps);
-                logger.info("Field: "+fieldProps+" added to table "+tableName+"in database"+currentDB.getDbName());
+                logger.info("Field: "+fieldProps+" added to table "+tableName+" in database "+currentDB.getDbName());
             }
 
             // Drop field from table
