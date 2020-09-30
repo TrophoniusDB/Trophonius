@@ -5,13 +5,14 @@ import com.trophonius.dbo.Row;
 import com.trophonius.sql.FilterTerm;
 import com.trophonius.utils.AppendableObjectInputStream;
 import com.trophonius.utils.AppendableObjectOutputStream;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OBJECT ENGINE - a storage engine that stores serialized Java Objects.
@@ -23,6 +24,7 @@ public class ObjectEngine implements Engine {
     private String tableSuffix;
     private boolean binaryFormat = false;
     private String comment;
+    Logger logger = LoggerFactory.getLogger(ObjectEngine.class);
 
 
     public ObjectEngine() {
@@ -65,6 +67,7 @@ public class ObjectEngine implements Engine {
         } catch (IOException e) {
             System.out.println("Error! Could not open table file...");
             e.printStackTrace();
+            logger.error("Could not open table file : "+e.getMessage());
         }
         return rowCount;
     } // end getRowCount
@@ -91,6 +94,7 @@ public class ObjectEngine implements Engine {
                     IOException e) {
                 System.out.println("Table could not we written to disk: ");
                 e.printStackTrace();
+                logger.error("Table could not we written to disk: "+e.getMessage());
             }
 
         } else {
@@ -135,7 +139,7 @@ public class ObjectEngine implements Engine {
         } catch (IOException e) {
             System.out.println("Row could not we written to file for table: " + tableName);
             e.printStackTrace();
-
+            logger.error("Row could not we written to file for table: " + tableName + " - "+e.getMessage());
         }
 
     }

@@ -5,6 +5,8 @@ import com.trophonius.Main;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Row;
 import com.trophonius.utils.HelperMethods;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
  */
 public class Select {
     private int limit, offset, whereStart=0, whereEnd=0;
+    Logger logger = LoggerFactory.getLogger(Select.class);
 
     public Select() {
     }
@@ -135,6 +138,7 @@ public class Select {
                 rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);
             } catch (Exception e) {
                 System.out.println("Rows could not be retrieved.");
+                logger.error("Rows could not be retrieved from "+ engine.getName());
             }
 
             if(!rows.isEmpty()) {
