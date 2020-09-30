@@ -227,12 +227,14 @@ public class DDL {
         if (sql.toLowerCase().startsWith("drop database")) {
             String dbName = words[2];
             currentDB.deleteDatabase(dbName);
+            logger.info("Database "+dbName+ " and all its tables deleted.");
         }
 
         // SQL: DROP TABLE
         if (sql.toLowerCase().startsWith("drop table")) {
             String tableName = words[2];
             currentDB.deleteTable(currentDB, tableName);
+            logger.info("Table "+tableName+" in database "+currentDB.getDbName()+ " deleted.");
         }
 
         // SQL: ALTER TABLE
@@ -246,6 +248,7 @@ public class DDL {
             if (tableAction.equals("add")) {
                 // Add field to table
                 currentDB.getTables().get(tableName).addField(tableName, fieldProps);
+                logger.info("Field: "+fieldProps+" added to table "+tableName+"in database"+currentDB.getDbName());
             }
 
             // Drop field from table
@@ -256,5 +259,4 @@ public class DDL {
 
     } // end parseSql
 
-
-}
+} // END CLASS
