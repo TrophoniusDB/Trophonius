@@ -218,7 +218,7 @@ public class DDL {
 
                 // Call the method for creating the Table File on the relevant engine
                 engine.createTableFile(currentDB.getDbName(), t1.getTableName());
-                logger.info("Table "+t1.getTableName() +" in database " + currentDB.getDbName() + ".");
+                logger.info("Table "+t1.getTableName() +" in database " + currentDB.getDbName() + " created.");
             } // end else
         } // end create table
 
