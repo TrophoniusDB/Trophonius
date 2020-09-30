@@ -66,7 +66,7 @@ public class HelperMethods {
         try (FileWriter outFile = new FileWriter(filename)){
             Random rand = new Random();
             for (Integer i = 1; i <= rows ; i++) {
-                outFile.append("insert into test (id,tall) values ("+i+","+rand.nextInt()+")\n");
+                outFile.append("insert into test (id,tall) values ("+i+","+rand.nextInt()+");\n");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -289,7 +289,6 @@ public class HelperMethods {
         }
 
     } // END showLog
-
 
 } // END CLASS
 

@@ -4,9 +4,12 @@ import com.trophonius.Engines.ByteEngine;
 import com.trophonius.Engines.CsvEngine;
 import com.trophonius.Engines.Engine;
 import com.trophonius.Engines.ObjectEngine;
+import com.trophonius.Main;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Field;
 import com.trophonius.dbo.Table;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
@@ -20,6 +23,7 @@ public class DDL {
     private Engine defaultEngine = new ObjectEngine();
     private String defaultCharset = "utf8";
     private String defaultCollation = "en_US";
+    Logger logger = LoggerFactory.getLogger(DDL.class);
 
     /***
      * Constructor that calls method to parse SQL
@@ -106,6 +110,7 @@ public class DDL {
                 try {
                     Database.saveDatabase(db1);
                     System.out.println("Database " + db1.getDbName() + " saved.");
+                    logger.info("Database " + db1.getDbName() + " created.");
                     currentDB = db1;
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -213,7 +218,7 @@ public class DDL {
 
                 // Call the method for creating the Table File on the relevant engine
                 engine.createTableFile(currentDB.getDbName(), t1.getTableName());
-
+                logger.info("Table "+t1.getTableName() +" in database " + currentDB.getDbName() + ".");
             } // end else
         } // end create table
 
