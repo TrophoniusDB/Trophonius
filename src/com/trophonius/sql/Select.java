@@ -68,14 +68,14 @@ public class Select {
         List<FilterTerm> filterTerms = new LinkedList<>();
         String terms ="";
         String operand = "";
-        if(whereTerms.contains("=")) {
-            operand = "=";
+        if  (whereTerms.contains("!=") || whereTerms.contains("<>")) {
+            operand = "!=";
         } else if (whereTerms.contains(">")) {
             operand = ">";
         } else if (whereTerms.contains("<")) {
             operand = "<";
-        } else if (whereTerms.contains("!=") || whereTerms.contains("<>")) {
-            operand = "!=";
+        } else if (whereTerms.contains("=")) {
+            operand = "=";
         }
 
         if(operand!="") {

@@ -39,7 +39,8 @@ public class ObjectEngine implements Engine {
 
     /**
      * Counts table rows
-     * @param dbName Name of the Database
+     *
+     * @param dbName    Name of the Database
      * @param tableName name of the Table
      * @return returns rowcount as long
      */
@@ -67,13 +68,14 @@ public class ObjectEngine implements Engine {
         } catch (IOException e) {
             System.out.println("Error! Could not open table file...");
             e.printStackTrace();
-            logger.error("Could not open table file : "+e.getMessage());
+            logger.error("Could not open table file : " + e.getMessage());
         }
         return rowCount;
     } // end getRowCount
 
     /**
      * Creates the physical table file
+     *
      * @param dbName    Name of the Database to which the table belongs
      * @param tableName Name of the Table for which to create a file
      */
@@ -94,7 +96,7 @@ public class ObjectEngine implements Engine {
                     IOException e) {
                 System.out.println("Table could not we written to disk: ");
                 e.printStackTrace();
-                logger.error("Table could not we written to disk: "+e.getMessage());
+                logger.error("Table could not we written to disk: " + e.getMessage());
             }
 
         } else {
@@ -106,10 +108,11 @@ public class ObjectEngine implements Engine {
 
     /**
      * Serializes and writes rows to disk
-     * @param dbName Name of Database
+     *
+     * @param dbName    Name of Database
      * @param tableName Name of Table
-     * @param row one row object
-     * @param verbose whether to give feedback for each stored row or not
+     * @param row       one row object
+     * @param verbose   whether to give feedback for each stored row or not
      */
     @Override
     public void writeRowToDisk(String dbName, String tableName, Row row, boolean verbose) {
@@ -139,18 +142,19 @@ public class ObjectEngine implements Engine {
         } catch (IOException e) {
             System.out.println("Row could not we written to file for table: " + tableName);
             e.printStackTrace();
-            logger.error("Row could not we written to file for table: " + tableName + " - "+e.getMessage());
+            logger.error("Row could not we written to file for table: " + tableName + " - " + e.getMessage());
         }
 
     }
 
     /**
      * Fetches rows from table according to SQL terms and returns them as a List
-     * @param tableName Name of the Table
-     * @param fieldList List of table fields to be teched
+     *
+     * @param tableName   Name of the Table
+     * @param fieldList   List of table fields to be teched
      * @param filterTerms List of FilterTerm objects
-     * @param limit Number of rows to fecth
-     * @param offset Number of rows to skip
+     * @param limit       Number of rows to fecth
+     * @param offset      Number of rows to skip
      * @return Returns a List of row - objects
      */
     @Override
@@ -164,10 +168,10 @@ public class ObjectEngine implements Engine {
             AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
 
             long rowCount = 0;
-            while (rowCount < limit+offset) {
+            while (rowCount < limit + offset) {
                 try {
                     Row theRow = (Row) is.readObject();
-                    if(rowCount >= offset & filterRow(theRow,filterTerms)) {
+                    if (rowCount >= offset & filterRow(theRow, filterTerms)) {
                         rows.add(theRow);
                     }
                     rowCount++;
@@ -189,36 +193,47 @@ public class ObjectEngine implements Engine {
     } // end
 
     private <E> boolean filterRow(Row row, List<FilterTerm> filterTerms) {
-     boolean retrieve = false;
-     if (filterTerms.isEmpty()) {
-         retrieve = true;
-     } else {
+        boolean retrieve = false;
 
-         for (FilterTerm term : filterTerms) {
+        if (filterTerms.isEmpty()) {
+            retrieve = true;
+        } else {
 
-             if(term.getOperand().equals("=")) {
-                 if (row.getRow().get(term.getFieldName()).toString().toLowerCase().equals(term.getValue())) {
-                     retrieve = true;
-                 }
-             }
+            for (FilterTerm term : filterTerms) {
 
-             if(term.getOperand().equals(">") | term.getOperand().equals("<")) {
-                 Integer fieldValue = Integer.valueOf(row.getRow().get(term.getFieldName()).toString());
-                 Integer termValue = Integer.valueOf(term.getValue());
-                 if(term.getOperand().equals(">")) {
-                     if (fieldValue > termValue) {
-                         retrieve = true;
-                     }
-                 } else {
-                     if ( fieldValue < termValue ) {
-                         retrieve = true;
-                     }
-                 }
-             }
+                // Get the stored value and compare it to the filter term value
+                Integer fieldValue = Integer.valueOf(row.getRow().get(term.getFieldName()).toString());
+                Integer termValue = Integer.valueOf(term.getValue());
+                String operand = term.getOperand();
 
-         }
-     }
-        return  retrieve;
+                System.out.println("fieldValue: "+fieldValue);
+                System.out.println("termValue: "+termValue);
+                System.out.println("operand: "+operand);
+
+
+                if (operand.equals("=")) {
+                    if (fieldValue.equals(termValue)) {
+                        retrieve = true;
+                    }
+
+                } else if (operand.equals(">")) {
+                    if (fieldValue > termValue) {
+                        retrieve = true;
+                    }
+                } else if (operand.equals("<")) {
+                    if (fieldValue < termValue) {
+                        retrieve = true;
+                    }
+
+                } else if (operand.equals("!=") || operand.equals("<>")) {
+                    if (!fieldValue.equals(termValue)) {
+                        retrieve = true;
+                    }
+                }
+
+            }
+        }
+        return retrieve;
     } // END filterRow
 
 
