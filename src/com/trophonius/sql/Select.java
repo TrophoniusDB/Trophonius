@@ -81,10 +81,13 @@ public class Select {
         if(operand!="") {
             terms = whereTerms.replaceAll(" ", "");
             String fieldName = terms.substring(0, terms.indexOf(operand));
-            String value = terms.substring(terms.indexOf(operand) + 1);
+            String value = terms.substring(terms.indexOf(operand)+operand.length());
             FilterTerm filter = new FilterTerm(fieldName, operand, value);
             filterTerms.add(filter);
         }
+
+        filterTerms.stream().forEach(System.out::println);
+
         // Check for functions
         // now()
         // round()
