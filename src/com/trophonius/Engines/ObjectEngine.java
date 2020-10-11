@@ -202,8 +202,8 @@ public class ObjectEngine implements Engine {
             for (FilterTerm term : filterTerms) {
 
                 // Get the stored value and compare it to the filter term value
-                Integer fieldValue = Integer.valueOf(row.getRow().get(term.getFieldName()).toString());
-                Integer termValue = Integer.valueOf(term.getValue());
+                String fieldValue = row.getRow().get(term.getFieldName()).toString();
+                String termValue = term.getValue();
                 String operand = term.getOperand();
 
                 System.out.println("fieldValue: "+fieldValue);
@@ -216,11 +216,11 @@ public class ObjectEngine implements Engine {
                         retrieve = true;
                     }
                 } else if (operand.equals(">")) {
-                    if (fieldValue > termValue) {
+                    if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
                         retrieve = true;
                     }
                 } else if (operand.equals("<")) {
-                    if (fieldValue < termValue) {
+                    if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
                         retrieve = true;
                     }
                 } else if (operand.equals("!=") || operand.equals("<>")) {
