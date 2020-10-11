@@ -215,7 +215,6 @@ public class ObjectEngine implements Engine {
                     if (fieldValue.equals(termValue)) {
                         retrieve = true;
                     }
-
                 } else if (operand.equals(">")) {
                     if (fieldValue > termValue) {
                         retrieve = true;
@@ -224,7 +223,6 @@ public class ObjectEngine implements Engine {
                     if (fieldValue < termValue) {
                         retrieve = true;
                     }
-
                 } else if (operand.equals("!=") || operand.equals("<>")) {
                     if (!fieldValue.equals(termValue)) {
                         retrieve = true;
