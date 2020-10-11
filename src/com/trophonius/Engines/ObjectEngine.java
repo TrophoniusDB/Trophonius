@@ -209,7 +209,6 @@ public class ObjectEngine implements Engine {
                 System.out.println("termValue: "+termValue);
                 System.out.println("operand: "+operand);
 
-
                 switch (operand) {
                     case "=":
                         if (fieldValue.equals(termValue)) {
@@ -217,7 +216,6 @@ public class ObjectEngine implements Engine {
                         }
                         break;
                     case ">":
-
                         if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
                             retrieve = true;
                         }
@@ -234,7 +232,6 @@ public class ObjectEngine implements Engine {
                         }
                         break;
                 }
-
             }
         }
         return retrieve;
