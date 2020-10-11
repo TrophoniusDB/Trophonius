@@ -202,8 +202,8 @@ public class ObjectEngine implements Engine {
             for (FilterTerm term : filterTerms) {
 
                 // Get the stored value and compare it to the filter term value
-                String fieldValue = row.getRow().get(term.getFieldName()).toString();
-                String termValue = term.getValue();
+                String fieldValue = row.getRow().get(term.getFieldName()).toString().toLowerCase();
+                String termValue = term.getValue().toLowerCase();
                 String operand = term.getOperand();
 
                 System.out.println("fieldValue: "+fieldValue);
