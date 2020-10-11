@@ -109,7 +109,7 @@ public class Select {
                 return;
             } else {
                 // Or else determine fields to be fetched and put them into the variable fieldList
-                // First substring the fields frm sql
+                // First substring the fields from sql
                 String fields = sql.toLowerCase()
                         .substring(sql.toLowerCase().indexOf("select") + 6, sql.toLowerCase().indexOf("from"));
                 // Then split the fields string and add Fields into fieldList
