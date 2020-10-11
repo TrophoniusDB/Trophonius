@@ -215,17 +215,21 @@ public class ObjectEngine implements Engine {
                     if (fieldValue.equals(termValue)) {
                         retrieve = true;
                     }
-                } else if (operand.equals(">")) {
-                    if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
-                        retrieve = true;
-                    }
-                } else if (operand.equals("<")) {
-                    if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
-                        retrieve = true;
-                    }
-                } else if (operand.equals("!=") || operand.equals("<>")) {
-                    if (!fieldValue.equals(termValue)) {
-                        retrieve = true;
+                } else {
+                    boolean b = Integer.getInteger(fieldValue) > Integer.getInteger(termValue);
+                    if (operand.equals(">")) {
+
+                        if (b) {
+                            retrieve = true;
+                        }
+                    } else if (operand.equals("<")) {
+                        if (b) {
+                            retrieve = true;
+                        }
+                    } else if (operand.equals("!=") || operand.equals("<>")) {
+                        if (!fieldValue.equals(termValue)) {
+                            retrieve = true;
+                        }
                     }
                 }
 
