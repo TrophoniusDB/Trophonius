@@ -136,7 +136,6 @@ public class ObjectEngine implements Engine {
             } else {
                 // Table file does not exists
                 System.out.println("Table file does not exist");
-                return;
             }
 
         } catch (IOException e) {
@@ -211,26 +210,29 @@ public class ObjectEngine implements Engine {
                 System.out.println("operand: "+operand);
 
 
-                if (operand.equals("=")) {
-                    if (fieldValue.equals(termValue)) {
-                        retrieve = true;
-                    }
-                } else {
-                    boolean b = Integer.getInteger(fieldValue) > Integer.getInteger(termValue);
-                    if (operand.equals(">")) {
+                switch (operand) {
+                    case "=":
+                        if (fieldValue.equals(termValue)) {
+                            retrieve = true;
+                        }
+                        break;
+                    case ">":
 
-                        if (b) {
+                        if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
                             retrieve = true;
                         }
-                    } else if (operand.equals("<")) {
-                        if (b) {
+                        break;
+                    case "<":
+                        if (Integer.getInteger(fieldValue) < Integer.getInteger(termValue)) {
                             retrieve = true;
                         }
-                    } else if (operand.equals("!=") || operand.equals("<>")) {
+                        break;
+                    case "!=":
+                    case "<>":
                         if (!fieldValue.equals(termValue)) {
                             retrieve = true;
                         }
-                    }
+                        break;
                 }
 
             }
