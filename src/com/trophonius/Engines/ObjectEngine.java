@@ -199,15 +199,10 @@ public class ObjectEngine implements Engine {
         } else {
 
             for (FilterTerm term : filterTerms) {
-
                 // Get the stored value and compare it to the filter term value
                 String fieldValue = row.getRow().get(term.getFieldName()).toString().toLowerCase();
                 String termValue = term.getValue().toLowerCase();
                 String operand = term.getOperand();
-
-                System.out.println("fieldValue: "+fieldValue);
-                System.out.println("termValue: "+termValue);
-                System.out.println("operand: "+operand);
 
                 switch (operand) {
                     case "=":
@@ -216,13 +211,21 @@ public class ObjectEngine implements Engine {
                         }
                         break;
                     case ">":
-                        if (Integer.getInteger(fieldValue) > Integer.getInteger(termValue)) {
-                            retrieve = true;
+                        try {
+                            if (Integer.parseInt(fieldValue) > Integer.parseInt(termValue)) {
+                                retrieve = true;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Not an integer "+e.getMessage());
                         }
                         break;
                     case "<":
-                        if (Integer.getInteger(fieldValue) < Integer.getInteger(termValue)) {
-                            retrieve = true;
+                        try {
+                            if (Integer.parseInt(fieldValue) < Integer.parseInt(termValue)) {
+                                retrieve = true;
+                            }
+                        } catch (Exception e) {
+                            System.out.println("Not an integer "+e.getMessage());
                         }
                         break;
                     case "!=":
