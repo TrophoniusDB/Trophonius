@@ -290,6 +290,16 @@ public class HelperMethods {
 
     } // END showLog
 
+    /**
+     * Method to clear terminal window screen
+     */
+    public static void clearScreen() {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+    }
+
+
+
 } // END CLASS
 
 
