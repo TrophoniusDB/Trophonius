@@ -113,18 +113,21 @@ public class DML<E> {
 
         // TODO check for other statements than insert
         if(timing) { startTime = System.currentTimeMillis(); }
+        int number;
         try {
-            Files.lines(Path.of(filename)).forEach(line -> {
-                // insert into tableName
-                Insert in = new Insert(line.toString(),false);
-            });
-                  // Insert as List<String>
+            // insert into tableName
+            number = (int) Files.lines(Path.of(filename)).map(line -> new Insert(line.toString(), false)).count();
+            System.out.print(number);
+            System.out.print(number > 1 ? " rows " : " row ");
+            System.out.println("from file inserted");
+
+            // Insert as List<String>
            // Insert in = new Insert(Files.lines(Path.of(filename)).collect(Collectors.toList()));
+
         } catch (IOException e) {
             System.out.println("SQL File not found");
             e.printStackTrace();
         }
-        System.out.print("All rows from file inserted");
         System.out.println(timing ? " in "+(System.currentTimeMillis()-startTime)+ " millis" : "");
     } // end importSQL
 
