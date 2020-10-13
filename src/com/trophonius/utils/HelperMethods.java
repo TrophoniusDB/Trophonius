@@ -62,11 +62,11 @@ public class HelperMethods {
      * @param rows Number of insert statements
      * @param filename Name of SQL file
      */
-    public static void populate(int rows, String filename) {
+    public static void populate(int rows, String tableName,String filename) {
         try (FileWriter outFile = new FileWriter(filename)){
             Random rand = new Random();
             for (Integer i = 1; i <= rows ; i++) {
-                outFile.append("insert into test (id,tall) values ("+i+","+rand.nextInt()+");\n");
+                outFile.append("insert into "+tableName+" (id,tall) values ("+i+","+rand.nextInt()+");\n");
             }
         } catch (IOException e) {
             e.printStackTrace();

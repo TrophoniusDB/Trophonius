@@ -201,9 +201,14 @@ public class SqlParser {
 
         // populate testbase
         if (sql.toLowerCase().startsWith("populate")) {
-            int numberofRows = Integer.valueOf(words[1]);
-            String outFile = words[2];
-            HelperMethods.populate(numberofRows, outFile);
+            try {
+                int numberofRows = Integer.valueOf(words[1]);
+                String tableName = words[2];
+                String outFile = words[3];
+                HelperMethods.populate(numberofRows, tableName,outFile);
+            } catch (Exception e) {
+                System.out.println("\""+words[1] + "\" is not a number.");
+            }
         }
 
     }
