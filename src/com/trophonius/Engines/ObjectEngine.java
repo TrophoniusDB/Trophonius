@@ -201,6 +201,7 @@ public class ObjectEngine implements Engine {
             for (FilterTerm term : filterTerms) {
                 // Get the stored value and compare it to the filter term value
                 String fieldValue = row.getRow().get(term.getFieldName()).toString().toLowerCase();
+                String fieldType = term.getFieldType();
                 String termValue = term.getValue().toLowerCase();
                 String operand = term.getOperand();
 
@@ -211,22 +212,68 @@ public class ObjectEngine implements Engine {
                         }
                         break;
                     case ">":
-                        try {
-                            if (Integer.parseInt(fieldValue) > Integer.parseInt(termValue)) {
-                                retrieve = true;
+                        switch (fieldType) {
+                            case "Integer":
+                            try {
+                                if (Integer.parseInt(fieldValue) > Integer.parseInt(termValue)) {
+                                    retrieve = true;
+                                }
+                            } catch (Exception e) {
+                                System.out.println("Not an integer " + e.getMessage());
                             }
-                        } catch (Exception e) {
-                            System.out.println("Not an integer "+e.getMessage());
+                            break;
+                            case "Decimal":
+                                try {
+                                    if (Double.parseDouble(fieldValue) > Double.parseDouble(termValue)) {
+                                        retrieve = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Not a Decimal " + e.getMessage());
+                                }
+                            break;
+                            case "Float":
+                                try {
+                                    if Float.parseFloat(fieldValue) > Float.parseFloat(termValue)) {
+                                        retrieve = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Not a Float " + e.getMessage());
+                                }
+                                break;
                         }
+
                         break;
                     case "<":
-                        try {
-                            if (Integer.parseInt(fieldValue) < Integer.parseInt(termValue)) {
-                                retrieve = true;
-                            }
-                        } catch (Exception e) {
-                            System.out.println("Not an integer "+e.getMessage());
+                        switch (fieldType) {
+                            case "Integer":
+                                try {
+                                    if (Integer.parseInt(fieldValue) < Integer.parseInt(termValue)) {
+                                        retrieve = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Not an integer " + e.getMessage());
+                                }
+                                break;
+                            case "Decimal":
+                                try {
+                                    if (Double.parseDouble(fieldValue) < Double.parseDouble(termValue)) {
+                                        retrieve = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Not a Decimal " + e.getMessage());
+                                }
+                                break;
+                            case "Float":
+                                try {
+                                    if Float.parseFloat(fieldValue) < Float.parseFloat(termValue)) {
+                                        retrieve = true;
+                                    }
+                                } catch (Exception e) {
+                                    System.out.println("Not a Float " + e.getMessage());
+                                }
+                                break;
                         }
+
                         break;
                     case "!=":
                     case "<>":
