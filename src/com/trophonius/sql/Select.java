@@ -82,7 +82,8 @@ public class Select {
             terms = whereTerms.replaceAll(" ", "");
             String fieldName = terms.substring(0, terms.indexOf(operand));
             String value = terms.substring(terms.indexOf(operand)+operand.length());
-            FilterTerm filter = new FilterTerm(fieldName, operand, value);
+            String fieldType = Main.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
+            FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value);
             filterTerms.add(filter);
         }
 
