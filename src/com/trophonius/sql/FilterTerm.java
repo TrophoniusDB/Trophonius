@@ -53,6 +53,7 @@ public class FilterTerm {
     public String toString() {
         return "FilterTerm{" +
                 "fieldName='" + fieldName + '\'' +
+                "fieldType='" + fieldType + '\'' +
                 ", operand='" + operand + '\'' +
                 ", value='" + value + '\'' +
                 '}';
