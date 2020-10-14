@@ -213,7 +213,7 @@ public class ObjectEngine implements Engine {
                         break;
                     case ">":
                         switch (fieldType) {
-                            case "Integer":
+                            case "int":
                             try {
                                 if (Integer.parseInt(fieldValue) > Integer.parseInt(termValue)) {
                                     retrieve = true;
@@ -222,7 +222,7 @@ public class ObjectEngine implements Engine {
                                 System.out.println("Not an integer " + e.getMessage());
                             }
                             break;
-                            case "Decimal":
+                            case "decimal":
                                 try {
                                     if (Double.parseDouble(fieldValue) > Double.parseDouble(termValue)) {
                                         retrieve = true;
@@ -231,7 +231,7 @@ public class ObjectEngine implements Engine {
                                     System.out.println("Not a Decimal " + e.getMessage());
                                 }
                             break;
-                            case "Float":
+                            case "float":
                                 try {
                                     if(Float.parseFloat(fieldValue) > Float.parseFloat(termValue)) {
                                         retrieve = true;
@@ -245,7 +245,7 @@ public class ObjectEngine implements Engine {
                         break;
                     case "<":
                         switch (fieldType) {
-                            case "Integer":
+                            case "int":
                                 try {
                                     if (Integer.parseInt(fieldValue) < Integer.parseInt(termValue)) {
                                         retrieve = true;
@@ -254,7 +254,7 @@ public class ObjectEngine implements Engine {
                                     System.out.println("Not an integer " + e.getMessage());
                                 }
                                 break;
-                            case "Decimal":
+                            case "decimal":
                                 try {
                                     if (Double.parseDouble(fieldValue) < Double.parseDouble(termValue)) {
                                         retrieve = true;
@@ -263,7 +263,7 @@ public class ObjectEngine implements Engine {
                                     System.out.println("Not a Decimal " + e.getMessage());
                                 }
                                 break;
-                            case "Float":
+                            case "float":
                                 try {
                                     if (Float.parseFloat(fieldValue) < Float.parseFloat(termValue)) {
                                         retrieve = true;
