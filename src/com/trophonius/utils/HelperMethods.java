@@ -137,7 +137,6 @@ public class HelperMethods {
         // iterate each row
         rows.stream().forEach(a-> {
             // iterate each object in row
-            // System.out.println(a.getRow().keySet());
             final int[] maxLength = {0};
             a.getRow().forEach((k,v) -> {
                 int valueLength;
@@ -155,7 +154,7 @@ public class HelperMethods {
             try {
                fieldLength = fieldsWithLength.get(fieldName).intValue();
             } catch (Exception e) {
-                fieldLength = 4;
+               fieldLength = 4;
             }
 
             // If length of value is greater than length of field name put it in fieldsWithLength HashMap
