@@ -74,6 +74,22 @@ public class HelperMethods {
         }
     }
 
+    /**
+     * Writes test table insert statements to an SQL file
+     * @param rows Number of insert statements
+     * @param fileName Name of SQL file
+     */
+    public static void populate(int rows, String fileName) {
+        try (FileWriter outFile = new FileWriter(fileName)){
+            Random rand = new Random();
+            for (Integer i = 1; i <= rows ; i++) {
+                outFile.append("insert into test (id,tall) values ("+i+","+rand.nextInt()+");\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     // print HTML-table with no header and footer
     public static <E> void printHTMLTable(E[][] data) {
@@ -82,7 +98,10 @@ public class HelperMethods {
     } // end printHTMLTable
 
 
-    // Print ASCII Table Row Count
+    /**
+     * Print ASCII Table for Row Count
+     * @param rowCount value to be printed in table
+     */
     public static void printAsciiTable(long rowCount) {
         int len = String.valueOf(rowCount).length();
         len = len < "count(*)".length() ? "count(*)".length() : len;
@@ -94,20 +113,25 @@ public class HelperMethods {
 
     }
 
-    // Print ASCII Table from a list of fields names and a list of rows
+    /**
+     * Print ASCII Table from a list of fields names and a list of rows
+     * @param fieldList List<String> of field Names
+     * @param rows List<Row> of rows
+     * @param <E> Generic type
+     */
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {
-        // Calculate field widths for length of ascii-box
-
         // Put field name and length in a HashMap
         Map<String,Integer> fieldsWithLength = new LinkedHashMap<>();
+        // Calculate field widths for length of ascii-box
+        int fieldNameLength = 0;
         for(String fieldName: fieldList) {
-            int fieldLength = fieldName.length();
+            fieldNameLength = fieldName.length();
             // if field length is equal to or less than "null" (4), make it same length as "null"
-            if(fieldLength<5) fieldLength = 4;
-            fieldsWithLength.put(fieldName,fieldLength);
+            if(fieldNameLength<5) fieldNameLength = 4;
+            fieldsWithLength.put(fieldName,fieldNameLength);
         }
 
-        // Go through rows tro see if length of value is greater than length of field name
+        // Go through rows to see if length of value is greater than length of field name
         // and put the longest in HashMap fieldsWithLength
 
         // iterate each row
