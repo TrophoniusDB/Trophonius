@@ -233,7 +233,7 @@ public class ObjectEngine implements Engine {
                             break;
                             case "Float":
                                 try {
-                                    if Float.parseFloat(fieldValue) > Float.parseFloat(termValue)) {
+                                    if(Float.parseFloat(fieldValue) > Float.parseFloat(termValue)) {
                                         retrieve = true;
                                     }
                                 } catch (Exception e) {
@@ -265,7 +265,7 @@ public class ObjectEngine implements Engine {
                                 break;
                             case "Float":
                                 try {
-                                    if Float.parseFloat(fieldValue) < Float.parseFloat(termValue)) {
+                                    if (Float.parseFloat(fieldValue) < Float.parseFloat(termValue)) {
                                         retrieve = true;
                                     }
                                 } catch (Exception e) {
