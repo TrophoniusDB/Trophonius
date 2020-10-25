@@ -150,9 +150,9 @@ public class ObjectEngine implements Engine {
      * Fetches rows from table according to SQL terms and returns them as a List
      *
      * @param tableName   Name of the Table
-     * @param fieldList   List of table fields to be teched
+     * @param fieldList   List of table fields to be feched
      * @param filterTerms List of FilterTerm objects
-     * @param limit       Number of rows to fecth
+     * @param limit       Number of rows to fetch
      * @param offset      Number of rows to skip
      * @return Returns a List of row - objects
      */
