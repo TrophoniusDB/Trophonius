@@ -66,8 +66,9 @@ public class Select {
 
         String whereTerms = sql.toLowerCase().substring(whereStart,whereEnd);
         List<FilterTerm> filterTerms = new LinkedList<>();
-        String terms ="";
+        String whereTermes ="";
         String operand = "";
+
         if  (whereTerms.contains("!=") || whereTerms.contains("<>")) {
             operand = "!=";
         } else if (whereTerms.contains(">")) {
@@ -79,15 +80,17 @@ public class Select {
         }
 
         if(operand!="") {
-            terms = whereTerms.replaceAll(" ", "");
-            String fieldName = terms.substring(0, terms.indexOf(operand));
-            String value = terms.substring(terms.indexOf(operand)+operand.length());
+
+            String fieldName = whereTerms.substring(0, whereTerms.indexOf(operand));
+            fieldName = fieldName.replaceAll(" ","");
+            String value = whereTerms.substring(whereTerms.indexOf(operand)+operand.length());
+            value = value.trim();
             String fieldType = Main.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
             FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value);
             filterTerms.add(filter);
         }
 
-        filterTerms.stream().forEach(System.out::println);
+        // filterTerms.stream().forEach(System.out::println);
 
         // Check for functions
         // now()
