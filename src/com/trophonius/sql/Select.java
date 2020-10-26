@@ -94,9 +94,9 @@ public class Select {
 
         // TODO
         // Check for functions
-        // now()
         // round()
         // / * + -
+
 
 
         try {

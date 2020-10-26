@@ -11,7 +11,7 @@ public class Numeric {
      * @return rounded double
      */
     public static double round(double n, int dec) {
-        return Math.round(n * Math.pow(10, dec)) / (double) Math.pow(10, dec);
+        return Math.round(n * Math.pow(10, dec)) / Math.pow(10, dec);
     }
 
     /**
