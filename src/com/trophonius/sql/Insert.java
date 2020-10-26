@@ -113,6 +113,18 @@ public class Insert {
                                 }
                             }
 
+                            if (storedClassName.equals("Long") || storedClassName.equals("long")) {
+                                try {
+                                    Long value = Long.parseLong(valueMap.get(storedFieldName));
+                                    row.addToRow(storedFieldName, String.valueOf(value));
+                                } catch (Exception e) {
+                                    System.out.println("Not a valid bigint format:\n" + e.getMessage());
+                                    validFields.set(false);
+                                    return;
+                                }
+                            }
+
+
                             if (storedClassName.equals("LocalDate")) {
                                 String dateString = valueMap.get(storedFieldName).replaceAll("'", "");
                                 dateString = dateString.replaceAll("\"", "");
