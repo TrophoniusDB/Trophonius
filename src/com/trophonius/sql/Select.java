@@ -83,10 +83,36 @@ public class Select {
             // create a new FilterTerm object with fieldName, operand and value
             String fieldName = whereTerms.substring(0, whereTerms.indexOf(operand));
             fieldName = fieldName.replaceAll(" ","");
+            String functionName = "";
+            String functionParameters = "";
+            // check for functions
+            if (fieldName.contains("(") & fieldName.contains(")")) {
+                // function is present
+                functionName = fieldName.substring(0,fieldName.indexOf("("));
+
+                System.out.println("functionName : "+functionName);
+
+
+                switch (functionName)  {
+                case "round":
+
+                    String fieldName2 = fieldName.substring(fieldName.indexOf("(")+1,fieldName.indexOf(","));
+                    functionParameters = fieldName.substring(fieldName.indexOf(",")+1,fieldName.indexOf(")"));
+                    fieldName = fieldName2;
+                    System.out.println("fieldName : "+fieldName);
+                    System.out.println("functionParameters : "+functionParameters);
+
+                    break;
+            }
+
+
+            } // end check for functions
+
+
             String value = whereTerms.substring(whereTerms.indexOf(operand)+operand.length());
             value = value.trim();
             String fieldType = Main.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
-            FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value);
+            FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value,functionName,functionParameters);
             filterTerms.add(filter);
         }
 
@@ -96,6 +122,7 @@ public class Select {
         // Check for functions
         // round()
         // / * + -
+
 
 
 

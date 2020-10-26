@@ -6,15 +6,19 @@ public class FilterTerm {
     private String fieldType;
     private String operand;
     private String value;
+    private String functionName;
+    private String functionParameters;
 
     public FilterTerm() {
     }
 
-    public FilterTerm(String fieldName, String fieldType, String operand, String value) {
+    public FilterTerm(String fieldName, String fieldType, String operand, String value, String functionName, String functionParameters) {
         this.fieldName = fieldName;
         this.fieldType = fieldType;
         this.operand = operand;
         this.value = value;
+        this.functionName = functionName;
+        this.functionParameters = functionParameters;
     }
 
     public String getFieldName() {
@@ -49,13 +53,31 @@ public class FilterTerm {
         this.value = value;
     }
 
+    public String getFunctionName() {
+        return functionName;
+    }
+
+    public void setFunctionName(String functionName) {
+        this.functionName = functionName;
+    }
+
+    public String getFunctionParameters() {
+        return functionParameters;
+    }
+
+    public void setFunctionParameters(String functionParameters) {
+        this.functionParameters = functionParameters;
+    }
+
     @Override
     public String toString() {
         return "FilterTerm{" +
                 "fieldName='" + fieldName + '\'' +
-                "fieldType='" + fieldType + '\'' +
+                ", fieldType='" + fieldType + '\'' +
                 ", operand='" + operand + '\'' +
                 ", value='" + value + '\'' +
+                ", functionName='" + functionName + '\'' +
+                ", functionParameters='" + functionParameters + '\'' +
                 '}';
     }
 }
