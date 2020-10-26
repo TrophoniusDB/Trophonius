@@ -47,6 +47,15 @@ public class Select {
             if (words[i].toLowerCase().equals("offset")) {
                 offset = Integer.valueOf(words[i + 1]);
             }
+
+            // check for round()
+
+
+            // TODO
+            // / * + -
+
+
+
         } // end parse words
 
         // Check for WHERE start and end
@@ -99,8 +108,8 @@ public class Select {
                     String fieldName2 = fieldName.substring(fieldName.indexOf("(")+1,fieldName.indexOf(","));
                     functionParameters = fieldName.substring(fieldName.indexOf(",")+1,fieldName.indexOf(")"));
                     fieldName = fieldName2;
-                    System.out.println("fieldName : "+fieldName);
-                    System.out.println("functionParameters : "+functionParameters);
+                   // System.out.println("fieldName : "+fieldName);
+                   // System.out.println("functionParameters : "+functionParameters);
 
                     break;
             }
@@ -117,13 +126,6 @@ public class Select {
         }
 
         // filterTerms.stream().forEach(System.out::println);
-
-        // TODO
-        // Check for functions
-        // round()
-        // / * + -
-
-
 
 
         try {
