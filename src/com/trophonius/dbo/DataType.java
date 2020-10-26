@@ -69,6 +69,10 @@ public class DataType implements Serializable {
             dataType.setClassName("Integer");
         }
 
+        if (dataTypeString.equals("bigint")) {
+            dataType.setClassName("Long");
+        }
+
         if (dataTypeString.equals("decimal") || dataTypeString.equals("double")) {
             dataType.setClassName("Double");
         }
