@@ -8,6 +8,9 @@ Code Repository for Trophonius Data Base Terminal Client
 ## User Manual
 https://github.com/TrophoniusDB/Trophonius/wiki/User-Manual
 
+## Javadoc
+https://trophonius.com/doc/
+
 ## Binaries
 
 ### Windows 
