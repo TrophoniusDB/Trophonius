@@ -5,6 +5,9 @@ Code Repository for Trophonius Data Base Terminal Client
 - clone repository and open in IntelliJ
 - Build artifact and run: java -jar Trophonius  
 
+## User Manual
+https://github.com/TrophoniusDB/Trophonius/wiki/User-Manual
+
 ## Binaries
 
 ### Windows 
