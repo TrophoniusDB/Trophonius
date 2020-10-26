@@ -80,7 +80,7 @@ public class Select {
         }
 
         if(operand!="") {
-
+            // create a new FilterTerm object with fieldName, operand and value
             String fieldName = whereTerms.substring(0, whereTerms.indexOf(operand));
             fieldName = fieldName.replaceAll(" ","");
             String value = whereTerms.substring(whereTerms.indexOf(operand)+operand.length());
@@ -92,6 +92,7 @@ public class Select {
 
         // filterTerms.stream().forEach(System.out::println);
 
+        // TODO
         // Check for functions
         // now()
         // round()
