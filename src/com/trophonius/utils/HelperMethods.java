@@ -122,7 +122,7 @@ public class HelperMethods {
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {
         // Put field name and length in a HashMap
         Map<String,Integer> fieldsWithLength = new LinkedHashMap<>();
-        // Calculate field widths for length of ascii-box
+        // Calculate field widths as input for total width of ascii-box
         int fieldNameLength = 0;
         for(String fieldName: fieldList) {
             fieldNameLength = fieldName.length();
@@ -158,7 +158,14 @@ public class HelperMethods {
             }
 
             // If length of value is greater than length of field name put it in fieldsWithLength HashMap
-            if(maxLength[0] > fieldLength) {
+
+               /*
+                System.out.println("valueLength : "+valueLength);
+                System.out.println("fieldLength : "+fieldLength);
+                System.out.println("maxLength[0] : "+maxLength[0]);
+                System.out.println("--------");
+*/
+                if(maxLength[0] > fieldLength) {
                 //Check if fieldName is amongst those to be returned
                 if(fieldsWithLength.containsKey(fieldName)) {
                     fieldsWithLength.put(fieldName, valueLength);
