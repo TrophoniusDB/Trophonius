@@ -94,7 +94,8 @@ public class Select {
             fieldName = fieldName.replaceAll(" ","");
             String functionName = "";
             String functionParameters = "";
-            // check for functions
+
+            // check for functions in where terms
             if (fieldName.contains("(") & fieldName.contains(")")) {
                 // function is present
                 functionName = fieldName.substring(0,fieldName.indexOf("("));
@@ -104,7 +105,7 @@ public class Select {
 
                 switch (functionName)  {
                 case "round":
-
+                    // Extract field name and parameter value from where term
                     String fieldName2 = fieldName.substring(fieldName.indexOf("(")+1,fieldName.indexOf(","));
                     functionParameters = fieldName.substring(fieldName.indexOf(",")+1,fieldName.indexOf(")"));
                     fieldName = fieldName2;
@@ -121,6 +122,7 @@ public class Select {
             String value = whereTerms.substring(whereTerms.indexOf(operand)+operand.length());
             value = value.trim();
             String fieldType = Main.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
+            // Create a FilterTerm and add it to List   to be sent to Engine for processing
             FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value,functionName,functionParameters);
             filterTerms.add(filter);
         }
