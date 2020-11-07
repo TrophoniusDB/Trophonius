@@ -129,7 +129,6 @@ public class Select {
 
         // filterTerms.stream().forEach(System.out::println);
 
-
         try {
             // Read fieldNames and Fields from tableStructure
             LinkedHashMap<String, Field> tableStructure = Main.currentDB.getTables().get(tableName).getTableStructure();
