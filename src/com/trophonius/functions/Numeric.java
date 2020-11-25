@@ -1,8 +1,10 @@
 package com.trophonius.functions;
 
+/**
+ * Class for numeric functions
+ */
+
 public class Numeric {
-
-
 
     /**
      * Rounding doubles with decimals, like round() in sql
