@@ -14,7 +14,7 @@ import java.util.Scanner;
 /**
  * Main Class that controls input and dispatches commands to other classes
  * @author Terje Berg-Hansen
- * @version 0.1.9
+ * @version 0.1.10
  */
 public class Main {
     public static boolean timing = true;
@@ -26,7 +26,7 @@ public class Main {
         Logger logger = LoggerFactory.getLogger(Main.class);
 
         System.out.println("Welcome to Trophonius - a Simple and Fast Database");
-        System.out.println("Version 0.1.9");
+        System.out.println("Version 0.1.10");
         System.out.println("Type 'help' or '\\h' for help and 'quit' or '\\q' to exit");
         System.out.println("User Manual: https://github.com/TrophoniusDB/Trophonius/wiki/User-Manual");
         logger.info("Trophonius started");

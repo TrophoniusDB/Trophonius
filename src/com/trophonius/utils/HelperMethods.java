@@ -60,7 +60,7 @@ public class HelperMethods {
     /**
      * Writes insert statements to an SQL file
      * @param rows Number of insert statements
-     * @param tableName
+     * @param tableName Name of table for insert statement
      * @param fileName Name of SQL file
      */
     public static void populate(int rows, String tableName,String fileName) {
@@ -115,8 +115,8 @@ public class HelperMethods {
 
     /**
      * Print ASCII Table from a list of fields names and a list of rows
-     * @param fieldList List<String> of field Names
-     * @param rows List<Row> of rows
+     * @param fieldList List&lt;String&gt; of field Names
+     * @param rows List&lt;Row&gt; of rows
      * @param <E> Generic type
      */
     public static <E> void printAsciiTable(List<String> fieldList, List<Row> rows) {

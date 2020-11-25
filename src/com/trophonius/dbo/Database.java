@@ -205,7 +205,7 @@ public class Database implements Serializable {
     /**
      * Saves the serialized current database object to a .db file
      * @param outDB Database object to be saved
-     * @throws IOException
+     * @throws IOException if file not saved
      */
     public static void saveDatabase(Database outDB) throws IOException {
 
@@ -268,8 +268,8 @@ public class Database implements Serializable {
      * Prints a box to console, containing all the characteristics of a Database object, including the names of its tables
      * @param dbName Name of database til describe
      * @param full Denotes that individual table structures should also be written to console
-     * @throws IOException
-     * @throws ClassNotFoundException
+     * @throws IOException database file not found
+     * @throws ClassNotFoundException if class not found
      */
     public void describeDatabase(String dbName, boolean full) throws IOException, ClassNotFoundException {
 
