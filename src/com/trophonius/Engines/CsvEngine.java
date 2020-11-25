@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
 import com.trophonius.Main;
+import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Row;
 import com.trophonius.sql.FilterTerm;
 
@@ -111,8 +112,12 @@ public class CsvEngine implements Engine {
 
     @Override
     public long getRowCount(String dbName, String tableName) {
-        return 0;
-    }
+        long rowCount = 0;
+        Database db = new Database().openDatabase(dbName);
+        rowCount = db.getTables().get(tableName).getRowCount();
+        return rowCount;
+    } // end getRowCount
+
 
     @Override
     public String getName() {

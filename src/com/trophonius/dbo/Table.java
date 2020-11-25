@@ -139,7 +139,7 @@ public class Table implements Serializable {
 
     public void printTableStructure() {
         AtomicReference<Integer> i = new AtomicReference<>(1);
-        System.out.println("Table Name: " + tableName);
+        System.out.println("Table Name: " + tableName+" | Number of Rows: "+rowCount);
         System.out.println("+" + "-".repeat(94) + "+");
         System.out.printf("| %-3s | %-20s | %-15s | %-8s | %-8s | %-12s | %-8s |\n", "#", "Field", "Data Type", "Not Null", "Unique", "Primary Key", "Identity");
         System.out.println("+" + "-".repeat(94) + "+");
