@@ -313,7 +313,7 @@ public class HelperMethods {
     public static void showLog() {
 
         try {
-            Files.lines(Paths.get("logs/app.log")).forEach(System.out::println);
+            Files.lines(Paths.get("data/logs/app.log")).forEach(System.out::println);
         } catch (IOException e) {
             System.out.println("Log file could not be read");
             e.printStackTrace();

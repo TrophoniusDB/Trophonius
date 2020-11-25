@@ -199,12 +199,14 @@ public class Insert {
                     // Call the method for storing a new row on the relevant engine
                     Engine engine = currentTable.getEngine();
                     engine.writeRowToDisk(currentDB.getDbName(), tableName,row,verbose);
-                    currentTable.setRowCount(currentTable.getRowCount()+1);
-                    try {
-                        Database.saveDatabase(currentDB);
-                    } catch (IOException e) {
-                        System.out.println("New row count not saved...");
-                        e.printStackTrace();
+                    if(verbose) {
+                        currentTable.setRowCount(currentTable.getRowCount() + 1);
+                        try {
+                            Database.saveDatabase(currentDB);
+                        } catch (IOException e) {
+                            System.out.println("New row count not saved...");
+                            e.printStackTrace();
+                        }
                     }
 
                 } else {

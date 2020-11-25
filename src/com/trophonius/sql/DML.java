@@ -117,9 +117,19 @@ public class DML<E> {
         try {
             // insert into tableName
             number = (int) Files.lines(Path.of(filename)).map(line -> new Insert(line.toString(), false)).count();
+            String line = Files.lines(Path.of(filename)).findFirst().toString();
+            String tableName = line.substring(line.indexOf("into")+5,line.indexOf("(")-1);
+            Table table = currentDB.getTables().get(tableName);
+            table.setRowCount(table.getRowCount() + number);
+            try {
+                Database.saveDatabase(currentDB);
+            } catch (IOException e) {
+                System.out.println("New row count not saved...");
+                e.printStackTrace();
+            }
             System.out.print(number);
             System.out.print(number > 1 ? " rows " : " row ");
-            System.out.println("from file inserted");
+            System.out.print("from file inserted");
 
             // Insert as List<String>
            // Insert in = new Insert(Files.lines(Path.of(filename)).collect(Collectors.toList()));
