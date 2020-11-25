@@ -1,9 +1,11 @@
 package com.trophonius.sql;
 
 import com.trophonius.Engines.Engine;
+import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Row;
 import com.trophonius.dbo.Table;
 
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -197,6 +199,13 @@ public class Insert {
                     // Call the method for storing a new row on the relevant engine
                     Engine engine = currentTable.getEngine();
                     engine.writeRowToDisk(currentDB.getDbName(), tableName,row,verbose);
+                    currentTable.setRowCount(currentTable.getRowCount()+1);
+                    try {
+                        Database.saveDatabase(currentDB);
+                    } catch (IOException e) {
+                        System.out.println("New row count not saved...");
+                        e.printStackTrace();
+                    }
 
                 } else {
                     System.out.println("Row not saved in table");

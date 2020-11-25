@@ -16,6 +16,7 @@ public class Table implements Serializable {
     private LinkedHashMap<String, Field> tableStructure = new LinkedHashMap<>();
     private ArrayList<String> fieldNames;
     private Object primaryKeyValue;
+    private int rowCount = 0;
     private Engine engine;
 
 
@@ -60,6 +61,14 @@ public class Table implements Serializable {
 
     public <T> void setPrimaryKey(T value) {
         T primaryKeyValue = value;
+    }
+
+    public int getRowCount() {
+        return rowCount;
+    }
+
+    public void setRowCount(int rowCount) {
+        this.rowCount = rowCount;
     }
 
     // Add Fields to the tableStructure HashMap

@@ -1,6 +1,7 @@
 package com.trophonius.Engines;
 
 import com.trophonius.Main;
+import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Row;
 import com.trophonius.sql.FilterTerm;
 import com.trophonius.utils.AppendableObjectInputStream;
@@ -47,29 +48,8 @@ public class ObjectEngine implements Engine {
     @Override
     public long getRowCount(String dbName, String tableName) {
         long rowCount = 0;
-        try {
-            FileInputStream dbFileIn = new FileInputStream("data/" + Main.currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
-            AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
-
-            while (true) {
-                try {
-                    Row theRow = (Row) is.readObject();
-                    rowCount++;
-                } catch (EOFException e) {
-                    break;
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                }
-            } // end while
-
-            is.close();
-            dbFileIn.close();
-
-        } catch (IOException e) {
-            System.out.println("Error! Could not open table file...");
-            e.printStackTrace();
-            logger.error("Could not open table file : " + e.getMessage());
-        }
+        Database db = new Database().openDatabase(dbName);
+        rowCount = db.getTables().get(tableName).getRowCount();
         return rowCount;
     } // end getRowCount
 
