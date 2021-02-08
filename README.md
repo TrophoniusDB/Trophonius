@@ -17,7 +17,7 @@ https://trophonius.com/doc/
 http://trophonius.com/Trophonius-0.1.9.exe
 
 ### Ubuntu 20.10
-http://trophonius.com/trophonius_0.1.8-1_amd64.deb
+http://trophonius.com/trophonius_0.1.10-1_amd64.deb
 
 ### Fedora 32
 http://trophonius.com/trophonius-0.1.9-1.x86_64.rpm
