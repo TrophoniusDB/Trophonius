@@ -13,8 +13,8 @@ https://trophonius.com/doc/
 
 ## Binaries
 
-### Windows 
-http://trophonius.com/Trophonius-0.1.9.exe
+### Windows 10 
+http://trophonius.com/Trophonius-0.1.10.exe
 
 ### Ubuntu 20.10
 http://trophonius.com/trophonius_0.1.10-1_amd64.deb
