@@ -46,10 +46,8 @@ public class HelperMethods {
             File rootDir = new File("data");
 
             for (File dir : rootDir.listFiles()) {
-                if (dir.isDirectory()) {
-
+                if (dir.isDirectory() && !dir.getName().equals("logs")) {
                     dbNames.add(dir.getName());
-
                 }
             }
         }
