@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.trophonius.Main.currentDB;
+import static com.trophonius.ClientHandler.currentDB;
 
 /**
  * This class parses an sql insert statement and prepares a row

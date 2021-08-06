@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static com.trophonius.Main.currentDB;
+import static com.trophonius.ClientHandler.currentDB;
 
 public class Table implements Serializable {
     private static final long serialVersionUID = 9134175559420903358L;

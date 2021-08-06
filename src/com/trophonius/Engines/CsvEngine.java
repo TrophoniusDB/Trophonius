@@ -1,5 +1,6 @@
 package com.trophonius.Engines;
 
+import com.trophonius.ClientHandler;
 import com.trophonius.Main;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Row;
@@ -85,7 +86,7 @@ public class CsvEngine implements Engine {
         AtomicInteger numberOfRows = new AtomicInteger();
 
         try {
-            List valueList = Files.lines(Paths.get("data/" + Main.currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
+            List valueList = Files.lines(Paths.get("data/" + ClientHandler.currentDB.getDbName() + "/" + tableName + "." + getTableSuffix())).collect(Collectors.toList());
             if (limit == Integer.MAX_VALUE) {
                 numberOfRows.set(valueList.size());
             }

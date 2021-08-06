@@ -1,5 +1,6 @@
 package com.trophonius.sql;
 
+import com.trophonius.ClientHandler;
 import com.trophonius.Engines.Engine;
 import com.trophonius.Main;
 import com.trophonius.dbo.Field;
@@ -121,7 +122,7 @@ public class Select {
 
             String value = whereTerms.substring(whereTerms.indexOf(operand)+operand.length());
             value = value.trim();
-            String fieldType = Main.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
+            String fieldType = ClientHandler.currentDB.getTables().get(tableName).getTableStructure().get(fieldName).getDataType().getName();
             // Create a FilterTerm and add it to List   to be sent to Engine for processing
             FilterTerm filter = new FilterTerm(fieldName,fieldType, operand, value,functionName,functionParameters);
             filterTerms.add(filter);
@@ -131,15 +132,15 @@ public class Select {
 
         try {
             // Read fieldNames and Fields from tableStructure
-            LinkedHashMap<String, Field> tableStructure = Main.currentDB.getTables().get(tableName).getTableStructure();
+            LinkedHashMap<String, Field> tableStructure = ClientHandler.currentDB.getTables().get(tableName).getTableStructure();
 
             // If "select *" then Fetch all fields by putting the whole keySet into the variable fieldList
             if (words[1].equals("*")) {
                 fieldList.addAll(tableStructure.keySet());
             } else if (words[1].equals("count(*)")) {
                 // get and print row count
-                Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
-                long rowCount = engine.getRowCount(Main.currentDB.getDbName(),  tableName);
+                Engine engine = ClientHandler.currentDB.getTables().get(tableName).getEngine();
+                long rowCount = engine.getRowCount(ClientHandler.currentDB.getDbName(),  tableName);
                 HelperMethods.printAsciiTable(rowCount);
                 return;
             } else {
@@ -170,7 +171,7 @@ public class Select {
 
         // Find table engine
         try {
-            Engine engine = Main.currentDB.getTables().get(tableName).getEngine();
+            Engine engine = ClientHandler.currentDB.getTables().get(tableName).getEngine();
 
             try {
                 rows = engine.fetchRows(tableName, fieldList, filterTerms, limit, offset);

@@ -1,5 +1,6 @@
 package com.trophonius.Engines;
 
+import com.trophonius.ClientHandler;
 import com.trophonius.Main;
 import com.trophonius.dbo.Database;
 import com.trophonius.dbo.Row;
@@ -144,7 +145,7 @@ public class ObjectEngine implements Engine {
 
         // Open Table file to find fields and check with SQL that all fields are present in table
         try {
-            FileInputStream dbFileIn = new FileInputStream("data/" + Main.currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
+            FileInputStream dbFileIn = new FileInputStream("data/" + ClientHandler.currentDB.getDbName() + "/" + tableName + "." + tableSuffix);
             AppendableObjectInputStream is = new AppendableObjectInputStream(new BufferedInputStream(dbFileIn));
 
             long rowCount = 0;
